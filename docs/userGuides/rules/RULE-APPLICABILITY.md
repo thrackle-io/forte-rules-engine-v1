@@ -8,7 +8,6 @@
 | [Account Max Value by Risk](./ACCOUNT-MAX-VALUE-BY-RISK.md) | Application | mint/buy/transfer |
 | [Account Max Value by Access Level](./ACCOUNT-MAX-VALUE-BY-ACCESS-LEVEL.md) | Application | mint/buy/transfer |
 | [Account Max Value Out by Access Level](./ACCOUNT-MAX-VALUE-OUT-BY-ACCESS-LEVEL.md) | Application | burn/sell/transfer |
-| [Tx Size Per Time Period by Risk Score](./ACCOUNT-MAX-TX-VALUE-BY-RISK-SCORE.md) | Application | mint/buy/sell/transfer |
 | [Oracle](./ACCOUNT-APPROVE-DENY-ORACLE.md) | ERC20/ERC721 | mint/buy/sell/transfer |
 | [Account Min/Max Token Balance](./ACCOUNT-MIN-MAX-TOKEN-BALANCE.md) | ERC20/ERC721 | mint/burn/buy/sell/transfer |
 | [Account Max Trade Size](./ACCOUNT-MAX-TRADE-SIZE.md) | ERC20/ERC721 | buy/sell |
