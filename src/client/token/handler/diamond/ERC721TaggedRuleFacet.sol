@@ -10,7 +10,8 @@ import "src/client/token/handler/ruleContracts/HandlerAccountMinMaxTokenBalance.
 import "src/client/token/handler/diamond/TradingRuleFacet.sol";
 
 contract ERC721TaggedRuleFacet is HandlerAccountMinMaxTokenBalance, HandlerUtils, AppAdministratorOrOwnerOnlyDiamondVersion{
-
+    event HEYYYY(string text);
+    event HEYYYY2(string text, ActionTypes action);
     /**
      * @dev This function uses the protocol's ruleProcessor to perform the actual tagged rule checks.
      * @param _balanceFrom token balance of sender address
@@ -22,6 +23,7 @@ contract ERC721TaggedRuleFacet is HandlerAccountMinMaxTokenBalance, HandlerUtils
      * @param action if selling or buying (of ActionTypes type)
      */
     function checkTaggedAndTradingRules(uint256 _balanceFrom, uint256 _balanceTo, address _from, address _to, address _sender, uint256 _amount, ActionTypes action) external onlyOwner {
+        emit HEYYYY("in check trading rules");
         _checkTaggedIndividualRules(_balanceFrom, _balanceTo, _from, _to, _sender, _amount, action);
     }
 
@@ -36,9 +38,13 @@ contract ERC721TaggedRuleFacet is HandlerAccountMinMaxTokenBalance, HandlerUtils
      * @param action if selling or buying (of ActionTypes type)
      */
     function _checkTaggedIndividualRules(uint256 _balanceFrom, uint256 _balanceTo, address _from, address _to, address _sender, uint256 _amount, ActionTypes action) internal {
+        emit HEYYYY("in _checkTaggedIndividualRules");
+        emit HEYYYY2("action", action);
         HandlerBaseS storage handlerBaseStorage = lib.handlerBaseStorage();
         bytes32[] memory toTags;
-        bytes32[] memory fromTags;        
+        bytes32[] memory fromTags; 
+        if (action == ActionTypes.BUY)  emit HEYYYY("action == ActionTypes.BUY");   
+        if (action == ActionTypes.SELL)  emit HEYYYY("action == ActionTypes.SELL");   
         bool mustCheckBuyRules = action == ActionTypes.BUY && !IAppManager(handlerBaseStorage.appManager).isTradingRuleBypasser(_to);
         bool mustCheckSellRules = action == ActionTypes.SELL && !IAppManager(handlerBaseStorage.appManager).isTradingRuleBypasser(_from);
         mapping(ActionTypes => Rule) storage accountMinMaxTokenBalance = lib.accountMinMaxTokenBalanceStorage().accountMinMaxTokenBalance;
@@ -75,7 +81,8 @@ contract ERC721TaggedRuleFacet is HandlerAccountMinMaxTokenBalance, HandlerUtils
             if (accountMinMaxTokenBalance[action].active) IRuleProcessor(handlerBaseStorage.ruleProcessor).checkAccountMinTokenBalance(_balanceFrom, fromTags, _amount, accountMinMaxTokenBalance[action].ruleId);
         }
         
-        if(mustCheckBuyRules || mustCheckSellRules)
+        if(mustCheckBuyRules || mustCheckSellRules){
+        emit HEYYYY("mustCheckBuyRules || mustCheckSellRules");
             callAnotherFacet(
                 0xb49c9636, 
                 abi.encodeWithSignature(
@@ -89,5 +96,6 @@ contract ERC721TaggedRuleFacet is HandlerAccountMinMaxTokenBalance, HandlerUtils
                     action
                 )
             );
+        }
     }
 }

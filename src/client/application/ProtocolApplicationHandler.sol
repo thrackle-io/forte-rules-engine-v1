@@ -182,7 +182,7 @@ contract ProtocolApplicationHandler is
                     ruleProcessor.checkAccountMaxValueByRiskScore(accountMaxValueByRiskScore[_action].ruleId, _to, riskScoreTo, _balanceValuation, _transferValuation);
             }
             if (accountMaxTxValueByRiskScore[_action].active) _checkAccountMaxTxValueByRiskScore(_action,_from, riskScoreFrom, _transferValuation);
-        } else if (_action == ActionTypes.MINT) {
+        } else if (_action == ActionTypes.MINT) {            
             if (accountMaxTxValueByRiskScore[_action].active) _checkAccountMaxTxValueByRiskScore(_action, _to, riskScoreTo, _transferValuation); 
             if (accountMaxValueByRiskScore[_action].active) 
                 ruleProcessor.checkAccountMaxValueByRiskScore(accountMaxValueByRiskScore[_action].ruleId, _to, riskScoreTo, _balanceValuation, _transferValuation);

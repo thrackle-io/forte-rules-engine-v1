@@ -448,6 +448,9 @@ abstract contract TestCommonFoundry is TestCommon, EndWithStopPrank, EnabledActi
 
         /// create ERC721
         (applicationNFT, applicationNFTHandler) = deployAndSetupERC721("FRANKENSTEIN", "FRK");
+        console.log("common applicationNFTHandler", address(applicationNFTHandler));
+        console.log("common applicationNFT", address(applicationNFT));
+        console.log("common handler connected", applicationNFT.getHandlerAddress());
         switchToAppAdministrator();
 
         /// create an ERC721U
@@ -723,6 +726,19 @@ abstract contract TestCommonFoundry is TestCommon, EndWithStopPrank, EnabledActi
         applicationAppManager.registerToken(name, address(erc721));
         HandlerVersionFacet(address(handler)).updateVersion("2.1.0");
     }
+
+    function deployAndSetupERC721MinLegacySell(string memory name, string memory symbol) internal endWithStopPrank returns (MinimalERC721LegacySell erc721, HandlerDiamond handler) {
+        switchToSuperAdmin();
+        erc721 = new MinimalERC721LegacySell(name, symbol);
+        handler = _createERC721HandlerDiamond();
+        ERC721HandlerMainFacet(address(handler)).initialize(address(ruleProcessor), address(applicationAppManager), address(erc721));
+        switchToAppAdministrator();
+        erc721.connectHandlerToToken(address(handler));
+        /// register the token
+        applicationAppManager.registerToken(name, address(erc721));
+        HandlerVersionFacet(address(handler)).updateVersion("2.1.0");
+    }
+
 
     function deployAndSetupERC20(string memory name, string memory symbol) internal endWithStopPrank returns (UtilApplicationERC20 erc20, HandlerDiamond handler) {
         (erc20, handler) = deployAndSetupERC20(name, symbol, applicationAppManager);

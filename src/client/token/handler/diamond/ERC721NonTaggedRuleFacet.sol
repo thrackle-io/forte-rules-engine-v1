@@ -27,6 +27,7 @@ contract ERC721NonTaggedRuleFacet is
     HandlerTokenMinHoldTime,
     HandlerTokenMaxDailyTrades
 {
+    event HEYYYY2(string text, bool check, address _address);
     /**
      * @dev This function uses the protocol's ruleProcessorto perform the actual rule checks.
      * @param action if selling or buying (of ActionTypes type)

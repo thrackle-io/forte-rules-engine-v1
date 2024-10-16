@@ -13,6 +13,7 @@ import {IHandlerDiamondErrors} from "src/common/IErrors.sol";
 import "diamond-std/implementations/ERC173/ERC173.sol";
 
 contract ERC721HandlerMainFacet is HandlerBase, HandlerUtils, ICommonApplicationHandlerEvents, NFTValuationLimit, IHandlerDiamondErrors {
+    event HEYYYY2(string text, ActionTypes action);
     /**
      * @dev Initializer params
      * @param _ruleProcessorProxyAddress of the protocol's Rule Processor contract.
@@ -60,7 +61,6 @@ contract ERC721HandlerMainFacet is HandlerBase, HandlerUtils, ICommonApplication
      * @return Success equals true if all checks pass
      */
     function checkAllRules(uint256 _balanceFrom, uint256 _balanceTo, address _from, address _to, uint256 _amount, uint256 _tokenId, ActionTypes _action) external onlyOwner returns (bool) {
-        _action = ActionTypes.P2P_TRANSFER; // This hard-coded setting is for the legacy clients. When this is no longer needed, this line can be removed giving clients the option of setting their own action
         _amount; // legacy parameter
         return _checkAllRules(_balanceFrom, _balanceTo, _from, _to, address(0), _tokenId, _action);
     }
@@ -77,6 +77,7 @@ contract ERC721HandlerMainFacet is HandlerBase, HandlerUtils, ICommonApplication
      * @return true if all checks pass
      */
     function _checkAllRules(uint256 balanceFrom, uint256 balanceTo, address _from, address _to, address _sender, uint256 _tokenId, ActionTypes _action) internal returns (bool) {
+        emit HEYYYY2("_checkAllRules entry",_action);
         HandlerBaseS storage handlerBaseStorage = lib.handlerBaseStorage();
 
         bool isFromTreasuryAccount = IAppManager(handlerBaseStorage.appManager).isTreasuryAccount(_from);
@@ -87,6 +88,7 @@ contract ERC721HandlerMainFacet is HandlerBase, HandlerUtils, ICommonApplication
         } else {
             action = _action;
         }
+        emit HEYYYY2("after action determination",action);
         uint256 _amount = 1; /// currently not supporting batch NFT transactions. Only single NFT transfers.
         /// standard tagged and non-tagged rules do not apply when either to or from is a Treasury account
         if (!isFromTreasuryAccount && !isToTreasuryAccount) {
@@ -100,7 +102,7 @@ contract ERC721HandlerMainFacet is HandlerBase, HandlerUtils, ICommonApplication
                 _tokenId,
                 action,
                 HandlerTypes.ERC721HANDLER
-            );
+            );            
             callAnotherFacet(0xcf2eaa37, abi.encodeWithSignature("checkTaggedAndTradingRules(uint256,uint256,address,address,address,uint256,uint8)", balanceFrom, balanceTo, _from, _to, _sender, _amount, action));
             callAnotherFacet(0x6c163628, abi.encodeWithSignature("checkNonTaggedRules(uint8,address,address,address,uint256,uint256)", action, _from, _to, _sender, _amount, _tokenId));
         } else if (isFromTreasuryAccount || isToTreasuryAccount) {

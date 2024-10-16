@@ -12,6 +12,7 @@ import "src/client/token/ERC20/IERC20Decimals.sol";
 import "forge-std/console.sol";
 
 contract TradingRuleFacet is HandlerAccountMaxTradeSize, HandlerUtils, HandlerTokenMaxBuySellVolume, AppAdministratorOrOwnerOnlyDiamondVersion, IZeroAddressError, IHandlerDiamondErrors {
+    event HEYYYY(string text);
     
     /**
      * @dev This function consolidates all the trading rules.
@@ -24,6 +25,7 @@ contract TradingRuleFacet is HandlerAccountMaxTradeSize, HandlerUtils, HandlerTo
      * @param action if selling or buying (of ActionTypes type)
      */
     function checkTradingRules(address _from, address _to, address _sender, bytes32[] memory fromTags, bytes32[] memory toTags, uint256 _amount, ActionTypes action) external onlyOwner {
+        emit HEYYYY("in check trading rules");
         if(action == ActionTypes.BUY){
             if (_from != _sender){ /// non custodial buy
                 _checkTradeRulesSellAction(_from, fromTags, _amount);

@@ -13,7 +13,7 @@ import {IAssetHandlerErrors} from "src/common/IErrors.sol";
 
 contract HandlerTokenMaxDailyTrades is RuleAdministratorOnly, ActionTypesArray, ITokenHandlerEvents, IAssetHandlerErrors {
     /// Rule Setters and Getters
-
+    event HEYYYY2(string text, ActionTypes act, bool check, address _address);
     /**
      * @dev Set the TokenMaxDailyTrades. Restricted to rule administrators only.
      * @notice that setting a rule will automatically activate it.
@@ -79,6 +79,7 @@ contract HandlerTokenMaxDailyTrades is RuleAdministratorOnly, ActionTypesArray, 
         TokenMaxDailyTradesS storage data = lib.tokenMaxDailyTradesStorage();
         data.tokenMaxDailyTrades[_action].ruleId = _ruleId;
         data.tokenMaxDailyTrades[_action].active = true;
+        emit HEYYYY2("setTokenMaxDailyTradesIdUpdate", _action, data.tokenMaxDailyTrades[_action].active, address(this));
     }
 
     /**

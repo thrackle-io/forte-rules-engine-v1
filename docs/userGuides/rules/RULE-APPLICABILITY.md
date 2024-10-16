@@ -16,9 +16,8 @@
 | [Token Minimum Hold Time](./TOKEN-MIN-HOLD-TIME.md) | ERC721 | burn/sell/transfer | 
 | [Token Minimum Transaction](./TOKEN-MIN-TRANSACTION-SIZE.md)| ERC20 | mint/burn/buy/sell/transfer |
 | [Account Max Tx Value By Risk Score](./ACCOUNT-MAX-TX-VALUE-BY-RISK-SCORE.md)| ERC20/ERC721 | mint/buy/sell/transfer |
-| [Oracle](./ACCOUNT-APPROVE-DENY-ORACLE.md) | ERC20/ERC721/AMM | mint/buy/sell/transfer |
+| [Oracle](./ACCOUNT-APPROVE-DENY-ORACLE.md) | ERC20/ERC721 | mint/buy/sell/transfer |
 | [Pause Rule](./PAUSE-RULE.md) | Application | mint/burn/buy/sell/transfer |
-| [Transaction Size Per Time Period by Risk Score](./ACCOUNT-MAX-TX-VALUE-BY-RISK-SCORE.md) | Application | mint/buy/sell/transfer |
 
 
 <!-- These are the header links -->
