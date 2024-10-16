@@ -15,9 +15,9 @@ contract WolfyB is ERC20, ERC20Burnable, AccessControl, ReentrancyGuard {
     bytes32 public constant MINTER_ROLE = keccak256("MINTER_ROLE");
 
     // Define an initial supply (optional for contract constructor)
-    uint256 public constant INITIAL_SUPPLY = 1_000_000 * 10**18; // 1 million tokens
+    uint256 public constant INITIAL_SUPPLY = 100_000 * 10**18; // 1 million tokens
 
-    constructor(address admin) ERC20("WolfyB", "WLFYA") {
+    constructor(address admin) ERC20("WolfyB", "WLFYB") {
         // Mint the initial supply to the deployer (admin)
         _mint(admin, INITIAL_SUPPLY);
 
