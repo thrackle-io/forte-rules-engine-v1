@@ -8,7 +8,7 @@ If an address is not on an approved oracle list, they will be denied from receiv
 
 The deny list is designed as a tool to reduce the risk of malicious actors in the ecosystem. If an address is on the deny oracle list they are denied from receiving or sending tokens. Any address not on the deny list will pass this rule check.
 
-This rule does not have any exemptions for burning or minting. Proper configuration will be required for [Mint or Burn Action Types](./ACTION-TYPES.md). Adding an Account Approve Deny Oracle Flexible Rule with the `addressToggle` set to check both `to` and `from` addresses, address(0x0) will be checked for mints or burns. Instead, add a new oracle rule with the with the `addressToggle` set to check only `to` address for [mint action types](./ACTION-TYPES.md).
+This rule does not have any exemptions for burning or minting. Proper configuration will be required for [Mint or Burn Action Types](./ACTION-TYPES.md). Adding an Account Approve Deny Oracle Flexible Rule with the `addressToggle` set to check both `to` and `from` addresses to the [mint or burn action types](./ACTION-TYPES.md) will require that the zero address be added to the oracle's list. Optionally, you can add a new oracle rule with the with the `addressToggle` set to check only `to` address for [mint action types](./ACTION-TYPES.md).
 
 This rule has the following [parameter optionality](./ACCOUNT-APPROVE-DENY-ORACLE-FLEXIBLE.md#parameter-optionality): A uint8 `addressToggle` value will set the address to be checked by this rule: 
 - 0 = Both to and from Address 
