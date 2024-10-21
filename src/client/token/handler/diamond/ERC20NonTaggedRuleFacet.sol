@@ -5,9 +5,8 @@ import "src/client/token/handler/diamond/FacetsCommonImports.sol";
 import "src/client/token/handler/common/HandlerUtils.sol";
 import "src/client/token/handler/common/AppAdministratorOrOwnerOnlyDiamondVersion.sol";
 import "src/client/token/handler/diamond/RuleStorage.sol";
+import "src/client/token/handler/diamond/OracleRulesFacet.sol";
 import "src/client/token/ITokenInterface.sol";
-import "src/client/token/handler/ruleContracts/HandlerAccountApproveDenyOracle.sol";
-import "src/client/token/handler/ruleContracts/HandlerAccountApproveDenyOracleFlexible.sol";
 import "src/client/token/handler/ruleContracts/HandlerTokenMaxSupplyVolatility.sol";
 import "src/client/token/handler/ruleContracts/HandlerTokenMaxTradingVolume.sol";
 import "src/client/token/handler/ruleContracts/HandlerTokenMinTxSize.sol";
@@ -15,8 +14,6 @@ import "src/client/token/handler/ruleContracts/HandlerTokenMinTxSize.sol";
 contract ERC20NonTaggedRuleFacet is 
     AppAdministratorOrOwnerOnlyDiamondVersion, 
     HandlerUtils, 
-    HandlerAccountApproveDenyOracle, 
-    HandlerAccountApproveDenyOracleFlexible, 
     HandlerTokenMaxSupplyVolatility, 
     HandlerTokenMaxTradingVolume, 
     HandlerTokenMinTxSize 
@@ -32,8 +29,18 @@ contract ERC20NonTaggedRuleFacet is
     function checkNonTaggedRules(address _from, address _to, address _sender, uint256 _amount, ActionTypes action) external onlyOwner {
         HandlerBaseS storage handlerBaseStorage = lib.handlerBaseStorage();
         address handlerBase = handlerBaseStorage.ruleProcessor;
-        _checkAccountApproveDenyOraclesRule(_from, _to, _sender, action, handlerBase);
-        _checkAccountApproveDenyOraclesFlexibleRule(_from, _to, action, handlerBase);
+        /// Call to the Oracle Rules Facet for Oracle Rule processing 
+        callAnotherFacet(
+                0x67fecc21, 
+                abi.encodeWithSignature(
+                    "checkAccountApproveDenyOraclesRules(address,address,address,uint8,address)",
+                    _from, 
+                    _to, 
+                    _sender, 
+                    action,
+                    handlerBase
+                )
+            );
 
         if (action == ActionTypes.BURN){
             /// tokenMaxTradingVolume Burn 

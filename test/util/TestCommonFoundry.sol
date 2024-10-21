@@ -146,12 +146,12 @@ abstract contract TestCommonFoundry is TestCommon, EndWithStopPrank, EnabledActi
      * @return diamond fully configured ERC20 Handler diamond
      */
     function _createERC20HandlerDiamond() public returns (HandlerDiamond diamond) {
-        FacetCut[] memory _erc20HandlerFacetCuts = new FacetCut[](8);
+        FacetCut[] memory _erc20HandlerFacetCuts = new FacetCut[](9);
         // Start by deploying the DiamonInit contract.
         DiamondInit diamondInit = new DiamondInit();
 
         // Register all facets.
-        string[8] memory facets = [
+        string[9] memory facets = [
             // diamond version
             "HandlerVersionFacet",
             // Native facets,
@@ -163,6 +163,7 @@ abstract contract TestCommonFoundry is TestCommon, EndWithStopPrank, EnabledActi
             "ERC20TaggedRuleFacet",
             "ERC20NonTaggedRuleFacet",
             "TradingRuleFacet",
+            "OracleRulesFacet",
             "FeesFacet"
         ];
 
@@ -199,12 +200,12 @@ abstract contract TestCommonFoundry is TestCommon, EndWithStopPrank, EnabledActi
      * @return diamond fully configured ERC721 Handler diamond
      */
     function _createERC721HandlerDiamond() public returns (HandlerDiamond diamond) {
-        FacetCut[] memory _erc721HandlerFacetCuts = new FacetCut[](7);
+        FacetCut[] memory _erc721HandlerFacetCuts = new FacetCut[](8);
         // Start by deploying the DiamonInit contract.
         DiamondInit diamondInit = new DiamondInit();
 
         // Register all facets.
-        string[7] memory facets = [
+        string[8] memory facets = [
             // diamond version
             "HandlerVersionFacet",
             // Native facets,
@@ -215,7 +216,8 @@ abstract contract TestCommonFoundry is TestCommon, EndWithStopPrank, EnabledActi
             "ERC721HandlerMainFacet",
             "ERC721TaggedRuleFacet",
             "ERC721NonTaggedRuleFacet",
-            "TradingRuleFacet"
+            "TradingRuleFacet",
+            "OracleRulesFacet"
         ];
 
         // Loop on each facet, deploy them and create the FacetCut.

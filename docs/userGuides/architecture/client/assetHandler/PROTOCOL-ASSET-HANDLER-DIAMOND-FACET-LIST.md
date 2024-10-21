@@ -20,6 +20,7 @@ Facet Location
 
 ### Common Facets:
 - [TradingRuleFacet.sol](../../../../../src/client/token/handler/diamond/TradingRuleFacet.sol)
+- [OracleRulesFacet.sol](../../../../../src/client/token/handler/diamond/OracleRulesFacet.sol)
 
 ## Data Facets: 
 - [StorageLib.sol](../../../../../src/client/token/handler/diamond/StorageLib.sol) 

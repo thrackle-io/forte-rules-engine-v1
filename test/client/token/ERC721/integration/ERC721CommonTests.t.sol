@@ -2467,8 +2467,8 @@ abstract contract ERC721CommonTests is TestCommonFoundry, ERC721Util {
                 internalIndex = 0;
             }
             for (uint j; j < 5; j++) {
-                assertEq(ERC721NonTaggedRuleFacet(address(applicationNFTHandler)).getAccountApproveDenyOracleIds(actions[mainIndex])[internalIndex], ruleIds[mainIndex]);
-                assertTrue(ERC721NonTaggedRuleFacet(address(applicationNFTHandler)).isAccountApproveDenyOracleActive(actions[mainIndex], ruleIds[mainIndex]));
+                assertEq(OracleRulesFacet(address(applicationNFTHandler)).getAccountApproveDenyOracleIds(actions[mainIndex])[internalIndex], ruleIds[mainIndex]);
+                assertTrue(OracleRulesFacet(address(applicationNFTHandler)).isAccountApproveDenyOracleActive(actions[mainIndex], ruleIds[mainIndex]));
                 lastAction = actions[mainIndex];
                 internalIndex++;
                 mainIndex++;
@@ -2517,8 +2517,8 @@ abstract contract ERC721CommonTests is TestCommonFoundry, ERC721Util {
                 internalIndex = 0;
             }
             for (uint j; j < 8; j++) {
-                assertEq(ERC721NonTaggedRuleFacet(address(applicationNFTHandler)).getAccountApproveDenyOracleIds(actions2[mainIndex])[internalIndex], ruleIds2[mainIndex]);
-                assertTrue(ERC721NonTaggedRuleFacet(address(applicationNFTHandler)).isAccountApproveDenyOracleActive(actions2[mainIndex], ruleIds2[mainIndex]));
+                assertEq(OracleRulesFacet(address(applicationNFTHandler)).getAccountApproveDenyOracleIds(actions2[mainIndex])[internalIndex], ruleIds2[mainIndex]);
+                assertTrue(OracleRulesFacet(address(applicationNFTHandler)).isAccountApproveDenyOracleActive(actions2[mainIndex], ruleIds2[mainIndex]));
                 lastAction = actions2[mainIndex];
                 internalIndex++;
                 mainIndex++;
@@ -2534,12 +2534,12 @@ abstract contract ERC721CommonTests is TestCommonFoundry, ERC721Util {
                 internalIndex = 0;
             }
             for (uint j; j < 5; j++) {
-                uint32[] memory ruleIds3 = ERC20NonTaggedRuleFacet(address(applicationNFTHandler)).getAccountApproveDenyOracleIds(actions[mainIndex]);
+                uint32[] memory ruleIds3 = OracleRulesFacet(address(applicationNFTHandler)).getAccountApproveDenyOracleIds(actions[mainIndex]);
                 // If a value was returned it must not match a previous rule
                 if (ruleIds3.length > 0) {
                     assertFalse(ruleIds3[internalIndex] == ruleIds[mainIndex]);
                 }
-                assertFalse(ERC20NonTaggedRuleFacet(address(applicationNFTHandler)).isAccountApproveDenyOracleActive(actions[mainIndex], ruleIds[mainIndex]));
+                assertFalse(OracleRulesFacet(address(applicationNFTHandler)).isAccountApproveDenyOracleActive(actions[mainIndex], ruleIds[mainIndex]));
                 lastAction = actions[mainIndex];
                 internalIndex++;
                 mainIndex++;
@@ -2568,8 +2568,8 @@ abstract contract ERC721CommonTests is TestCommonFoundry, ERC721Util {
 
         // Verify that all the rule id's were set correctly and are active
         for (uint i; i < 5; ++i) {
-            assertEq(ERC721NonTaggedRuleFacet(address(applicationNFTHandler)).getAccountApproveDenyOracleIds(actions[i])[i], ruleIds[i]);
-            assertTrue(ERC721NonTaggedRuleFacet(address(applicationNFTHandler)).isAccountApproveDenyOracleActive(actions[i], ruleIds[i]));
+            assertEq(OracleRulesFacet(address(applicationNFTHandler)).getAccountApproveDenyOracleIds(actions[i])[i], ruleIds[i]);
+            assertTrue(OracleRulesFacet(address(applicationNFTHandler)).isAccountApproveDenyOracleActive(actions[i], ruleIds[i]));
         }
 
         // Create zero length arrays
@@ -2581,8 +2581,8 @@ abstract contract ERC721CommonTests is TestCommonFoundry, ERC721Util {
 
         // Verify that all the rule ids were cleared and not active
         for (uint i; i < 5; ++i) {
-            assertEq(ERC721NonTaggedRuleFacet(address(applicationNFTHandler)).getAccountApproveDenyOracleIds(actions[i]).length, 0);
-            assertFalse(ERC721NonTaggedRuleFacet(address(applicationNFTHandler)).isAccountApproveDenyOracleActive(actions[i], ruleIds[i]));
+            assertEq(OracleRulesFacet(address(applicationNFTHandler)).getAccountApproveDenyOracleIds(actions[i]).length, 0);
+            assertFalse(OracleRulesFacet(address(applicationNFTHandler)).isAccountApproveDenyOracleActive(actions[i], ruleIds[i]));
         }
     }
 
@@ -2613,8 +2613,8 @@ abstract contract ERC721CommonTests is TestCommonFoundry, ERC721Util {
                 internalIndex = 0;
             }
             for (uint j; j < 5; j++) {
-                assertEq(ERC721NonTaggedRuleFacet(address(applicationNFTHandler)).getAccountApproveDenyOracleFlexibleIds(actions[mainIndex])[internalIndex], ruleIds[mainIndex]);
-                assertTrue(ERC721NonTaggedRuleFacet(address(applicationNFTHandler)).isAccountApproveDenyOracleFlexibleActive(actions[mainIndex], ruleIds[mainIndex]));
+                assertEq(OracleRulesFacet(address(applicationNFTHandler)).getAccountApproveDenyOracleFlexibleIds(actions[mainIndex])[internalIndex], ruleIds[mainIndex]);
+                assertTrue(OracleRulesFacet(address(applicationNFTHandler)).isAccountApproveDenyOracleFlexibleActive(actions[mainIndex], ruleIds[mainIndex]));
                 lastAction = actions[mainIndex];
                 internalIndex++;
                 mainIndex++;
@@ -2663,8 +2663,8 @@ abstract contract ERC721CommonTests is TestCommonFoundry, ERC721Util {
                 internalIndex = 0;
             }
             for (uint j; j < 8; j++) {
-                assertEq(ERC721NonTaggedRuleFacet(address(applicationNFTHandler)).getAccountApproveDenyOracleFlexibleIds(actions2[mainIndex])[internalIndex], ruleIds2[mainIndex]);
-                assertTrue(ERC721NonTaggedRuleFacet(address(applicationNFTHandler)).isAccountApproveDenyOracleFlexibleActive(actions2[mainIndex], ruleIds2[mainIndex]));
+                assertEq(OracleRulesFacet(address(applicationNFTHandler)).getAccountApproveDenyOracleFlexibleIds(actions2[mainIndex])[internalIndex], ruleIds2[mainIndex]);
+                assertTrue(OracleRulesFacet(address(applicationNFTHandler)).isAccountApproveDenyOracleFlexibleActive(actions2[mainIndex], ruleIds2[mainIndex]));
                 lastAction = actions2[mainIndex];
                 internalIndex++;
                 mainIndex++;
@@ -2680,12 +2680,12 @@ abstract contract ERC721CommonTests is TestCommonFoundry, ERC721Util {
                 internalIndex = 0;
             }
             for (uint j; j < 5; j++) {
-                uint32[] memory ruleIds3 = ERC20NonTaggedRuleFacet(address(applicationNFTHandler)).getAccountApproveDenyOracleFlexibleIds(actions[mainIndex]);
+                uint32[] memory ruleIds3 = OracleRulesFacet(address(applicationNFTHandler)).getAccountApproveDenyOracleFlexibleIds(actions[mainIndex]);
                 // If a value was returned it must not match a previous rule
                 if (ruleIds3.length > 0) {
                     assertFalse(ruleIds3[internalIndex] == ruleIds[mainIndex]);
                 }
-                assertFalse(ERC20NonTaggedRuleFacet(address(applicationNFTHandler)).isAccountApproveDenyOracleFlexibleActive(actions[mainIndex], ruleIds[mainIndex]));
+                assertFalse(OracleRulesFacet(address(applicationNFTHandler)).isAccountApproveDenyOracleFlexibleActive(actions[mainIndex], ruleIds[mainIndex]));
                 lastAction = actions[mainIndex];
                 internalIndex++;
                 mainIndex++;
@@ -2714,8 +2714,8 @@ abstract contract ERC721CommonTests is TestCommonFoundry, ERC721Util {
         
         // Verify that all the rule id's were set correctly and are active
         for (uint i; i < 5; ++i) {
-            assertEq(ERC721NonTaggedRuleFacet(address(applicationNFTHandler)).getAccountApproveDenyOracleFlexibleIds(actions[i])[i], ruleIds[i]);
-            assertTrue(ERC721NonTaggedRuleFacet(address(applicationNFTHandler)).isAccountApproveDenyOracleFlexibleActive(actions[i], ruleIds[i]));
+            assertEq(OracleRulesFacet(address(applicationNFTHandler)).getAccountApproveDenyOracleFlexibleIds(actions[i])[i], ruleIds[i]);
+            assertTrue(OracleRulesFacet(address(applicationNFTHandler)).isAccountApproveDenyOracleFlexibleActive(actions[i], ruleIds[i]));
         }
 
         // Create zero length arrays
@@ -2727,8 +2727,8 @@ abstract contract ERC721CommonTests is TestCommonFoundry, ERC721Util {
         
         // Verify that all the rule ids were cleared and not active
         for (uint i; i < 5; ++i) {
-            assertEq(ERC721NonTaggedRuleFacet(address(applicationNFTHandler)).getAccountApproveDenyOracleFlexibleIds(actions[i]).length, 0);
-            assertFalse(ERC721NonTaggedRuleFacet(address(applicationNFTHandler)).isAccountApproveDenyOracleFlexibleActive(actions[i], ruleIds[i]));
+            assertEq(OracleRulesFacet(address(applicationNFTHandler)).getAccountApproveDenyOracleFlexibleIds(actions[i]).length, 0);
+            assertFalse(OracleRulesFacet(address(applicationNFTHandler)).isAccountApproveDenyOracleFlexibleActive(actions[i], ruleIds[i]));
         }
     }
 

@@ -312,11 +312,11 @@ contract RuleProcessorModuleFuzzTest is TestCommonFoundry, RuleCreation {
         uint32 approveOracle = RuleDataFacet(address(ruleProcessor)).addAccountApproveDenyOracle(address(applicationAppManager), 1, address(oracleApproved));
         /// to simulate randomness in the oracle rule to pick, we grab the transferAmount%2
         if (transferAmount % 2 == 0) {
-            ERC20NonTaggedRuleFacet(address(applicationCoinHandler)).setAccountApproveDenyOracleId(_createActionsArray(), banOracle);
-            assertTrue(ERC20NonTaggedRuleFacet(address(applicationCoinHandler)).isAccountApproveDenyOracleActive(ActionTypes.P2P_TRANSFER, 0));
+            OracleRulesFacet(address(applicationCoinHandler)).setAccountApproveDenyOracleId(_createActionsArray(), banOracle);
+            assertTrue(OracleRulesFacet(address(applicationCoinHandler)).isAccountApproveDenyOracleActive(ActionTypes.P2P_TRANSFER, 0));
         } else {
-            ERC20NonTaggedRuleFacet(address(applicationCoinHandler)).setAccountApproveDenyOracleId(_createActionsArray(), approveOracle);
-            assertTrue(ERC20NonTaggedRuleFacet(address(applicationCoinHandler)).isAccountApproveDenyOracleActive(ActionTypes.P2P_TRANSFER, 1));
+            OracleRulesFacet(address(applicationCoinHandler)).setAccountApproveDenyOracleId(_createActionsArray(), approveOracle);
+            assertTrue(OracleRulesFacet(address(applicationCoinHandler)).isAccountApproveDenyOracleActive(ActionTypes.P2P_TRANSFER, 1));
         }
     }
 }

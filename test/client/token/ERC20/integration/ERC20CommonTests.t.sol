@@ -2408,8 +2408,8 @@ abstract contract ERC20CommonTests is TestCommonFoundry, DummyAMM, ERC20Util {
                 internalIndex = 0;
             }
             for (uint j; j < 5; j++) {
-                assertEq(ERC20NonTaggedRuleFacet(address(applicationCoinHandler)).getAccountApproveDenyOracleIds(actions[mainIndex])[internalIndex], ruleIds[mainIndex]);
-                assertTrue(ERC20NonTaggedRuleFacet(address(applicationCoinHandler)).isAccountApproveDenyOracleActive(actions[mainIndex], ruleIds[mainIndex]));
+                assertEq(OracleRulesFacet(address(applicationCoinHandler)).getAccountApproveDenyOracleIds(actions[mainIndex])[internalIndex], ruleIds[mainIndex]);
+                assertTrue(OracleRulesFacet(address(applicationCoinHandler)).isAccountApproveDenyOracleActive(actions[mainIndex], ruleIds[mainIndex]));
                 lastAction = actions[mainIndex];
                 internalIndex++;
                 mainIndex++;
@@ -2458,8 +2458,8 @@ abstract contract ERC20CommonTests is TestCommonFoundry, DummyAMM, ERC20Util {
                 internalIndex = 0;
             }
             for (uint j; j < 8; j++) {
-                assertEq(ERC20NonTaggedRuleFacet(address(applicationCoinHandler)).getAccountApproveDenyOracleIds(actions2[mainIndex])[internalIndex], ruleIds2[mainIndex]);
-                assertTrue(ERC20NonTaggedRuleFacet(address(applicationCoinHandler)).isAccountApproveDenyOracleActive(actions2[mainIndex], ruleIds2[mainIndex]));
+                assertEq(OracleRulesFacet(address(applicationCoinHandler)).getAccountApproveDenyOracleIds(actions2[mainIndex])[internalIndex], ruleIds2[mainIndex]);
+                assertTrue(OracleRulesFacet(address(applicationCoinHandler)).isAccountApproveDenyOracleActive(actions2[mainIndex], ruleIds2[mainIndex]));
                 lastAction = actions2[mainIndex];
                 internalIndex++;
                 mainIndex++;
@@ -2475,12 +2475,12 @@ abstract contract ERC20CommonTests is TestCommonFoundry, DummyAMM, ERC20Util {
                 internalIndex = 0;
             }
             for (uint j; j < 5; j++) {
-                uint32[] memory ruleIds3 = ERC20NonTaggedRuleFacet(address(applicationCoinHandler)).getAccountApproveDenyOracleIds(actions[mainIndex]);
+                uint32[] memory ruleIds3 = OracleRulesFacet(address(applicationCoinHandler)).getAccountApproveDenyOracleIds(actions[mainIndex]);
                 // If a value was returned it must not match a previous rule
                 if (ruleIds3.length > 0) {
                     assertFalse(ruleIds3[internalIndex] == ruleIds[mainIndex]);
                 }
-                assertFalse(ERC20NonTaggedRuleFacet(address(applicationCoinHandler)).isAccountApproveDenyOracleActive(actions[mainIndex], ruleIds[mainIndex]));
+                assertFalse(OracleRulesFacet(address(applicationCoinHandler)).isAccountApproveDenyOracleActive(actions[mainIndex], ruleIds[mainIndex]));
                 lastAction = actions[mainIndex];
                 internalIndex++;
                 mainIndex++;
@@ -2509,8 +2509,8 @@ abstract contract ERC20CommonTests is TestCommonFoundry, DummyAMM, ERC20Util {
         
         // Verify that all the rule id's were set correctly and are active
         for (uint i; i < 5; i++) {
-            assertEq(ERC20NonTaggedRuleFacet(address(applicationCoinHandler)).getAccountApproveDenyOracleIds(actions[i])[i], ruleIds[i]);
-            assertTrue(ERC20NonTaggedRuleFacet(address(applicationCoinHandler)).isAccountApproveDenyOracleActive(actions[i], ruleIds[i]));
+            assertEq(OracleRulesFacet(address(applicationCoinHandler)).getAccountApproveDenyOracleIds(actions[i])[i], ruleIds[i]);
+            assertTrue(OracleRulesFacet(address(applicationCoinHandler)).isAccountApproveDenyOracleActive(actions[i], ruleIds[i]));
         }
         // Create zero length arrays
         uint32[] memory ruleIdsZero = new uint32[](0);
@@ -2521,8 +2521,8 @@ abstract contract ERC20CommonTests is TestCommonFoundry, DummyAMM, ERC20Util {
 
         // Verify that all the rule ids were cleared and not active
         for (uint i; i < 5; i++) {
-            assertEq(ERC20NonTaggedRuleFacet(address(applicationCoinHandler)).getAccountApproveDenyOracleIds(actions[i]).length, 0);
-            assertFalse(ERC20NonTaggedRuleFacet(address(applicationCoinHandler)).isAccountApproveDenyOracleActive(actions[i], ruleIds[i]));
+            assertEq(OracleRulesFacet(address(applicationCoinHandler)).getAccountApproveDenyOracleIds(actions[i]).length, 0);
+            assertFalse(OracleRulesFacet(address(applicationCoinHandler)).isAccountApproveDenyOracleActive(actions[i], ruleIds[i]));
         }
     }
 
@@ -2553,8 +2553,8 @@ abstract contract ERC20CommonTests is TestCommonFoundry, DummyAMM, ERC20Util {
                 internalIndex = 0;
             }
             for (uint j; j < 5; j++) {
-                assertEq(ERC20NonTaggedRuleFacet(address(applicationCoinHandler)).getAccountApproveDenyOracleFlexibleIds(actions[mainIndex])[internalIndex], ruleIds[mainIndex]);
-                assertTrue(ERC20NonTaggedRuleFacet(address(applicationCoinHandler)).isAccountApproveDenyOracleFlexibleActive(actions[mainIndex], ruleIds[mainIndex]));
+                assertEq(OracleRulesFacet(address(applicationCoinHandler)).getAccountApproveDenyOracleFlexibleIds(actions[mainIndex])[internalIndex], ruleIds[mainIndex]);
+                assertTrue(OracleRulesFacet(address(applicationCoinHandler)).isAccountApproveDenyOracleFlexibleActive(actions[mainIndex], ruleIds[mainIndex]));
                 lastAction = actions[mainIndex];
                 internalIndex++;
                 mainIndex++;
@@ -2603,8 +2603,8 @@ abstract contract ERC20CommonTests is TestCommonFoundry, DummyAMM, ERC20Util {
                 internalIndex = 0;
             }
             for (uint j; j < 8; j++) {
-                assertEq(ERC20NonTaggedRuleFacet(address(applicationCoinHandler)).getAccountApproveDenyOracleFlexibleIds(actions2[mainIndex])[internalIndex], ruleIds2[mainIndex]);
-                assertTrue(ERC20NonTaggedRuleFacet(address(applicationCoinHandler)).isAccountApproveDenyOracleFlexibleActive(actions2[mainIndex], ruleIds2[mainIndex]));
+                assertEq(OracleRulesFacet(address(applicationCoinHandler)).getAccountApproveDenyOracleFlexibleIds(actions2[mainIndex])[internalIndex], ruleIds2[mainIndex]);
+                assertTrue(OracleRulesFacet(address(applicationCoinHandler)).isAccountApproveDenyOracleFlexibleActive(actions2[mainIndex], ruleIds2[mainIndex]));
                 lastAction = actions2[mainIndex];
                 internalIndex++;
                 mainIndex++;
@@ -2620,12 +2620,12 @@ abstract contract ERC20CommonTests is TestCommonFoundry, DummyAMM, ERC20Util {
                 internalIndex = 0;
             }
             for (uint j; j < 5; j++) {
-                uint32[] memory ruleIds3 = ERC20NonTaggedRuleFacet(address(applicationCoinHandler)).getAccountApproveDenyOracleFlexibleIds(actions[mainIndex]);
+                uint32[] memory ruleIds3 = OracleRulesFacet(address(applicationCoinHandler)).getAccountApproveDenyOracleFlexibleIds(actions[mainIndex]);
                 // If a value was returned it must not match a previous rule
                 if (ruleIds3.length > 0) {
                     assertFalse(ruleIds3[internalIndex] == ruleIds[mainIndex]);
                 }
-                assertFalse(ERC20NonTaggedRuleFacet(address(applicationCoinHandler)).isAccountApproveDenyOracleFlexibleActive(actions[mainIndex], ruleIds[mainIndex]));
+                assertFalse(OracleRulesFacet(address(applicationCoinHandler)).isAccountApproveDenyOracleFlexibleActive(actions[mainIndex], ruleIds[mainIndex]));
                 lastAction = actions[mainIndex];
                 internalIndex++;
                 mainIndex++;
@@ -2654,8 +2654,8 @@ abstract contract ERC20CommonTests is TestCommonFoundry, DummyAMM, ERC20Util {
         
         // Verify that all the rule id's were set correctly and are active
         for (uint i; i < 5; i++) {
-            assertEq(ERC20NonTaggedRuleFacet(address(applicationCoinHandler)).getAccountApproveDenyOracleFlexibleIds(actions[i])[i], ruleIds[i]);
-            assertTrue(ERC20NonTaggedRuleFacet(address(applicationCoinHandler)).isAccountApproveDenyOracleFlexibleActive(actions[i], ruleIds[i]));
+            assertEq(OracleRulesFacet(address(applicationCoinHandler)).getAccountApproveDenyOracleFlexibleIds(actions[i])[i], ruleIds[i]);
+            assertTrue(OracleRulesFacet(address(applicationCoinHandler)).isAccountApproveDenyOracleFlexibleActive(actions[i], ruleIds[i]));
         }
         // Create zero length arrays
         uint32[] memory ruleIdsZero = new uint32[](0);
@@ -2666,8 +2666,8 @@ abstract contract ERC20CommonTests is TestCommonFoundry, DummyAMM, ERC20Util {
 
         // Verify that all the rule ids were cleared and not active
         for (uint i; i < 5; i++) {
-            assertEq(ERC20NonTaggedRuleFacet(address(applicationCoinHandler)).getAccountApproveDenyOracleFlexibleIds(actions[i]).length, 0);
-            assertFalse(ERC20NonTaggedRuleFacet(address(applicationCoinHandler)).isAccountApproveDenyOracleFlexibleActive(actions[i], ruleIds[i]));
+            assertEq(OracleRulesFacet(address(applicationCoinHandler)).getAccountApproveDenyOracleFlexibleIds(actions[i]).length, 0);
+            assertFalse(OracleRulesFacet(address(applicationCoinHandler)).isAccountApproveDenyOracleFlexibleActive(actions[i], ruleIds[i]));
         }
     }
     
