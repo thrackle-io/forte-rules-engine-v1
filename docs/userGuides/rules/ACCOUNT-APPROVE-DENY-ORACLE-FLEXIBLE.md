@@ -1,14 +1,14 @@
-# Account Approve Deny Oracle Rule
+# Account Approve Deny Oracle Flexible Rule
 
 ## Purpose
 
-The purpose of the account-approve-deny-oracle-flexible rule is to more flexible further address validation from either the approve or deny list oracles. This rule allows the [rule admin](../permissions/ADMIN-ROLES.md) to configure if the `to address`, `from address` or both addresses are checked by the oracle contract during the transaction. 
+The purpose of the account-approve-deny-oracle-flexible rule is to offer more flexible address validation from either the approve or deny list oracles. This rule allows the [rule admin](../permissions/ADMIN-ROLES.md) to configure if the `to address`, `from address` or both addresses are checked by the oracle contract during the transaction. 
 
-If an address is not on an approved oracle list, they will be denied from receiving application tokens. This rule can be used to restrict transfers to or from specific contract addresses or wallets that are approved by the oracle owner. An example is NFT exchanges that support ERC2981 royalty payments. 
+If an address is not on an approved oracle list, they will be denied from receiving application tokens. This rule can be used to restrict transfers to or from specific contract addresses or wallets that are not approved by the oracle owner. An example is to only allow trading through NFT exchanges that support ERC2981 royalty payments. 
 
 The deny list is designed as a tool to reduce the risk of malicious actors in the ecosystem. If an address is on the deny oracle list they are denied from receiving or sending tokens. Any address not on the deny list will pass this rule check.
 
-This rule does not have any exemptions for burning or minting. Proper configuration will be required for [Mint or Burn Action Types](./ACTION-TYPES.md).
+This rule does not have any exemptions for burning or minting. Proper configuration will be required for [Mint or Burn Action Types](./ACTION-TYPES.md). Adding an Account Approve Deny Oracle Flexible Rule with the `addressToggle` set to check both `to` and `from` addresses, address(0x0) will be checked for mints or burns. Instead, add a new oracle rule with the with the `addressToggle` set to check only `to` address for [mint action types](./ACTION-TYPES.md).
 
 This rule has the following [parameter optionality](./ACCOUNT-APPROVE-DENY-ORACLE-FLEXIBLE.md#parameter-optionality): A uint8 `addressToggle` value will set the address to be checked by this rule: 
 - 0 = Both to and from Address 
