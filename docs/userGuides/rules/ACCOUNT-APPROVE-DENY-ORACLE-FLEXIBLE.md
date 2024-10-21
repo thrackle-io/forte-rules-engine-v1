@@ -2,7 +2,7 @@
 
 ## Purpose
 
-The purpose of the account-approve-deny-oracle-flexible rule is to offer further address validation from either the approve or deny list oracles. This rule allows the [rule admin](../permissions/ADMIN-ROLES.md) to configure if the `to address`, `from address` or both addresses are checked by the oracle contract during the transaction. 
+The purpose of the account-approve-deny-oracle-flexible rule is to more flexible further address validation from either the approve or deny list oracles. This rule allows the [rule admin](../permissions/ADMIN-ROLES.md) to configure if the `to address`, `from address` or both addresses are checked by the oracle contract during the transaction. 
 
 If an address is not on an approved oracle list, they will be denied from receiving application tokens. This rule can be used to restrict transfers to or from specific contract addresses or wallets that are approved by the oracle owner. An example is NFT exchanges that support ERC2981 royalty payments. 
 
@@ -126,7 +126,7 @@ function addAccountApproveDenyOracleFlexible(
 ```
 ###### *see [RuleDataFacet](../../../src/protocol/economic/ruleProcessor/RuleDataFacet.sol)*
 
-The create function will return the protocol ID of the rule.
+The add function will return the protocol ID of the rule.
 
 ### Parameters:
 
@@ -150,7 +150,7 @@ Note: A 0 for an approve oracle rule will ensure both addresses are on the appro
 
 ### Parameter Validation:
 
-The following validation will be carried out by the create function in order to ensure that these parameters are valid and make sense:
+The following validation will be carried out by the add function in order to ensure that these parameters are valid and make sense:
 
 - `_appManagerAddr` is not the zero address.
 - `_oracleAddress` is not the zero address. 

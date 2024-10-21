@@ -103,7 +103,7 @@ function addTokenMaxSupplyVolatility(
 ```
 ###### *see [RuleDataFacet](../../../src/protocol/economic/ruleProcessor/RuleDataFacet.sol)*
 
-The create function will return the protocol ID of the rule.
+The add function will return the protocol ID of the rule.
 
 ### Parameters:
 
@@ -122,7 +122,7 @@ The parameters where developers have options are:
 
 ### Parameter Validation:
 
-The following validation will be carried out by the create function in order to ensure that these parameters are valid and make sense:
+The following validation will be carried out by the add function in order to ensure that these parameters are valid and make sense:
 
 - `_appManagerAddr` is not the zero address.
 - `_maxPercentage` is not zero.
