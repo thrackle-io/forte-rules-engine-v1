@@ -1,5 +1,5 @@
 # RuleStoragePositionLib
-[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/4a2e9b2745fc1ebf2913bcb6fdbbd0ad4f2bfe93/src/protocol/economic/ruleProcessor/RuleStoragePositionLib.sol)
+[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/a5f86c82f92d74cf46bb4f0f59e066361ee97617/src/protocol/economic/ruleProcessor/RuleStoragePositionLib.sol)
 
 **Author:**
 @ShaneDuncan602 @oscarsernarosero @TJ-Everett
@@ -87,6 +87,14 @@ bytes32 constant TOKEN_MAX_SUPPLY_VOLATILITY_POSITION = bytes32(uint256(keccak25
 
 ```solidity
 bytes32 constant ACC_APPROVE_DENY_ORACLE_POSITION = bytes32(uint256(keccak256("account-approve-deny-oracle")) - 1);
+```
+
+
+### ACC_APPROVE_DENY_ORACLE_FLEXIBLE_POSITION
+
+```solidity
+bytes32 constant ACC_APPROVE_DENY_ORACLE_FLEXIBLE_POSITION =
+    bytes32(uint256(keccak256("account-approve-deny-oracle-flexible")) - 1);
 ```
 
 
@@ -280,6 +288,24 @@ function accountApproveDenyOracleStorage() internal pure returns (IRuleStorage.A
 |Name|Type|Description|
 |----|----|-----------|
 |`ds`|`IRuleStorage.AccountApproveDenyOracleS`|Data Storage of Oracle Rule|
+
+
+### accountApproveDenyOracleFlexibleStorage
+
+*Function to store Flexible Oracle rules*
+
+
+```solidity
+function accountApproveDenyOracleFlexibleStorage()
+    internal
+    pure
+    returns (IRuleStorage.AccountApproveDenyOracleFlexibleS storage ds);
+```
+**Returns**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`ds`|`IRuleStorage.AccountApproveDenyOracleFlexibleS`|Data Storage of Flexible Oracle Rule|
 
 
 ### accountMaxValueByAccessLevelStorage

@@ -1,5 +1,5 @@
 # RuleApplicationValidationFacet
-[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/4a2e9b2745fc1ebf2913bcb6fdbbd0ad4f2bfe93/src/protocol/economic/ruleProcessor/RuleApplicationValidationFacet.sol)
+[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/a5f86c82f92d74cf46bb4f0f59e066361ee97617/src/protocol/economic/ruleProcessor/RuleApplicationValidationFacet.sol)
 
 **Inherits:**
 ERC173
@@ -196,6 +196,37 @@ function getTotalAccountApproveDenyOracle() internal view returns (uint32);
 |Name|Type|Description|
 |----|----|-----------|
 |`<none>`|`uint32`|total accountApproveDenyOracleRules array length|
+
+
+### validateAccountApproveDenyOracleFlexible
+
+*Validate the existence of the rule*
+
+
+```solidity
+function validateAccountApproveDenyOracleFlexible(ActionTypes[] memory _actions, uint32 _ruleId) external view;
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`_actions`|`ActionTypes[]`||
+|`_ruleId`|`uint32`|Rule Identifier|
+
+
+### getTotalAccountApproveDenyOracleFlexible
+
+*Function get total Account Approve Deny Oracle Flexible rules*
+
+
+```solidity
+function getTotalAccountApproveDenyOracleFlexible() internal view returns (uint32);
+```
+**Returns**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`<none>`|`uint32`|total accountApproveDenyOracleFlexibleRules array length|
 
 
 ### validateTokenMaxBuySellVolume

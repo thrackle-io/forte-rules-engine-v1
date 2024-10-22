@@ -1,5 +1,5 @@
 # IRuleStorage
-[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/4a2e9b2745fc1ebf2913bcb6fdbbd0ad4f2bfe93/src/protocol/economic/ruleProcessor/IRuleStorage.sol)
+[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/a5f86c82f92d74cf46bb4f0f59e066361ee97617/src/protocol/economic/ruleProcessor/IRuleStorage.sol)
 
 **Author:**
 @ShaneDuncan602 @oscarsernarosero @TJ-Everett
@@ -111,6 +111,17 @@ struct TokenMaxSupplyVolatilityS {
 struct AccountApproveDenyOracleS {
     mapping(uint32 => INonTaggedRules.AccountApproveDenyOracle) accountApproveDenyOracleRules;
     uint32 accountApproveDenyOracleIndex;
+}
+```
+
+### AccountApproveDenyOracleFlexibleS
+******** Account Approve/Deny Oracle ********
+
+
+```solidity
+struct AccountApproveDenyOracleFlexibleS {
+    mapping(uint32 => INonTaggedRules.AccountApproveDenyOracleFlexible) accountApproveDenyOracleFlexibleRules;
+    uint32 accountApproveDenyOracleFlexibleIndex;
 }
 ```
 

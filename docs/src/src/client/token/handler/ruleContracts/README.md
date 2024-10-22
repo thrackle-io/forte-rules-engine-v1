@@ -4,6 +4,8 @@
 - [Fees](Fees.sol/contract.Fees.md)
 - [HandlerAccountApproveDenyOracle](HandlerAccountApproveDenyOracle.sol/contract.HandlerAccountApproveDenyOracle.md)
 - [HandlerAccountApproveDenyOracle constants](HandlerAccountApproveDenyOracle.sol/constants.HandlerAccountApproveDenyOracle.md)
+- [HandlerAccountApproveDenyOracleFlexible](HandlerAccountApproveDenyOracleFlexible.sol/contract.HandlerAccountApproveDenyOracleFlexible.md)
+- [HandlerAccountApproveDenyOracleFlexible constants](HandlerAccountApproveDenyOracleFlexible.sol/constants.HandlerAccountApproveDenyOracleFlexible.md)
 - [HandlerAccountMaxTradeSize](HandlerAccountMaxTradeSize.sol/contract.HandlerAccountMaxTradeSize.md)
 - [HandlerAccountMinMaxTokenBalance](HandlerAccountMinMaxTokenBalance.sol/contract.HandlerAccountMinMaxTokenBalance.md)
 - [HandlerBase](HandlerBase.sol/contract.HandlerBase.md)

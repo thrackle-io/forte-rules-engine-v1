@@ -1,5 +1,5 @@
 # Constants
-[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/4a2e9b2745fc1ebf2913bcb6fdbbd0ad4f2bfe93/src/protocol/economic/ruleProcessor/RuleCodeData.sol)
+[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/a5f86c82f92d74cf46bb4f0f59e066361ee97617/src/protocol/economic/ruleProcessor/RuleCodeData.sol)
 
 ### AMM_FEE
 
@@ -95,6 +95,12 @@ bytes32 constant TOKEN_MAX_SUPPLY_VOLATILITY = "TOKEN_MAX_SUPPLY_VOLATILITY";
 
 ```solidity
 bytes32 constant ACCOUNT_APPROVE_DENY_ORACLE = "ACCOUNT_APPROVE_DENY_ORACLE";
+```
+
+### ACCOUNT_APPROVE_DENY_ORACLE_FLEXIBLE
+
+```solidity
+bytes32 constant ACCOUNT_APPROVE_DENY_ORACLE_FLEXIBLE = "ACCOUNT_APPROVE_DENY_ORACLE_FLEX";
 ```
 
 ### TOKEN_MAX_DAILY_TRADES

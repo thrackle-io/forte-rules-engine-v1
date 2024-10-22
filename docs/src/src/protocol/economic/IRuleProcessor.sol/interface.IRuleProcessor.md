@@ -1,5 +1,5 @@
 # IRuleProcessor
-[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/4a2e9b2745fc1ebf2913bcb6fdbbd0ad4f2bfe93/src/protocol/economic/IRuleProcessor.sol)
+[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/a5f86c82f92d74cf46bb4f0f59e066361ee97617/src/protocol/economic/IRuleProcessor.sol)
 
 **Author:**
 @ShaneDuncan602 @oscarsernarosero @TJ-Everett
@@ -136,6 +136,25 @@ function checkAccountApproveDenyOracles(Rule[] memory _rules, address _address) 
 |----|----|-----------|
 |`_rules`|`Rule[]`|Rule Id Array|
 |`_address`|`address`|user address to be checked|
+
+
+### checkAccountApproveDenyOraclesFlexible
+
+*This function receives an array of rule ids, which it uses to get the oracle details, then calls the oracle to determine permissions.*
+
+
+```solidity
+function checkAccountApproveDenyOraclesFlexible(Rule[] memory _rules, address _toAddress, address _fromAddress)
+    external
+    view;
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`_rules`|`Rule[]`|Rule Id Array|
+|`_toAddress`|`address`|receiver address to be checked|
+|`_fromAddress`|`address`|sender address to be checked|
 
 
 ### checkBalanceByAccessLevelPasses
@@ -637,6 +656,22 @@ function validateTokenMinTxSize(ActionTypes[] memory _actions, uint32 _ruleId) e
 
 ```solidity
 function validateAccountApproveDenyOracle(ActionTypes[] memory _actions, uint32 _ruleId) external view;
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`_actions`|`ActionTypes[]`||
+|`_ruleId`|`uint32`|Rule Identifier|
+
+
+### validateAccountApproveDenyOracleFlexible
+
+*Validate the existence of the rule*
+
+
+```solidity
+function validateAccountApproveDenyOracleFlexible(ActionTypes[] memory _actions, uint32 _ruleId) external view;
 ```
 **Parameters**
 

@@ -1,5 +1,5 @@
 # RuleDataFacet
-[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/4a2e9b2745fc1ebf2913bcb6fdbbd0ad4f2bfe93/src/protocol/economic/ruleProcessor/RuleDataFacet.sol)
+[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/a5f86c82f92d74cf46bb4f0f59e066361ee97617/src/protocol/economic/ruleProcessor/RuleDataFacet.sol)
 
 **Inherits:**
 Context, [RuleAdministratorOnly](/src/protocol/economic/RuleAdministratorOnly.sol/contract.RuleAdministratorOnly.md), [IEconomicEvents](/src/common/IEvents.sol/interface.IEconomicEvents.md), [IInputErrors](/src/common/IErrors.sol/interface.IInputErrors.md), [ITagInputErrors](/src/common/IErrors.sol/interface.ITagInputErrors.md), [IZeroAddressError](/src/common/IErrors.sol/interface.IZeroAddressError.md), [IAppRuleInputErrors](/src/common/IErrors.sol/interface.IAppRuleInputErrors.md)
@@ -309,6 +309,35 @@ function addAccountApproveDenyOracle(address _appManagerAddr, uint8 _type, addre
 |----|----|-----------|
 |`_appManagerAddr`|`address`|Address of App Manager|
 |`_type`|`uint8`|type of Oracle Rule --> 0 = restricted; 1 = allowed|
+|`_oracleAddress`|`address`|Address of Oracle|
+
+**Returns**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`<none>`|`uint32`|ruleId position of rule in storage|
+
+
+### addAccountApproveDenyOracleFlexible
+
+*Function add an Account Approve Deny Oracle Flexible rule*
+
+
+```solidity
+function addAccountApproveDenyOracleFlexible(
+    address _appManagerAddr,
+    uint8 _type,
+    uint8 _addressToggle,
+    address _oracleAddress
+) external ruleAdministratorOnly(_appManagerAddr) returns (uint32);
+```
+**Parameters**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`_appManagerAddr`|`address`|Address of App Manager|
+|`_type`|`uint8`|type of Oracle Rule --> 0 = restricted; 1 = allowed|
+|`_addressToggle`|`uint8`|toggle the address to be checked: 0 = Both to and from Address, 1 = to address only, 2 = from address only, 3 = Either to or from address.|
 |`_oracleAddress`|`address`|Address of Oracle|
 
 **Returns**

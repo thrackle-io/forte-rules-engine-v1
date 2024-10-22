@@ -1,8 +1,8 @@
 # ERC721NonTaggedRuleFacet
-[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/4a2e9b2745fc1ebf2913bcb6fdbbd0ad4f2bfe93/src/client/token/handler/diamond/ERC721NonTaggedRuleFacet.sol)
+[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/a5f86c82f92d74cf46bb4f0f59e066361ee97617/src/client/token/handler/diamond/ERC721NonTaggedRuleFacet.sol)
 
 **Inherits:**
-[AppAdministratorOrOwnerOnlyDiamondVersion](/src/client/token/handler/common/AppAdministratorOrOwnerOnlyDiamondVersion.sol/contract.AppAdministratorOrOwnerOnlyDiamondVersion.md), [HandlerAccountApproveDenyOracle](/src/client/token/handler/ruleContracts/HandlerAccountApproveDenyOracle.sol/contract.HandlerAccountApproveDenyOracle.md), [HandlerUtils](/src/client/token/handler/common/HandlerUtils.sol/contract.HandlerUtils.md), [HandlerTokenMaxSupplyVolatility](/src/client/token/handler/ruleContracts/HandlerTokenMaxSupplyVolatility.sol/contract.HandlerTokenMaxSupplyVolatility.md), [HandlerTokenMaxTradingVolume](/src/client/token/handler/ruleContracts/HandlerTokenMaxTradingVolume.sol/contract.HandlerTokenMaxTradingVolume.md), [HandlerTokenMinTxSize](/src/client/token/handler/ruleContracts/HandlerTokenMinTxSize.sol/contract.HandlerTokenMinTxSize.md), [HandlerTokenMinHoldTime](/src/client/token/handler/ruleContracts/HandlerTokenMinHoldTime.sol/contract.HandlerTokenMinHoldTime.md), [HandlerTokenMaxDailyTrades](/src/client/token/handler/ruleContracts/HandlerTokenMaxDailyTrades.sol/contract.HandlerTokenMaxDailyTrades.md)
+[AppAdministratorOrOwnerOnlyDiamondVersion](/src/client/token/handler/common/AppAdministratorOrOwnerOnlyDiamondVersion.sol/contract.AppAdministratorOrOwnerOnlyDiamondVersion.md), [HandlerUtils](/src/client/token/handler/common/HandlerUtils.sol/contract.HandlerUtils.md), [HandlerTokenMaxSupplyVolatility](/src/client/token/handler/ruleContracts/HandlerTokenMaxSupplyVolatility.sol/contract.HandlerTokenMaxSupplyVolatility.md), [HandlerTokenMaxTradingVolume](/src/client/token/handler/ruleContracts/HandlerTokenMaxTradingVolume.sol/contract.HandlerTokenMaxTradingVolume.md), [HandlerTokenMinTxSize](/src/client/token/handler/ruleContracts/HandlerTokenMinTxSize.sol/contract.HandlerTokenMinTxSize.md), [HandlerTokenMinHoldTime](/src/client/token/handler/ruleContracts/HandlerTokenMinHoldTime.sol/contract.HandlerTokenMinHoldTime.md), [HandlerTokenMaxDailyTrades](/src/client/token/handler/ruleContracts/HandlerTokenMaxDailyTrades.sol/contract.HandlerTokenMaxDailyTrades.md)
 
 
 ## Functions
@@ -35,6 +35,7 @@ function checkNonTaggedRules(
 
 ### _checkTokenMinTxSizeRule
 
+Call to the Oracle Rules Facet for Oracle Rule processing
 tokenMaxTradingVolume Burn
 tokenMinTxSize Burn
 tokenMaxDailyTrades BURN
@@ -79,41 +80,7 @@ function _checkTokenMinTxSizeRule(uint256 _amount, ActionTypes action, address h
 |`handlerBase`|`address`|address of the handler proxy|
 
 
-### _checkAccountApproveDenyOraclesRule
-
-*Internal function to check the Account Approve Deny Oracle Rules*
-
-
-```solidity
-function _checkAccountApproveDenyOraclesRule(
-    address _from,
-    address _to,
-    address _sender,
-    ActionTypes action,
-    address handlerBase
-) internal view;
-```
-**Parameters**
-
-|Name|Type|Description|
-|----|----|-----------|
-|`_from`|`address`|address of the from account|
-|`_to`|`address`|address of the to account|
-|`_sender`|`address`|address of the caller|
-|`action`|`ActionTypes`|if selling or buying (of ActionTypes type)|
-|`handlerBase`|`address`|address of the handler proxy|
-
-
 ### _checkTokenMaxTradingVolumeRule
-
-The action type determines if the _to or _from is checked by the oracle
-_from address is checked for Burn
-_to address is checked  for Mint
-_from and _to address are checked for BUY, SELL, and P2P_TRANSFER
-non custodial buy
-custodial buy
-non custodial sell
-custodial sell
 
 *Internal function to check the Token Max Trading Volume rule*
 

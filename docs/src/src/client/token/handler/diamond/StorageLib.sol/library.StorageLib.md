@@ -1,5 +1,5 @@
 # StorageLib
-[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/4a2e9b2745fc1ebf2913bcb6fdbbd0ad4f2bfe93/src/client/token/handler/diamond/StorageLib.sol)
+[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/a5f86c82f92d74cf46bb4f0f59e066361ee97617/src/client/token/handler/diamond/StorageLib.sol)
 
 **Author:**
 @ShaneDuncan602 @oscarsernarosero @TJ-Everett
@@ -22,6 +22,14 @@ bytes32 constant DIAMOND_CUT_STORAGE_HANDLER_POS = bytes32(uint256(keccak256("di
 ```solidity
 bytes32 constant ACCOUNT_APPROVE_DENY_ORACLE_HANDLER_POSITION =
     bytes32(uint256(keccak256("account-approve-deny-oracle-position")) - 1);
+```
+
+
+### ACCOUNT_APPROVE_DENY_ORACLE_FLEXIBLE_HANDLER_POSITION
+
+```solidity
+bytes32 constant ACCOUNT_APPROVE_DENY_ORACLE_FLEXIBLE_HANDLER_POSITION =
+    bytes32(uint256(keccak256("account-approve-deny-oracle-flexible-position")) - 1);
 ```
 
 
@@ -301,6 +309,24 @@ function accountApproveDenyOracleStorage() internal pure returns (AccountApprove
 |Name|Type|Description|
 |----|----|-----------|
 |`ds`|`AccountApproveDenyOracleS`|Data Storage of Oracle Rule|
+
+
+### accountApproveDenyOracleFlexibleStorage
+
+*Function to store Oracle Flexible rules*
+
+
+```solidity
+function accountApproveDenyOracleFlexibleStorage()
+    internal
+    pure
+    returns (AccountApproveDenyOracleFlexibleS storage ds);
+```
+**Returns**
+
+|Name|Type|Description|
+|----|----|-----------|
+|`ds`|`AccountApproveDenyOracleFlexibleS`|Data Storage of Oracle Flexible Rule|
 
 
 ### tokenMinHoldTimeStorage
