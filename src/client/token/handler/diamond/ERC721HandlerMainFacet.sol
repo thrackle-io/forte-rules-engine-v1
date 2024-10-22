@@ -13,7 +13,7 @@ import {IHandlerDiamondErrors} from "src/common/IErrors.sol";
 import "diamond-std/implementations/ERC173/ERC173.sol";
 
 contract ERC721HandlerMainFacet is HandlerBase, HandlerUtils, ICommonApplicationHandlerEvents, NFTValuationLimit, IHandlerDiamondErrors {
-    event HEYYYY2(string text, ActionTypes action);
+   
     /**
      * @dev Initializer params
      * @param _ruleProcessorProxyAddress of the protocol's Rule Processor contract.
@@ -77,7 +77,6 @@ contract ERC721HandlerMainFacet is HandlerBase, HandlerUtils, ICommonApplication
      * @return true if all checks pass
      */
     function _checkAllRules(uint256 balanceFrom, uint256 balanceTo, address _from, address _to, address _sender, uint256 _tokenId, ActionTypes _action) internal returns (bool) {
-        emit HEYYYY2("_checkAllRules entry",_action);
         HandlerBaseS storage handlerBaseStorage = lib.handlerBaseStorage();
 
         bool isFromTreasuryAccount = IAppManager(handlerBaseStorage.appManager).isTreasuryAccount(_from);
@@ -88,7 +87,6 @@ contract ERC721HandlerMainFacet is HandlerBase, HandlerUtils, ICommonApplication
         } else {
             action = _action;
         }
-        emit HEYYYY2("after action determination",action);
         uint256 _amount = 1; /// currently not supporting batch NFT transactions. Only single NFT transfers.
         /// standard tagged and non-tagged rules do not apply when either to or from is a Treasury account
         if (!isFromTreasuryAccount && !isToTreasuryAccount) {

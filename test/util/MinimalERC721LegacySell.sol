@@ -17,7 +17,6 @@ contract MinimalERC721LegacySell is ERC721, ERC721Burnable, ERC721Enumerable{
     address private handlerAddress;
 
     error ZeroAddress();
-    event HEYYYY2(string text, ActionTypesLegacy action);
 
     constructor(string memory _name, string memory _symbol) ERC721(_name, _symbol) {
 
@@ -25,7 +24,6 @@ contract MinimalERC721LegacySell is ERC721, ERC721Burnable, ERC721Enumerable{
 
     function _beforeTokenTransfer(address from, address to, uint256 tokenId, uint256 batchSize) internal override(ERC721, ERC721Enumerable)  {
         if (handlerAddress != address(0)) {
-            emit HEYYYY2("_beforeTokenTransfer", ActionTypesLegacy.SELL);
             // Rule Processor Module Check
             require(IProtocolERC721HandlerSell(handlerAddress).checkAllRules(from == address(0) ? 0 : balanceOf(from), to == address(0) ? 0 : balanceOf(to), from, to, 1, tokenId, ActionTypesLegacy.SELL));
         }
