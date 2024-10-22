@@ -113,20 +113,22 @@ contract DeployBase is Script, DiamondScriptUtil {
                 validateName(name);
         bool recordAllChains;
         recordAllChains = vm.envBool("RECORD_DEPLOYMENTS_FOR_ALL_CHAINS");
-        FacetCut[] memory _erc20HandlerFacetCuts = new FacetCut[](4);
+        FacetCut[] memory _erc20HandlerFacetCuts = new FacetCut[](5);
 
         // Register all facets.
-        string[4] memory facets = [
+        string[5] memory facets = [
             "ERC20TaggedRuleFacet",
             "ERC20NonTaggedRuleFacet",
             "TradingRuleFacet",
+            "OracleRulesFacet",
             "FeesFacet"
         ];
 
-        string[4] memory directories = [
+        string[5] memory directories = [
             "./out/ERC20TaggedRuleFacet.sol/",
             "./out/ERC20NonTaggedRuleFacet.sol/",
             "./out/TradingRuleFacet.sol/",
+            "./out/OracleRulesFacet.sol/",
             "./out/FeesFacet.sol/"
         ];
 
@@ -240,19 +242,21 @@ contract DeployBase is Script, DiamondScriptUtil {
                 validateName(name);
         bool recordAllChains;
         recordAllChains = vm.envBool("RECORD_DEPLOYMENTS_FOR_ALL_CHAINS");
-        FacetCut[] memory _erc20HandlerFacetCuts = new FacetCut[](3);
+        FacetCut[] memory _erc20HandlerFacetCuts = new FacetCut[](4);
 
         // Register all facets.
-        string[3] memory facets = [
+        string[4] memory facets = [
             "ERC721TaggedRuleFacet",
             "ERC721NonTaggedRuleFacet",
-            "TradingRuleFacet"
+            "TradingRuleFacet",
+            "OracleRulesFacet"
         ];
 
-        string[3] memory directories = [
+        string[4] memory directories = [
             "./out/ERC721TaggedRuleFacet.sol/",
             "./out/ERC721NonTaggedRuleFacet.sol/",
-            "./out/TradingRuleFacet.sol/"
+            "./out/TradingRuleFacet.sol/",
+            "./out/OracleRulesFacet.sol/"
         ];
 
         name = replace(name, " ", "_");

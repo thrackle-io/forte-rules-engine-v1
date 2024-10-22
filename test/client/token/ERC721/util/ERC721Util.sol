@@ -16,17 +16,33 @@ abstract contract ERC721Util is TokenUtils, DummyNFTAMM {
     function setAccountApproveDenyOracleRule(address assetHandler, uint32 ruleId) public endWithStopPrank {
         switchToRuleAdmin();
         ActionTypes[] memory actionTypes = createActionTypeArray(ActionTypes.P2P_TRANSFER, ActionTypes.BUY, ActionTypes.SELL, ActionTypes.MINT, ActionTypes.BURN);
-        ERC721NonTaggedRuleFacet(address(assetHandler)).setAccountApproveDenyOracleId(actionTypes, ruleId);
+        OracleRulesFacet(address(assetHandler)).setAccountApproveDenyOracleId(actionTypes, ruleId);
     }
 
     function setAccountApproveDenyOracleRuleSingleAction(ActionTypes action, address assetHandler, uint32 ruleId) public endWithStopPrank {
         switchToRuleAdmin();
-        ERC721NonTaggedRuleFacet(address(assetHandler)).setAccountApproveDenyOracleId(createActionTypeArray(action), ruleId);
+        OracleRulesFacet(address(assetHandler)).setAccountApproveDenyOracleId(createActionTypeArray(action), ruleId);
     }
 
     function setAccountApproveDenyOracleRuleFull(address assetHandler, ActionTypes[] memory actions, uint32[] memory ruleIds) public endWithStopPrank {
         switchToRuleAdmin();
-        ERC721NonTaggedRuleFacet(address(assetHandler)).setAccountApproveDenyOracleIdFull(actions, ruleIds);
+        OracleRulesFacet(address(assetHandler)).setAccountApproveDenyOracleIdFull(actions, ruleIds);
+    }
+
+    function setAccountApproveDenyOracleFlexibleRule(address assetHandler, uint32 ruleId) public endWithStopPrank {
+        switchToRuleAdmin();
+        ActionTypes[] memory actionTypes = createActionTypeArray(ActionTypes.P2P_TRANSFER, ActionTypes.BUY, ActionTypes.SELL, ActionTypes.MINT, ActionTypes.BURN);
+        OracleRulesFacet(address(assetHandler)).setAccountApproveDenyOracleFlexibleId(actionTypes, ruleId);
+    }
+
+    function setAccountApproveDenyOracleFlexibleRuleSingleAction(ActionTypes action, address assetHandler, uint32 ruleId) public endWithStopPrank {
+        switchToRuleAdmin();
+        OracleRulesFacet(address(assetHandler)).setAccountApproveDenyOracleFlexibleId(createActionTypeArray(action), ruleId);
+    }
+
+    function setAccountApproveDenyOracleFlexibleRuleFull(address assetHandler, ActionTypes[] memory actions, uint32[] memory ruleIds) public endWithStopPrank {
+        switchToRuleAdmin();
+        OracleRulesFacet(address(assetHandler)).setAccountApproveDenyOracleFlexibleIdFull(actions, ruleIds);
     }
 
     function setTokenMaxDailyTradesRule(address assetHandler, uint32 ruleId) public endWithStopPrank endWithStopPrank {

@@ -67,6 +67,7 @@ import "src/client/token/handler/diamond/ERC20NonTaggedRuleFacet.sol";
 import "src/client/token/handler/diamond/ERC721TaggedRuleFacet.sol";
 import "src/client/token/handler/diamond/ERC721NonTaggedRuleFacet.sol";
 import "src/client/token/handler/diamond/TradingRuleFacet.sol";
+import "src/client/token/handler/diamond/OracleRulesFacet.sol";
 import {FeesFacet} from "src/client/token/handler/diamond/FeesFacet.sol";
 import {ERC20HandlerMainFacet} from "src/client/token/handler/diamond/ERC20HandlerMainFacet.sol";
 import {ERC721HandlerMainFacet} from "src/client/token/handler/diamond/ERC721HandlerMainFacet.sol";
@@ -141,7 +142,6 @@ abstract contract TestCommon is
     UtilApplicationERC721 public applicationNFTv2;
     MinimalERC721 public minimalNFT;
     MinimalERC721Legacy public minimalNFTLegacy;
-    // ApplicationERC721HandlerMod public ERC721AssetHandler;
     ApplicationERC721Pricing public erc721Pricer;
 
     ApplicationERC721UpgAdminMint public applicationNFTU;

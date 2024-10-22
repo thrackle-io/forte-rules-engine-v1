@@ -82,7 +82,7 @@ function addPauseRule(uint256 _pauseStart, uint256 _pauseStop) external onlyRole
 - **_pauseStart** (uint256): the Unix timestamp for the start of the paused period.
 - **_pauseStop** (uint256): the Unix timestamp for the end of the paused period.
 
-The create function will return the protocol ID of the rule.
+The add function will return the protocol ID of the rule.
 
 This create function will also delete automatically any pause rule where the `pauseStop` timestamp is less than current timestamp  since this means that the rule has *expired*. 
 
@@ -98,7 +98,7 @@ There are no options for the parameters of this rule.
 
 ### Parameter Validation:
 
-The following validation will be carried out by the create function in order to ensure that these parameters are valid and make sense:
+The following validation will be carried out by the add function in order to ensure that these parameters are valid and make sense:
 
 - The amount of rules won't be greater than `MAX_RULES`.
 - `pauseStop` timestamp is greater than `pauseStart`.

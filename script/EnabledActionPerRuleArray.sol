@@ -33,6 +33,9 @@ contract EnabledActionPerRuleArray is ActionTypesArray {
         enabledActionPerRuleArray.push(
             EnabledActionPerRule(ACCOUNT_APPROVE_DENY_ORACLE, createActionTypesArray(ActionTypes.P2P_TRANSFER, ActionTypes.BUY, ActionTypes.SELL, ActionTypes.MINT, ActionTypes.BURN))
         );
+        enabledActionPerRuleArray.push(
+            EnabledActionPerRule(ACCOUNT_APPROVE_DENY_ORACLE_FLEXIBLE, createActionTypesArray(ActionTypes.P2P_TRANSFER, ActionTypes.BUY, ActionTypes.SELL, ActionTypes.MINT, ActionTypes.BURN))
+        );
         enabledActionPerRuleArray.push(EnabledActionPerRule(ACCOUNT_DENY_FOR_NO_ACCESS_LEVEL, createActionTypesArray(ActionTypes.P2P_TRANSFER, ActionTypes.BUY, ActionTypes.SELL, ActionTypes.MINT)));
         enabledActionPerRuleArray.push(EnabledActionPerRule(ACCOUNT_MAX_TRADE_SIZE, createActionTypesArray(ActionTypes.BUY, ActionTypes.SELL)));
         enabledActionPerRuleArray.push(

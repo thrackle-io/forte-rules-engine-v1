@@ -117,7 +117,7 @@ contract ApplicationERC20HandlerComplexTest is TestCommonFoundry, ERC20Util {
         // check the event emission when deactivating
         vm.expectEmit(true, true, true, true);
         emit AD1467_ApplicationHandlerActionDeactivated(ACCOUNT_APPROVE_DENY_ORACLE, _createActionsArray(), _indexTwo);
-        ERC20NonTaggedRuleFacet(address(applicationCoinHandlerSpecialOwner)).activateAccountApproveDenyOracle(_createActionsArray(), false, _indexTwo);
+        OracleRulesFacet(address(applicationCoinHandlerSpecialOwner)).activateAccountApproveDenyOracle(_createActionsArray(), false, _indexTwo);
         vm.stopPrank();
         vm.startPrank(address(applicationCoin));
         ERC20HandlerMainFacet(address(applicationCoinHandlerSpecialOwner)).checkAllRules(20, 0, user1, address(88), user1, 10);
@@ -131,7 +131,7 @@ contract ApplicationERC20HandlerComplexTest is TestCommonFoundry, ERC20Util {
         // check the event emission when activating
         vm.expectEmit(true, true, true, true);
         emit AD1467_ApplicationHandlerActionActivated(ACCOUNT_APPROVE_DENY_ORACLE, _createActionsArray(), _indexTwo);
-        ERC20NonTaggedRuleFacet(address(applicationCoinHandlerSpecialOwner)).activateAccountApproveDenyOracle(_createActionsArray(), true, _indexTwo);
+        OracleRulesFacet(address(applicationCoinHandlerSpecialOwner)).activateAccountApproveDenyOracle(_createActionsArray(), true, _indexTwo);
         vm.stopPrank();
         vm.startPrank(address(applicationCoin));
         vm.expectRevert(abi.encodeWithSignature("AddressNotApproved()"));
@@ -139,7 +139,7 @@ contract ApplicationERC20HandlerComplexTest is TestCommonFoundry, ERC20Util {
 
         // Remove the denied list rule and verify it no longer fails.
         switchToRuleAdmin();
-        ERC20NonTaggedRuleFacet(address(applicationCoinHandlerSpecialOwner)).removeAccountApproveDenyOracle(_createActionsArray(), _index);
+        OracleRulesFacet(address(applicationCoinHandlerSpecialOwner)).removeAccountApproveDenyOracle(_createActionsArray(), _index);
         vm.stopPrank();
         vm.startPrank(address(applicationCoin));
         ERC20HandlerMainFacet(address(applicationCoinHandlerSpecialOwner)).checkAllRules(20, 0, user1, address(68), user1, 10);

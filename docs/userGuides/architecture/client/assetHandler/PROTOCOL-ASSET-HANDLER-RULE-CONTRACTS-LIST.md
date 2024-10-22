@@ -7,6 +7,7 @@ These contracts contain logic used by the facets in the Asset Handler Diamond.
 
 ## Rule Contract Location: 
  
+- [HandlerAccountApproveDenyOracleFlexible.sol](../../../../../src/client/token/handler/ruleContracts/HandlerAccountApproveDenyOracleFlexible.sol)
 - [HandlerAccountApproveDenyOracle.sol](../../../../../src/client/token/handler/ruleContracts/HandlerAccountApproveDenyOracle.sol)
 - [HandlerAccountMaxTradeSize.sol](../../../../../src/client/token/handler/ruleContracts/HandlerAccountMaxTradeSize.sol) 
 - [HandlerAccountMinMaxTokenBalance.sol](../../../../../src/client/token/handler/ruleContracts/HandlerAccountMinMaxTokenBalance.sol)
