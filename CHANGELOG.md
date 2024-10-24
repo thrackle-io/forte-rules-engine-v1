@@ -33,8 +33,6 @@
 
 ## 2.2.0 - 2024-10-23
 
-### Changed
-
 ### Added
 - Account Approve/Deny Oracle Flexible Rule was added to RulesProcessor and token handlers.
 - Deployment data for all supported chains
