@@ -1,7 +1,7 @@
 ## 2.0.0 - 2024-08-19
 
 ### Changed
-- The repository was renamed to rules-engine
+- The repository was renamed to forte-rules-engine
 - **The Minimum Hold Time rule was refactored to conform to common rule storage and processing conventions(breaking change)**
 - **Deployment Scripts were updated to better align with the documented integration strategy and AppManager based RBAC items were removed(breaking change)**
 - Documentation was added for admin role removal and renunciation
@@ -30,3 +30,11 @@
 - Version 2.0.0 Deployment information for Ethereum Sepolia
 - Version 2.0.0 Deployment information for Polygon Amoy
 - Version 2.1.0 Deployment information for Ethereum 
+
+## 2.2.0 - 2024-10-23
+
+### Added
+- Account Approve/Deny Oracle Flexible Rule was added to RulesProcessor and token handlers.
+- Deployment data for all supported chains
+
+
