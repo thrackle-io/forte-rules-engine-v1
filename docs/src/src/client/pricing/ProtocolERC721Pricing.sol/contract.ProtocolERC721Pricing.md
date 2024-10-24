@@ -1,5 +1,5 @@
 # ProtocolERC721Pricing
-[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/c68a304eba8615cfb7f60cfb23fe792f1083c190/src/client/pricing/ProtocolERC721Pricing.sol)
+[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/6b9ac124d2cb0fe47a8b5c261a1dd458067f45ea/src/client/pricing/ProtocolERC721Pricing.sol)
 
 **Inherits:**
 Ownable, [IApplicationEvents](/src/common/IEvents.sol/interface.IApplicationEvents.md), [IProtocolERC721Pricing](/src/common/IProtocolERC721Pricing.sol/interface.IProtocolERC721Pricing.md)
@@ -16,7 +16,7 @@ This contract is a simple pricing mechanism only. Its main purpose is to store p
 ### VERSION
 
 ```solidity
-string private constant VERSION = "2.1.0";
+string private constant VERSION = "2.2.0";
 ```
 
 

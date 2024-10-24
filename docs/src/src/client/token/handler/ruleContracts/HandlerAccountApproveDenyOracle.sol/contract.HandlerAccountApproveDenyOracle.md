@@ -1,5 +1,5 @@
 # HandlerAccountApproveDenyOracle
-[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/c68a304eba8615cfb7f60cfb23fe792f1083c190/src/client/token/handler/ruleContracts/HandlerAccountApproveDenyOracle.sol)
+[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/6b9ac124d2cb0fe47a8b5c261a1dd458067f45ea/src/client/token/handler/ruleContracts/HandlerAccountApproveDenyOracle.sol)
 
 **Inherits:**
 [RuleAdministratorOnly](/src/protocol/economic/RuleAdministratorOnly.sol/contract.RuleAdministratorOnly.md), [ActionTypesArray](/src/client/common/ActionTypesArray.sol/contract.ActionTypesArray.md), [ITokenHandlerEvents](/src/common/IEvents.sol/interface.ITokenHandlerEvents.md), [IAssetHandlerErrors](/src/common/IErrors.sol/interface.IAssetHandlerErrors.md)

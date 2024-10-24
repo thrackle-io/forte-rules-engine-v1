@@ -1,5 +1,5 @@
 # DataModule
-[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/c68a304eba8615cfb7f60cfb23fe792f1083c190/src/client/application/data/DataModule.sol)
+[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/6b9ac124d2cb0fe47a8b5c261a1dd458067f45ea/src/client/application/data/DataModule.sol)
 
 **Inherits:**
 Ownable, [IOwnershipErrors](/src/common/IErrors.sol/interface.IOwnershipErrors.md), [IZeroAddressError](/src/common/IErrors.sol/interface.IZeroAddressError.md)
@@ -16,7 +16,7 @@ This contract serves as a template for all data modules and is abstract as it is
 ### VERSION
 
 ```solidity
-string private constant VERSION = "2.1.0";
+string private constant VERSION = "2.2.0";
 ```
 
 
