@@ -68,27 +68,27 @@ main() {
     # replace in src
     while IFS= read -r -d '' file; do
         replace_version_in_src "$file" "$new_version"
-    done < <(find "src" -type f -name "*.sol" -print0)
+    done < <(find "../../src" -type f -name "*.sol" -print0)
 
      # replace in test
     while IFS= read -r -d '' file; do
         replace_version_in_test "$file" "$new_version"
-    done < <(find "test" -type f -name "*.sol" -print0)
+    done < <(find "../../test" -type f -name "*.sol" -print0)
 
     # replace in package.json
-    replace_version_in_package_json "./package.json"  "$new_version"
+    replace_version_in_package_json "../../package.json"  "$new_version"
 
     # replace in script
-    replace_version_in_abi_script "./script/python/record_abi.py" "$new_version"
-    replace_version_in_abi_script "./script/python/record_facets.py" "$new_version"
+    replace_version_in_abi_script "../python/record_abi.py" "$new_version"
+    replace_version_in_abi_script "../python/record_facets.py" "$new_version"
     
     # replace in readme
-    replace_version_in_readme "./README.md"  "$new_version"
+    replace_version_in_readme "../../README.md"  "$new_version"
 
     # replace in docs
     while IFS= read -r -d '' file; do
         replace_version_in_readme "$file" "$new_version"
-    done < <(find "docs" -type f -name "*.md" -print0)
+    done < <(find "../../docs" -type f -name "*.md" -print0)
     
     
 }
