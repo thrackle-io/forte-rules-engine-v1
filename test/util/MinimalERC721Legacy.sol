@@ -25,7 +25,7 @@ contract MinimalERC721Legacy is ERC721, ERC721Burnable, ERC721Enumerable{
     function _beforeTokenTransfer(address from, address to, uint256 tokenId, uint256 batchSize) internal override(ERC721, ERC721Enumerable)  {
         if (handlerAddress != address(0)) {
             // Rule Processor Module Check
-            require(IProtocolERC721Handler(handlerAddress).checkAllRules(from == address(0) ? 0 : balanceOf(from), to == address(0) ? 0 : balanceOf(to), from, to, 1, tokenId, ActionTypesLegacy.TRADE));
+            require(IProtocolERC721Handler(handlerAddress).checkAllRules(from == address(0) ? 0 : balanceOf(from), to == address(0) ? 0 : balanceOf(to), from, to, 1, tokenId, ActionTypesLegacy.P2P_TRANSFER));
         }
         super._beforeTokenTransfer(from, to, tokenId, batchSize);
     }
@@ -96,9 +96,11 @@ interface IProtocolERC721Handler {
  * @dev stores the possible actions for the protocol
  */
 enum ActionTypesLegacy {
-    PURCHASE,
-    SELL,
-    TRADE,
-    INQUIRE
+    P2P_TRANSFER,
+    BUY,
+    SELL,   
+    MINT,
+    BURN,
+    NONE
 }
 
