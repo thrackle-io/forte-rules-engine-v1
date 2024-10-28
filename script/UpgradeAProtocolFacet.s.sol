@@ -12,6 +12,7 @@ import {IDiamondCut} from "diamond-std/core/DiamondCut/IDiamondCut.sol";
 import {TaggedRuleDataFacet} from "src/protocol/economic/ruleProcessor/TaggedRuleDataFacet.sol";
 import {RuleDataFacet} from "src/protocol/economic/ruleProcessor/RuleDataFacet.sol";
 import {DiamondScriptUtil} from "./DiamondScriptUtil.sol";
+import "forge-std/console2.sol";
 
 /**
  * @title The initial deployment script for the Protocol. It deploys the rule processor diamond and the initial set of facets.
@@ -26,7 +27,7 @@ contract UpgradeAProtocolFacet is Script, DiamondScriptUtil {
     /// NOTE these values must be configured in the local env file
     uint256 privateKey;
     string facetToUpgrade;
-    bool recordAllChains;    
+    string facetTimestamp; 
 
     /**
      * @dev This is the main function that gets called by the Makefile or CLI
@@ -35,10 +36,12 @@ contract UpgradeAProtocolFacet is Script, DiamondScriptUtil {
 
         privateKey = vm.envUint("DEPLOYMENT_OWNER_KEY");
         facetToUpgrade = vm.envString("FACET_TO_UPGRADE");
-        recordAllChains = vm.envBool("RECORD_DEPLOYMENTS_FOR_ALL_CHAINS");
+        facetTimestamp = vm.envString("FACET_TIMESTAMP");
+
         vm.startBroadcast(privateKey);
         (address facetAddress, address diamondAddress) = getFacetAddressAndDiamond();
-        removeOldSelectors(diamondAddress, getFacetSelectors(facetAddress, diamondAddress));
+        bytes4[] memory selectors = getFacetSelectors(facetAddress, diamondAddress);
+        removeOldSelectors(diamondAddress, selectors);
         deployNewFacet(diamondAddress);
         clearENV();
         vm.stopBroadcast();
@@ -51,31 +54,28 @@ contract UpgradeAProtocolFacet is Script, DiamondScriptUtil {
         getFacetAddressInput[2] = "ProtocolProcessorDiamond";
         getFacetAddressInput[3] = facetToUpgrade;
         getFacetAddressInput[4] = vm.toString(block.chainid);
-        getFacetAddressInput[5] = vm.toString(block.timestamp);
+        getFacetAddressInput[5] = facetTimestamp;
         bytes memory res = vm.ffi(getFacetAddressInput);
-        console.logBytes(res);
 
         address[2] memory addresses = abi.decode(res, (address[2]));
         facetAddress = addresses[0]; 
         diamondAddress = addresses[1];
-        console.logAddress(facetAddress);
-        console.logAddress(diamondAddress);
     }
 
     function setFacetAddress(address newFacetAddress) internal {
-        string[] memory getFacetAddressInput = new string[](6);
+        string[] memory getFacetAddressInput = new string[](7);
         getFacetAddressInput[0] = "python3";
         getFacetAddressInput[1] = "script/python/set_latest_facet_address.py";
         getFacetAddressInput[2] = "ProtocolProcessorDiamond";
         getFacetAddressInput[3] = facetToUpgrade;
         getFacetAddressInput[4] = vm.toString(newFacetAddress);
         getFacetAddressInput[5] = vm.toString(block.chainid);
+        getFacetAddressInput[6] = facetTimestamp;
         bytes memory res = vm.ffi(getFacetAddressInput);
-        console.logBytes(res);
     }
 
-    function getFacetSelectors(address facetAddress, address diamondAddres ) internal view returns(bytes4[] memory selectors){
-        selectors =  IDiamondLoupe(diamondAddres).facetFunctionSelectors(facetAddress);
+    function getFacetSelectors(address facetAddress, address diamondAddress ) internal view returns(bytes4[] memory selectors){
+        selectors =  IDiamondLoupe(diamondAddress).facetFunctionSelectors(facetAddress);
     }
 
     function removeOldSelectors(address diamondAddres, bytes4[] memory selectors) internal {
