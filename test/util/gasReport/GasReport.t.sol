@@ -98,6 +98,44 @@ contract GasReports is RuleCreation, GasHelpers, ERC721Util {
         _erc721SafeMintGasReport("ERC721_ApproveDenyOracleActive_SafeMint");
     }
 
+/**********  Approve Deny Oracle Flexible Gas Usage **********/
+
+    function testERC20_ApproveDenyOracleFlexibleActive_Mint() public endWithStopPrank {
+        _applyAccountApproveDenyOracleFlexibleActiveSetUp(address(applicationCoinHandler));
+        _erc20MintGasReportPrep();
+        _erc20MintGasReport("ERC20_ApproveDenyOracleFlexibleActive_Mint");       
+    }
+
+    function testERC20_ApproveDenyOracleFlexibleActive_Burn() public endWithStopPrank {
+        _applyAccountApproveDenyOracleFlexibleActiveSetUp(address(applicationCoinHandler));
+        _erc20BurnGasReportPrep();  
+        _erc20BurnGasReport("ERC20_ApproveDenyOracleFlexible_Burn");       
+    }
+
+    function testERC20_ApproveDenyOracleFlexibleActive_Transfer() public endWithStopPrank {
+        _applyAccountApproveDenyOracleFlexibleActiveSetUp(address(applicationCoinHandler));
+        _erc20TransferGasReportPrep();
+        _erc20TransferGasReport("ERC20_ApproveDenyOracleFlexible_Transfer");
+    }
+
+    function testERC721_ApproveDenyOracleFlexibleActive_TransferFrom() public endWithStopPrank {
+        _applyAccountApproveDenyOracleFlexibleActiveSetUp(address(applicationNFTHandler));
+        _erc721TransferFromGasReportPrep();
+        _erc721TransferFromGasReport("ERC721_ApproveDenyOracleFlexible_TransferFrom");
+    }
+
+    function testERC721_ApproveDenyOracleFlexibleActive_Burn() public endWithStopPrank {
+        _applyAccountApproveDenyOracleFlexibleActiveSetUp(address(applicationNFTHandler));
+        _erc721BurnGasReportPrep();
+        _erc721BurnGasReport("ERC721_ApproveDenyOracleFlexible_Burn");
+    }
+
+    function testERC721_ApproveDenyOracleFlexibleActive_SafeMint() public endWithStopPrank {
+        _applyAccountApproveDenyOracleFlexibleActiveSetUp(address(applicationNFTHandler));
+        _erc721SafeMintGasReportPrep();
+        _erc721SafeMintGasReport("ERC721_ApproveDenyOracleFlexible_SafeMint");
+    }
+
 /**********  Account Deny For No Access Level Gas Usage **********/
 
     function testERC20_AccountDenyForNoAccessLevel_Mint() public endWithStopPrank {
@@ -718,6 +756,12 @@ contract GasReports is RuleCreation, GasHelpers, ERC721Util {
         oracleDenied.addAddressToDeniedList(address(1));
     }
 
+    function _applyAccountApproveDenyOracleFlexibleActiveSetUp(address _handler) public {
+        uint32 ruleId = createAccountApproveDenyOracleFlexibleRule(0, 0);
+        setAccountApproveDenyOracleFlexibleRule(address(_handler), ruleId);
+        switchToAppAdministrator();
+        oracleDenied.addAddressToDeniedList(address(1));
+    }
 
     function _applyAccountDenyForNoAccessLevelSetUp() public {
         ActionTypes[] memory actionTypes = createActionTypeArray(ActionTypes.P2P_TRANSFER, ActionTypes.BUY, ActionTypes.SELL, ActionTypes.MINT);

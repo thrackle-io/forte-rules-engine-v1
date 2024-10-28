@@ -54,16 +54,28 @@ function _applyTokenMaxBuySellVolumeSetUp(address _handler) public {
 
 Gas measuring helpers for individual actions are included for both ERC721 and ERC20. For this example, I want to test how the rule affects the gas used for an ERC721 burn action.
 
+This consists of two functions, one to prep the burn and one to perform a subsequent burn. This is to ensure that the test is not affected by touching cold storage.
+
 This is the helper to start measuring gas consumption, burn an NFT, and stop measuring gas consumption. Once finished, it will output the label and gas used by the burn action.
 ```c
+
 function _erc721BurnGasReport(string memory _label) public {
         switchToAppAdministrator();
         applicationNFT.safeMint(appAdministrator);
 
         startMeasuringGas(_label);
-        applicationNFT.burn(0);
+        applicationNFT.burn(1);
         gasUsed = stopMeasuringGas();
         console.log(_label, gasUsed);
+    }
+
+function _erc721BurnGasReportPrep() public {
+        switchToAppAdministrator();
+        applicationNFT.safeMint(appAdministrator);
+
+        startMeasuringGas("_erc721BurnGasReportBurn");
+        applicationNFT.burn(0);
+        gasUsed = stopMeasuringGas();
     }
 ```
 
@@ -72,6 +84,7 @@ For this example, this is the full test function.
 ```c
 function testERC721_TokenMaxBuySellVolume_Burn() public endWithStopPrank {
         _applyTokenMaxBuySellVolumeSetUp(address(applicationNFTHandler));
+        _erc721BurnGasReportPrep();
         _erc721BurnGasReport("ERC721_TokenMaxBuySellVolume_Burn");         
     }
 ```
