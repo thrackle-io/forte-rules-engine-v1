@@ -8,10 +8,10 @@ import "@openzeppelin/contracts/utils/Counters.sol";
 import "src/client/token/IProtocolToken.sol";
 
 /**
- * @title Minimal ERC721 Protocol Contract
+ * @title Minimal ERC721 Protocol Contract. This contract hard codes the sell action to the protocol hook.
  * @author @ShaneDuncan602, @oscarsernarosero, @TJ-Everett
  */
-contract MinimalERC721Legacy is ERC721, ERC721Burnable, ERC721Enumerable{
+contract MinimalERC721LegacySell is ERC721, ERC721Burnable, ERC721Enumerable{
     using Counters for Counters.Counter;
     Counters.Counter internal _tokenIdCounter;
     address private handlerAddress;
@@ -25,7 +25,7 @@ contract MinimalERC721Legacy is ERC721, ERC721Burnable, ERC721Enumerable{
     function _beforeTokenTransfer(address from, address to, uint256 tokenId, uint256 batchSize) internal override(ERC721, ERC721Enumerable)  {
         if (handlerAddress != address(0)) {
             // Rule Processor Module Check
-            require(IProtocolERC721Handler(handlerAddress).checkAllRules(from == address(0) ? 0 : balanceOf(from), to == address(0) ? 0 : balanceOf(to), from, to, 1, tokenId, ActionTypesLegacy.P2P_TRANSFER));
+            require(IProtocolERC721HandlerSell(handlerAddress).checkAllRules(from == address(0) ? 0 : balanceOf(from), to == address(0) ? 0 : balanceOf(to), from, to, 1, tokenId, ActionTypesLegacy.SELL));
         }
         super._beforeTokenTransfer(from, to, tokenId, batchSize);
     }
@@ -75,7 +75,7 @@ contract MinimalERC721Legacy is ERC721, ERC721Burnable, ERC721Enumerable{
  * @dev This interface provides the ABI for assets to access their handlers in an efficient way
  */
 
-interface IProtocolERC721Handler {
+interface IProtocolERC721HandlerSell {
     /**
      * @dev This function is the one called from the contract that implements this handler. It's the entry point to protocol.
      * @param balanceFrom token balance of sender address
@@ -96,11 +96,9 @@ interface IProtocolERC721Handler {
  * @dev stores the possible actions for the protocol
  */
 enum ActionTypesLegacy {
-    P2P_TRANSFER,
-    BUY,
-    SELL,   
-    MINT,
-    BURN,
-    NONE
+    PURCHASE,
+    SELL,
+    TRADE,
+    INQUIRE
 }
 
