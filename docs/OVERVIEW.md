@@ -107,7 +107,6 @@ Rule deactivation is done by sending a "false" boolean along with the no longer 
 | [Account Max Tx Value By Risk Score](./userGuides/rules/ACCOUNT-MAX-TX-VALUE-BY-RISK-SCORE.md)| ERC20/ERC721 | mint/buy/sell/transfer |
 | [Oracle](./userGuides/rules/ACCOUNT-APPROVE-DENY-ORACLE.md) | ERC20/ERC721/AMM | mint/buy/sell/transfer |
 | [Pause Rule](./userGuides/rules/PAUSE-RULE.md) | Application | mint/burn/buy/sell/transfer |
-| [Transaction Size Per Time Period by Risk Score](./userGuides/rules/ACCOUNT-MAX-TX-VALUE-BY-RISK-SCORE.md) | Application | mint/buy/sell/transfer |
 
 ## Rule Applicibility Controls
 

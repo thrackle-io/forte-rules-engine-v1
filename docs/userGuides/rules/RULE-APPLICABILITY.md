@@ -22,7 +22,6 @@
 | [Oracle](./ACCOUNT-APPROVE-DENY-ORACLE.md) | ERC20/ERC721/AMM | mint/buy/sell/transfer |
 | [Oracle Flexible](./ACCOUNT-APPROVE-DENY-ORACLE-FLEXIBLE.md) | ERC20/ERC721/AMM | mint/buy/sell/transfer |
 | [Pause Rule](./PAUSE-RULE.md) | Application | mint/burn/buy/sell/transfer |
-| [Transaction Size Per Time Period by Risk Score](./ACCOUNT-MAX-TX-VALUE-BY-RISK-SCORE.md) | Application | mint/buy/sell/transfer |
 
 
 <!-- These are the header links -->
