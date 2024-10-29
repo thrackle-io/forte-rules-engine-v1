@@ -51,6 +51,8 @@ const ABIFiles = [
       "./out/ERC721TaggedRuleFacet.sol/ERC721TaggedRuleFacet.json",
       "./out/ERC721NonTaggedRuleFacet.sol/ERC721NonTaggedRuleFacet.json",
       "./out/TradingRuleFacet.sol/TradingRuleFacet.json",
+      "./out/HandlerAccountApproveDenyOracle.sol/HandlerAccountApproveDenyOracle.json",
+      "./out/HandlerAccountApproveDenyOracleFlexible.sol/HandlerAccountApproveDenyOracleFlexible.json",
     ],
   },
   {
