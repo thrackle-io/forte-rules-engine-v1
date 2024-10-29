@@ -7,7 +7,7 @@
 
 This chart shows how individual active rules affect gas consumption of basic token actions.
 
-Integrating the Rules Engine without activating any rules add n gas units.
+The gas tests were done using simple ERC20 and ERC721 tokens that integrate the Forte Rules Engine. The comparison is between the base usage(Rules engine integrated but with no active rules) and with the rule active and passing.
 
 Column Definitions
 - Rule = Named Rule Engine rule being tested
