@@ -1,5 +1,5 @@
 # RuleProcessorDiamondArgs
-[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/6b9ac124d2cb0fe47a8b5c261a1dd458067f45ea/src/protocol/economic/ruleProcessor/RuleProcessorDiamond.sol)
+[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/5026b0b8ff56953bd0f2675bfc42f5fa45097500/src/protocol/economic/ruleProcessor/RuleProcessorDiamond.sol)
 
 This is used in diamond constructor
 more arguments are added to this struct
