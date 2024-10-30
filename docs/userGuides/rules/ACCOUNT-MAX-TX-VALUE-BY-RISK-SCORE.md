@@ -50,7 +50,7 @@ maxValue = [500, 250, 50];
 ***risk scores can be between 0 and 100.***
 
 ```c
-/// ******** Transaction Size Per Period Rules ********
+/// ******** Account Max Transaction Value By Period Rules ********
 struct AccountMaxTxValueByRiskScore {
         uint48[] maxValue; /// whole USD (no cents) -> 1 = 1 USD (Max allowed: 281 trillion USD)
         uint8[] riskScore;
@@ -63,7 +63,7 @@ struct AccountMaxTxValueByRiskScore {
 These rules are stored in a mapping indexed by ruleId(uint32) in order of creation:
 
 ```c
- /// ******** Transaction Size Per Period Rules ********
+ /// ******** Account Max Transaction Value By Period Rules ********
     struct AccountMaxTxValueByRiskScoreS {
         mapping(uint32 => IApplicationRules.AccountMaxTxValueByRiskScore) accountMaxTxValueByRiskScoreRules;
         uint32 accountMaxTxValueByRiskScoreIndex;
