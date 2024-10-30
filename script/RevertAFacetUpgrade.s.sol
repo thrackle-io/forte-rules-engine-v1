@@ -27,9 +27,8 @@ contract RevertAFacetupgrade is Script, DeployBase {
     /// NOTE these values must be configured in the local env file
     uint256 privateKey;
     string facetNameToRevert;
-    string diamond;
+    string facetTimestamp;
     address revertToFacetAddress;
-    bool recordAllChains;
 
     /**
      * @dev This is the main function that gets called by the Makefile or CLI
@@ -37,11 +36,9 @@ contract RevertAFacetupgrade is Script, DeployBase {
     function run() external {
 
         privateKey = vm.envUint("DEPLOYMENT_OWNER_KEY");
-        recordAllChains = vm.envBool("RECORD_DEPLOYMENTS_FOR_ALL_CHAINS");
         facetNameToRevert = vm.envString("FACET_NAME_TO_REVERT");
         validateFacetNameToRevert(facetNameToRevert);
-        diamond = vm.envString("DIAMOND_TO_UPGRADE");
-        validateDiamondToUpgrade(diamond);
+        facetTimestamp = vm.envString("FACET_TIMESTAMP");
         revertToFacetAddress = vm.envAddress("REVERT_TO_FACET_ADDRESS");
         validateRevertToFacetAddress(revertToFacetAddress);
         vm.startBroadcast(privateKey);
@@ -55,10 +52,10 @@ contract RevertAFacetupgrade is Script, DeployBase {
         string[] memory getFacetAddressInput = new string[](6);
         getFacetAddressInput[0] = "python3";
         getFacetAddressInput[1] = "script/python/get_latest_facet_address.py";
-        getFacetAddressInput[2] = diamond;
+        getFacetAddressInput[2] = "ProtocolProcessorDiamond";
         getFacetAddressInput[3] = facetNameToRevert;
         getFacetAddressInput[4] = vm.toString(block.chainid);
-        getFacetAddressInput[5] = vm.toString(block.timestamp);
+        getFacetAddressInput[5] = facetTimestamp;
         bytes memory res = vm.ffi(getFacetAddressInput);
         address[2] memory addresses = abi.decode(res, (address[2]));
         facetAddress = addresses[0]; 
@@ -66,13 +63,14 @@ contract RevertAFacetupgrade is Script, DeployBase {
     }
 
     function setFacetAddress(address newFacetAddress) internal {
-        string[] memory getFacetAddressInput = new string[](6);
+        string[] memory getFacetAddressInput = new string[](7);
         getFacetAddressInput[0] = "python3";
         getFacetAddressInput[1] = "script/python/set_latest_facet_address.py";
-        getFacetAddressInput[2] = diamond;
+        getFacetAddressInput[2] = "ProtocolProcessorDiamond";
         getFacetAddressInput[3] = facetNameToRevert;
         getFacetAddressInput[4] = vm.toString(newFacetAddress);
         getFacetAddressInput[5] = vm.toString(block.chainid);
+        getFacetAddressInput[6] = facetTimestamp;
         bytes memory res = vm.ffi(getFacetAddressInput);
         console.logBytes(res);
     }

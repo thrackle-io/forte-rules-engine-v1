@@ -4,27 +4,33 @@ from datetime import date
 from eth_abi import encode
 from pathlib import Path
 from dotenv import dotenv_values 
+from datetime import datetime
 
 _dir  = dotenv_values(".env")
 dir = Path(_dir["DEPLOYMENT_OUT_DIR"])
-file = Path(_dir["DEPLOYMENT_OUT_DIR"] + _dir["DIAMOND_DEPLOYMENT_OUT_FILE"])
+version = "2.2.0"
 
 def get_latest_deployed_facet(args):
     record = {}
     facet = None
     diamond = None
+    date  = args.timestamp
+
+    file = Path(_dir["DEPLOYMENT_OUT_DIR"] + "/" + args.chain_id + "/" + version + "/" + date + "/diamond/" +  _dir["DIAMOND_DEPLOYMENT_OUT_FILE"])
+
     with open(file, 'r') as openfile:
         record = json.load(openfile)
 
-    sorted_records = sorted([date.fromisoformat(date_string) for date_string in record[args.chain_id][args.diamond].keys()], reverse=True)
+    sorted_records = sorted([date_string for date_string in record[args.chain_id][args.diamond].keys()], reverse=True)
     for deployment in sorted_records:
-        if(args.facet in record[args.chain_id][args.diamond][deployment.isoformat()[:10]].keys()):
-            facet = record[args.chain_id][args.diamond][deployment.isoformat()[:10]][args.facet]
+        if(args.facet in record[args.chain_id][args.diamond][deployment.split("T")[0]].keys()):
+            facet = record[args.chain_id][args.diamond][deployment.split("T")[0]][args.facet]
             break
     for deployment in sorted_records:
-        if("diamond" in record[args.chain_id][args.diamond][deployment.isoformat()[:10]].keys()):
-            diamond = record[args.chain_id][args.diamond][deployment.isoformat()[:10]]["diamond"]
+        if("RuleProcessorDiamond" in record[args.chain_id][args.diamond][deployment.split("T")[0]].keys()):
+            diamond = record[args.chain_id][args.diamond][deployment.split("T")[0]]["RuleProcessorDiamond"]
             break
+
     return (facet, diamond)
 
 def parse_args():

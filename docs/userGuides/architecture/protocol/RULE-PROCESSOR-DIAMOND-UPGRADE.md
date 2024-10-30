@@ -8,6 +8,7 @@ To upgrade a protocol facet, follow these steps:
     DEPLOYMENT_OWNER_KEY=<YOUR_DEPLOYMENT_OWNER_KEY>
     FACET_TO_UPGRADE=<THE_NAME_OF_THE_FACET_CONTRACT_TO_UPGRADE>
     RECORD_DEPLOYMENTS_FOR_ALL_CHAINS=<true/false> #true if testing in 31337 and recorded values are needed
+    FACET_TIMESTAMP=<THE_TIMESTAMP_OF_THE_DIAMOND_TO_UPGRADE> # Find this in the deployments directory, its the name of the folder for when the diamond was deployed
     DEPLOYMENT_OUT_DIR=<THE_NAME_OF_THE_DIRECTORY_CONTAINING_DEPLOYED_OUTPUT_TO_UPGRADE>
     ```
 2. Run the following script:
