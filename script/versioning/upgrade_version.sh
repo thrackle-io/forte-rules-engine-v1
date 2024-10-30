@@ -4,7 +4,7 @@
 # Script designed specifically for this repository to change versions in the src and test directories as well  #
 # as in the package.json file.                                                                                 #
 #                                                                                                              #
-# Usage:                                                                                                       #
+# Usage:    cd script/versioning                                                                                                 #
 #           ./upgrade_version.sh <MAJOR.MINOR.MICRO>                                                           #
 #                                                                                                              #
 # Notice that there are no quotation marks in the version.                                                     #
@@ -81,6 +81,9 @@ main() {
     # replace in script
     replace_version_in_abi_script "../python/record_abi.py" "$new_version"
     replace_version_in_abi_script "../python/record_facets.py" "$new_version"
+
+    # replace in deployment script
+    replace_version_in_src "../DeployAllModulesPt3.s.sol" "$new_version"
     
     # replace in readme
     replace_version_in_readme "../../README.md"  "$new_version"
