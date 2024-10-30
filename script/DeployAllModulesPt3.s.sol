@@ -31,6 +31,7 @@ contract DeployAllModulesPt3Script is Script, DiamondScriptUtil, DeployABIUtil {
     address ownerAddress;
     bool recordAllChains;
     uint256 timestamp;
+    string private constant VERSION="2.2.0";
 
     /**
      * @dev This is the main function that gets called by the Makefile or CLI
@@ -98,7 +99,7 @@ contract DeployAllModulesPt3Script is Script, DiamondScriptUtil, DeployABIUtil {
         IDiamondCut(ruleProcessorAddress).diamondCut(_facetCutsRuleProcessor, address(0x0), "");
 
         // Set the version
-        VersionFacet(ruleProcessorAddress).updateVersion("2.2.0");
+        VersionFacet(ruleProcessorAddress).updateVersion(VERSION);
 
         setENVVariable("RECORD_DEPLOYMENTS_FOR_ALL_CHAINS", "false");
     }
