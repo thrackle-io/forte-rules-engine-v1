@@ -12,6 +12,7 @@ import {TaggedRuleDataFacet} from "src/protocol/economic/ruleProcessor/TaggedRul
 import {RuleDataFacet} from "src/protocol/economic/ruleProcessor/RuleDataFacet.sol";
 import {DiamondScriptUtil} from "./DiamondScriptUtil.sol";
 import {DeployABIUtil} from "./DeployABIUtil.sol";
+import {VersionFacet} from "src/protocol/diamond/VersionFacet.sol";
 
 /**
  * @title The final deployment script for the Protocol. It deploys the final set of facets.
@@ -95,6 +96,9 @@ contract DeployAllModulesPt3Script is Script, DiamondScriptUtil, DeployABIUtil {
         address ruleProcessorAddress = vm.envAddress("RULE_PROCESSOR_DIAMOND");
 
         IDiamondCut(ruleProcessorAddress).diamondCut(_facetCutsRuleProcessor, address(0x0), "");
+
+        // Set the version
+        VersionFacet(ruleProcessorAddress).updateVersion("2.2.0");
 
         setENVVariable("RECORD_DEPLOYMENTS_FOR_ALL_CHAINS", "false");
     }
