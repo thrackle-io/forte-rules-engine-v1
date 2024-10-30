@@ -51,6 +51,8 @@ const ABIFiles = [
       "./out/ERC721TaggedRuleFacet.sol/ERC721TaggedRuleFacet.json",
       "./out/ERC721NonTaggedRuleFacet.sol/ERC721NonTaggedRuleFacet.json",
       "./out/TradingRuleFacet.sol/TradingRuleFacet.json",
+      "./out/HandlerAccountApproveDenyOracle.sol/HandlerAccountApproveDenyOracle.json",
+      "./out/HandlerAccountApproveDenyOracleFlexible.sol/HandlerAccountApproveDenyOracleFlexible.json",
     ],
   },
   {
@@ -129,7 +131,7 @@ ABIFiles.filter((f) => f.branches.includes(repoBranch)).forEach(
     if (abi) {
       fs.writeFile(
         `./${outputDir}/${abiFile.name}.json`,
-        JSON.stringify(abi),
+        JSON.stringify(abi, null, 2),
         (err) => {
           if (err) {
             console.log("Could not write file: ", abiFile.name)
