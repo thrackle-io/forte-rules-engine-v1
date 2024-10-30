@@ -1,5 +1,5 @@
 # ApplicationERC20UMinUpgAdminMint
-[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/ca6c5450e5e6a46aa53ada940ee13a6c9dcc6be8/src/example/ERC20/upgradeable/ApplicationERC20UMinUpgAdminMint.sol)
+[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/870573a1cabb155592086e193c28d8b5f4d263c4/src/example/ERC20/upgradeable/ApplicationERC20UMinUpgAdminMint.sol)
 
 **Inherits:**
 [ApplicationERC20UMin](/src/example/ERC20/upgradeable/ApplicationERC20UMin.sol/contract.ApplicationERC20UMin.md)

@@ -1,5 +1,5 @@
 # IProtocolERC721Pricing
-[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/ca6c5450e5e6a46aa53ada940ee13a6c9dcc6be8/src/common/IProtocolERC721Pricing.sol)
+[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/870573a1cabb155592086e193c28d8b5f4d263c4/src/common/IProtocolERC721Pricing.sol)
 
 **Inherits:**
 [NFTPricingErrors](/src/common/IErrors.sol/interface.NFTPricingErrors.md)
