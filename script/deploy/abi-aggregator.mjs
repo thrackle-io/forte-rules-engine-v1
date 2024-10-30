@@ -131,7 +131,7 @@ ABIFiles.filter((f) => f.branches.includes(repoBranch)).forEach(
     if (abi) {
       fs.writeFile(
         `./${outputDir}/${abiFile.name}.json`,
-        JSON.stringify(abi),
+        JSON.stringify(abi, null, 2),
         (err) => {
           if (err) {
             console.log("Could not write file: ", abiFile.name)
