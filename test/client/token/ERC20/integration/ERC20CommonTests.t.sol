@@ -93,7 +93,7 @@ abstract contract ERC20CommonTests is TestCommonFoundry, DummyAMM, ERC20Util {
 
     function testERC20_ERC20CommonTests_OracleApproveEventEmission_Negative() public endWithStopPrank ifDeploymentTestsEnabled {
         // switch to an address other than the owner
-        switchToSuperAdmin();
+        switchToUser();
         vm.expectRevert("Ownable: caller is not the owner");
         oracleApproved.addToApprovedList(ADDRESSES);
     }
@@ -125,7 +125,7 @@ abstract contract ERC20CommonTests is TestCommonFoundry, DummyAMM, ERC20Util {
 
     function testERC20_ERC20CommonTests_OracleDeniedEventEmission_Negative() public endWithStopPrank ifDeploymentTestsEnabled {
         // switch to an address other than the owner
-        switchToSuperAdmin();
+        switchToUser();
         vm.expectRevert("Ownable: caller is not the owner");
         oracleDenied.addToDeniedList(ADDRESSES);
     }
@@ -184,8 +184,9 @@ abstract contract ERC20CommonTests is TestCommonFoundry, DummyAMM, ERC20Util {
 
     function testERC20_ERC20CommonTests_Mint() public endWithStopPrank ifDeploymentTestsEnabled {
         switchToAppAdministrator();
+        uint256 previousBalance = UtilApplicationERC20(address(testCaseToken)).balanceOf(superAdmin);
         UtilApplicationERC20(address(testCaseToken)).mint(superAdmin, 1000);
-        assertEq(testCaseToken.balanceOf(superAdmin), 1000);
+        assertEq(testCaseToken.balanceOf(superAdmin), previousBalance + 1000);
     }
 
     /// Test token transfer
@@ -208,13 +209,8 @@ abstract contract ERC20CommonTests is TestCommonFoundry, DummyAMM, ERC20Util {
     }
 
     function testERC20_ERC20CommonTests_ZeroAddressCheckERC20HandlerConnection() public endWithStopPrank ifDeploymentTestsEnabled {
-        if (vm.envAddress("DEPLOYMENT_OWNER") != address(0x0)) {
-            vm.expectRevert(abi.encodePacked("AccessControl: account ", Strings.toHexString(appAdministrator), " is missing role 0x9e262e26e9d5bf97da5c389e15529a31bb2b13d89967a4f6eab01792567d5fd6"));
-            UtilApplicationERC20(address(testCaseToken)).connectHandlerToToken(address(0));
-        } else {
         vm.expectRevert(0xba80c9e5);
         IProtocolToken(address(testCaseToken)).connectHandlerToToken(address(0));
-        }
     }
 
     /// Token Minimum Transaction Size Tests
@@ -1115,9 +1111,9 @@ abstract contract ERC20CommonTests is TestCommonFoundry, DummyAMM, ERC20Util {
         _pauseRuleSetup();
         ///Check that Treasury accounts can still transfer within pausePeriod
         switchToTreasuryAccount();
-
+        uint256 previousBalance = UtilApplicationERC20(address(testCaseToken)).balanceOf(superAdmin);
         testCaseToken.transfer(superAdmin, 1000);
-        assertEq(testCaseToken.balanceOf(superAdmin), 1000);
+        assertEq(testCaseToken.balanceOf(superAdmin),previousBalance + 1000);
     }
 
     function testERC20_ERC20CommonTests_PauseRulesViaAppManager_MultipleWindows() public endWithStopPrank ifDeploymentTestsEnabled {
