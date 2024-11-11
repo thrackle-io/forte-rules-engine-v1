@@ -81,6 +81,8 @@ main() {
     # replace in script
     replace_version_in_abi_script "../python/record_abi.py" "$new_version"
     replace_version_in_abi_script "../python/record_facets.py" "$new_version"
+    replace_version_in_abi_script "../python/get_latest_facet_address.py" "$new_version"
+    replace_version_in_abi_script "../python/set_latest_facet_address.py" "$new_version"
 
     # replace in deployment script
     replace_version_in_src "../DeployAllModulesPt3.s.sol" "$new_version"
@@ -92,7 +94,6 @@ main() {
     while IFS= read -r -d '' file; do
         replace_version_in_readme "$file" "$new_version"
     done < <(find "../../docs" -type f -name "*.md" -print0)
-    
     
 }
 
