@@ -53,7 +53,7 @@ contract UpgradeFacetsJSONBuilder is Script, DiamondScriptUtil {
         chainId = vm.envString("CHAIN_ID");
         safeAddress = vm.envAddress("SAFE_ADDRESS");
 
-        // add or replace
+        // prefill the json batch file to be
 
         JsonBatchFile memory batchFile;
         Meta memory meta = Meta({
@@ -160,6 +160,7 @@ contract UpgradeFacetsJSONBuilder is Script, DiamondScriptUtil {
     }
 
     function _runPythonScript() internal {
+        // reorder the json file to be in the correct order
         string[] memory commandInput = new string[](3);
         commandInput[0] = "python3";
         commandInput[1] = "script/python/reorder_json.py";
