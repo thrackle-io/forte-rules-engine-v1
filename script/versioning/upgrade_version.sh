@@ -94,6 +94,8 @@ main() {
     while IFS= read -r -d '' file; do
         replace_version_in_readme "$file" "$new_version"
     done < <(find "../../docs" -type f -name "*.md" -print0)
+
+    replace_version_in_readme "../../CONTRIBUTORS.md" "$new_version"
     
 }
 
