@@ -13,6 +13,9 @@ import {IHandlerDiamondErrors} from "src/common/IErrors.sol";
 import "diamond-std/implementations/ERC173/ERC173.sol";
 
 contract ERC721HandlerMainFacet is HandlerBase, HandlerUtils, ICommonApplicationHandlerEvents, NFTValuationLimit, IHandlerDiamondErrors {
+    
+    string private constant VERSION="2.2.0";
+    
     /**
      * @dev Initializer params
      * @param _ruleProcessorProxyAddress of the protocol's Rule Processor contract.
@@ -23,6 +26,7 @@ contract ERC721HandlerMainFacet is HandlerBase, HandlerUtils, ICommonApplication
         InitializedS storage ini = lib.initializedStorage();
         if (ini.initialized) revert AlreadyInitialized();
         HandlerBaseS storage data = lib.handlerBaseStorage();
+        HandlerVersionS storage versionData = lib.handlerVersionStorage();
         if (_appManagerAddress == address(0) || _ruleProcessorProxyAddress == address(0) || _assetAddress == address(0)) revert ZeroAddress();
         data.appManager = _appManagerAddress;
         data.ruleProcessor = _ruleProcessorProxyAddress;
@@ -30,6 +34,7 @@ contract ERC721HandlerMainFacet is HandlerBase, HandlerUtils, ICommonApplication
         lib.nftValuationLimitStorage().nftValuationLimit = 100;
         data.lastPossibleAction = 5;
         ini.initialized = true;
+        versionData.version = VERSION;
         callAnotherFacet(0xf2fde38b, abi.encodeWithSignature("transferOwnership(address)", _assetAddress));
     }
 

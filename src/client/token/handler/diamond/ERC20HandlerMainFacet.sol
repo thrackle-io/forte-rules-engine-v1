@@ -11,6 +11,7 @@ import {IHandlerDiamondErrors} from "src/common/IErrors.sol";
 
 contract ERC20HandlerMainFacet is HandlerBase, HandlerUtils, ICommonApplicationHandlerEvents, IHandlerDiamondErrors {
 
+    string private constant VERSION="2.2.0";
     /**
      * @dev Initializer params
      * @param _ruleProcessorProxyAddress of the protocol's Rule Processor contract.
@@ -21,13 +22,15 @@ contract ERC20HandlerMainFacet is HandlerBase, HandlerUtils, ICommonApplicationH
         InitializedS storage init = lib.initializedStorage();
         if(init.initialized) revert AlreadyInitialized();
         HandlerBaseS storage data = lib.handlerBaseStorage();
+        HandlerVersionS storage versionData = lib.handlerVersionStorage();
         if (_appManagerAddress == address(0) || _ruleProcessorProxyAddress == address(0) || _assetAddress == address(0)) 
             revert ZeroAddress();
         data.appManager = _appManagerAddress;
         data.ruleProcessor = _ruleProcessorProxyAddress;
         data.assetAddress = _assetAddress;
         data.lastPossibleAction = 5;
-        init.initialized = true;
+        init.initialized = true;        
+        versionData.version = VERSION;
         // function selector is (transferOwnership(address))
         callAnotherFacet(0xf2fde38b, abi.encodeWithSignature("transferOwnership(address)",_assetAddress));
     }
