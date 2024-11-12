@@ -735,7 +735,7 @@ abstract contract TestCommonFoundry is TestCommon, EndWithStopPrank, EnabledActi
         erc721.connectHandlerToToken(address(handler));
         /// register the token
         applicationAppManager.registerToken(name, address(erc721));
-        HandlerVersionFacet(address(handler)).updateVersion("2.1.0");
+        HandlerVersionFacet(address(handler)).updateVersion("2.2.0");
     }
 
     function deployAndSetupERC20MinLegacySell(string memory name, string memory symbol) internal endWithStopPrank returns (MinimalERC20LegacySell erc20, HandlerDiamond handler) {
