@@ -69,7 +69,7 @@ For a baseline cost of actions in ERC721, note that transferFroms in a base OZ i
 
 ## ERC20
 ---
-For ERC20, note that transfers in a base OZ implementation typically have a cost of 30,544gas, burns are 8,325, and mints are 8,317.
+For ERC20, note that transfers in a base OZ implementation typically have a cost of 30,544 gas, burns are 8,325, and mints are 8,317.
 | Rule | Action | With Rules Engine Integrated | With Rule Active | Additional Gas | % Increase |
 |:-|:-|:-|:-|:-|:-|
 | [Account Approve/Deny Oracle](../rules/ACCOUNT-APPROVE-DENY-ORACLE.md) | transfer | 39,001 | 44,646 | 5,645 | 14.5% |
