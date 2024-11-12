@@ -73,42 +73,42 @@ contract UpgradeFacetsJSONBuilder is Script, DiamondScriptUtil {
         string memory diamondAction = vm.envString("DIAMOND_ACTION");
         
         bytes4[] memory selectors = getSelectors();
+        console2.log("address: %s", newFacetAddress);
+        console2.log("selectors: %s");
+        for (uint i; i < selectors.length; i++) {
+            console2.logBytes4(selectors[i]);
+        }
+        FacetCut memory facetCut;
 
         if (keccak256(abi.encode(diamondAction)) == keccak256(abi.encode("ADD"))) {
-            FacetCut memory facetCut = FacetCut({
+            facetCut = FacetCut({
                 facetAddress: newFacetAddress,
                 action: FacetCutAction.Add,
                 functionSelectors: selectors
             });
-
-            bytes memory diamondCut = abi.encodeWithSelector(IDiamondCut.diamondCut.selector, facetCut, address(0), "");
-            
-            batchFile.transactions[0] = Transaction({
-                data: vm.toString(diamondCut),
-                to: diamondAddress,
-                value: 0
-            });
-
-
         } else if (keccak256(abi.encode(diamondAction)) == keccak256(abi.encode("REPLACE"))) {
-            FacetCut memory facetCut = FacetCut({
+            facetCut = FacetCut({
                 facetAddress: newFacetAddress,
                 action: FacetCutAction.Replace,
                 functionSelectors: selectors
             });
-            
-            bytes memory diamondCut = abi.encodeWithSelector(IDiamondCut.diamondCut.selector, facetCut, address(0), "");
-
-            batchFile.transactions[0] = Transaction({
-                data: vm.toString(diamondCut),
-                to: diamondAddress,
-                value: 0
+        } else if (keccak256(abi.encode(diamondAction)) == keccak256(abi.encode("REMOVE"))) {
+            facetCut = FacetCut({
+                facetAddress: newFacetAddress,
+                action: FacetCutAction.Remove,
+                functionSelectors: selectors
             });
-
-
         } else {
             revert("Invalid diamond action");
         }
+
+        bytes memory diamondCut = abi.encodeWithSelector(IDiamondCut.diamondCut.selector, facetCut, address(0), "");
+
+        batchFile.transactions[0] = Transaction({
+            data: vm.toString(diamondCut),
+            to: diamondAddress,
+            value: 0
+        });
    
         _serializeJSON(batchFile);
         _runPythonScript();
