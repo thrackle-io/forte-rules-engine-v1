@@ -1,5 +1,5 @@
 # RiskScores
-[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/711083cf73df92cf4f18e3e51c50d0b3b5021828/src/client/application/data/RiskScores.sol)
+[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/5abe0bdd205a0cc39e18fc6dac3a712362e23f50/src/client/application/data/RiskScores.sol)
 
 **Inherits:**
 [IRiskScores](/src/client/application/data/IRiskScores.sol/interface.IRiskScores.md), [DataModule](/src/client/application/data/DataModule.sol/abstract.DataModule.md), [IAppLevelEvents](/src/common/IEvents.sol/interface.IAppLevelEvents.md)

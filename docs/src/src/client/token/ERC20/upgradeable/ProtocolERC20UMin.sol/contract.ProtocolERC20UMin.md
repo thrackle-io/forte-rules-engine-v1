@@ -1,5 +1,5 @@
 # ProtocolERC20UMin
-[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/711083cf73df92cf4f18e3e51c50d0b3b5021828/src/client/token/ERC20/upgradeable/ProtocolERC20UMin.sol)
+[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/5abe0bdd205a0cc39e18fc6dac3a712362e23f50/src/client/token/ERC20/upgradeable/ProtocolERC20UMin.sol)
 
 **Inherits:**
 Initializable, ERC20Upgradeable, [ProtocolTokenCommonU](/src/client/token/ProtocolTokenCommonU.sol/abstract.ProtocolTokenCommonU.md), ReentrancyGuard

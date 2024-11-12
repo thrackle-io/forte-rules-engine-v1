@@ -1,5 +1,5 @@
 # OracleRulesFacet
-[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/711083cf73df92cf4f18e3e51c50d0b3b5021828/src/client/token/handler/diamond/OracleRulesFacet.sol)
+[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/5abe0bdd205a0cc39e18fc6dac3a712362e23f50/src/client/token/handler/diamond/OracleRulesFacet.sol)
 
 **Inherits:**
 [HandlerUtils](/src/client/token/handler/common/HandlerUtils.sol/contract.HandlerUtils.md), [AppAdministratorOrOwnerOnlyDiamondVersion](/src/client/token/handler/common/AppAdministratorOrOwnerOnlyDiamondVersion.sol/contract.AppAdministratorOrOwnerOnlyDiamondVersion.md), [HandlerAccountApproveDenyOracle](/src/client/token/handler/ruleContracts/HandlerAccountApproveDenyOracle.sol/contract.HandlerAccountApproveDenyOracle.md), [HandlerAccountApproveDenyOracleFlexible](/src/client/token/handler/ruleContracts/HandlerAccountApproveDenyOracleFlexible.sol/contract.HandlerAccountApproveDenyOracleFlexible.md), [IZeroAddressError](/src/common/IErrors.sol/interface.IZeroAddressError.md), [IHandlerDiamondErrors](/src/common/IErrors.sol/interface.IHandlerDiamondErrors.md)
