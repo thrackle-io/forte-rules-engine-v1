@@ -38,49 +38,55 @@ contract GasReportRegularTokens is GasHelpers, Test {
 
     function test_ERC20_Mint() public {
         erc20Mock.mint(address(this), 1);
-        startMeasuringGas("ERC20_Mint");
+        string memory label = "ERC20_Mint: ";
+        startMeasuringGas(label);
         erc20Mock.mint(address(this), 1000);
         uint256 gasDelta = stopMeasuringGas();
-        console.log("Gas Delta: %s", gasDelta);
+        console.log(label, gasDelta);
     }
 
     function test_ERC20_Burn() public {
         erc20Mock.mint(address(this), 1000);
-        startMeasuringGas("ERC20_Burn");
+        string memory label = "ERC20_Burn: ";
+        startMeasuringGas(label);
         erc20Mock.burn(address(this), 1000);
         uint256 gasDelta = stopMeasuringGas();
-        console.log("Gas Delta: %s", gasDelta);
+        console.log(label, gasDelta);
     }
 
     function test_ERC20_Transfer() public {
         erc20Mock.mint(address(this), 1000);
-        startMeasuringGas("ERC20_Transfer");
+        string memory label = "ERC20_Transfer: ";
+        startMeasuringGas(label);
         erc20Mock.transfer(address(1), 1000);
         uint256 gasDelta = stopMeasuringGas();
-        console.log("Gas Delta: %s", gasDelta);
+        console.log(label, gasDelta);
     }
 
     function test_ERC721_Mint() public {
         erc721Mock.mint(address(this), 1);
-        startMeasuringGas("ERC721_Mint");
+        string memory label = "ERC721_Mint: ";
+        startMeasuringGas(label);
         erc721Mock.mint(address(this), 2);
         uint256 gasDelta = stopMeasuringGas();
-        console.log("Gas Delta: %s", gasDelta);
+        console.log(label, gasDelta);
     }
 
     function test_ERC721_Burn() public {
         erc721Mock.mint(address(this), 1);
-        startMeasuringGas("ERC721_Burn");
+        string memory label = "ERC721_Burn: ";
+        startMeasuringGas(label);
         erc721Mock.burn(1);
         uint256 gasDelta = stopMeasuringGas();
-        console.log("Gas Delta: %s", gasDelta);
+        console.log(label, gasDelta);
     }
 
     function test_ERC721_Transfer() public {
         erc721Mock.mint(address(this), 1);
-        startMeasuringGas("ERC721_Transfer");
+        string memory label = "ERC721_Transfer: ";
+        startMeasuringGas(label);
         erc721Mock.transferFrom(address(this), address(1), 1);
         uint256 gasDelta = stopMeasuringGas();
-        console.log("Gas Delta: %s", gasDelta);
+        console.log(label, gasDelta);
     }
 }
