@@ -5,6 +5,7 @@ import "forge-std/Script.sol";
 import "forge-std/console2.sol";
 import {IDiamondLoupe} from "diamond-std/core/DiamondLoupe/IDiamondLoupe.sol";
 import {IDiamondCut} from "diamond-std/core/DiamondCut/IDiamondCut.sol";
+import {DiamondCutFacet} from "diamond-std/core/DiamondCut/DiamondCutFacet.sol";
 import {FacetCut, FacetCutAction} from "diamond-std/core/DiamondCut/DiamondCutLib.sol";
 import {DiamondScriptUtil} from "../DiamondScriptUtil.sol";
 
@@ -78,23 +79,23 @@ contract UpgradeFacetsJSONBuilder is Script, DiamondScriptUtil {
         for (uint i; i < selectors.length; i++) {
             console2.logBytes4(selectors[i]);
         }
-        FacetCut memory facetCut;
+        FacetCut[] memory facetCuts = new FacetCut[](1);
 
         if (keccak256(abi.encode(diamondAction)) == keccak256(abi.encode("ADD"))) {
-            facetCut = FacetCut({
+            facetCuts[0] = FacetCut({
                 facetAddress: newFacetAddress,
                 action: FacetCutAction.Add,
                 functionSelectors: selectors
             });
         } else if (keccak256(abi.encode(diamondAction)) == keccak256(abi.encode("REPLACE"))) {
-            facetCut = FacetCut({
+            facetCuts[0] = FacetCut({
                 facetAddress: newFacetAddress,
                 action: FacetCutAction.Replace,
                 functionSelectors: selectors
             });
         } else if (keccak256(abi.encode(diamondAction)) == keccak256(abi.encode("REMOVE"))) {
-            facetCut = FacetCut({
-                facetAddress: newFacetAddress,
+            facetCuts[0] = FacetCut({
+                facetAddress: address(0),
                 action: FacetCutAction.Remove,
                 functionSelectors: selectors
             });
@@ -102,7 +103,7 @@ contract UpgradeFacetsJSONBuilder is Script, DiamondScriptUtil {
             revert("Invalid diamond action");
         }
 
-        bytes memory diamondCut = abi.encodeWithSelector(IDiamondCut.diamondCut.selector, facetCut, address(0), "");
+        bytes memory diamondCut = abi.encodeWithSelector(DiamondCutFacet.diamondCut.selector, facetCuts, address(0), "");
 
         batchFile.transactions[0] = Transaction({
             data: vm.toString(diamondCut),
