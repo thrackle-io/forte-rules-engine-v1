@@ -61,7 +61,7 @@ jobs:
     steps:
       - name: Echo outputs
         run: |
-          echo "Necessist Image: ${{ toJson(needs.build-and-push-images.outputs) }}"
+          echo "Necessist Image: ${{ toJson(needs) }}"
 
       - name: Trigger Necessist Deployment
         uses: peter-evans/repository-dispatch@v3
