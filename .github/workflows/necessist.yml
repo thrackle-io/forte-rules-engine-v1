@@ -12,7 +12,7 @@ jobs:
   build-and-push-images:
     runs-on: Linux-Arm64
     outputs:
-      necessist-image: ${{ steps.set-image-tags.outputs.NECESSIST_IMAGE_TAG }}
+      necessist-image: ${{ steps.set-image-tags.outputs.NECESSIST_IMAGE }}
 
     steps:
       - name: Checkout Repository
@@ -41,7 +41,7 @@ jobs:
       - name: Set Image Tags per Environment and Hash
         run: |
           echo 'NECESSIST_IMAGE=${{ secrets.ECR_REGISTRY }}/necessist/forte-rules-engine:${{ env.GIT_TAG }}' >> $GITHUB_ENV
-          echo 'NECESSIST_IMAGE=${{ secrets.ECR_REGISTRY }}/necessist/forte-rules-engine:${{ env.GIT_TAG }}' >> $GITHUB_OUTPUT
+          echo '${{ env.NECESSIST_IMAGE }}' >> $GITHUB_OUTPUT
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
