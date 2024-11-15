@@ -40,8 +40,8 @@ jobs:
 
       - name: Set Image Tags per Environment and Hash
         run: |
-          echo 'NECESSIST_IMAGE=${{ vars.ECR_REGISTRY }}/necessist:${{ env.GIT_TAG }}' >> $GITHUB_ENV
-          echo 'NECESSIST_IMAGE=${{ vars.ECR_REGISTRY }}/necessist:${{ env.GIT_TAG }}' >> $GITHUB_OUTPUT
+          echo 'NECESSIST_IMAGE=${{ secrets.ECR_REGISTRY }}/necessist/forte-rules-engine:${{ env.GIT_TAG }}' >> $GITHUB_ENV
+          echo 'NECESSIST_IMAGE=${{ secrets.ECR_REGISTRY }}/necessist/forte-rules-engine:${{ env.GIT_TAG }}' >> $GITHUB_OUTPUT
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
