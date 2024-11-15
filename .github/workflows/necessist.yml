@@ -40,8 +40,9 @@ jobs:
       - name: Register Image Names
         id: register-image
         run: |
-          echo 'NECESSIST_IMAGE=${{ secrets.ECR_REGISTRY }}/necessist/forte-rules-engine:${{ env.GIT_TAG }}' >> $GITHUB_ENV
-          echo 'necessist_image=${{ env.NECESSIST_IMAGE }}' >> $GITHUB_OUTPUT
+          necessist_image="${{ secrets.ECR_REGISTRY }}/necessist/forte-rules-engine:${{ env.GIT_TAG }}"
+          echo "NECESSIST_IMAGE=${necessist_image}" >> $GITHUB_ENV
+          echo "necessist_image=${necessist_image}" >> $GITHUB_OUTPUT
 
       # - name: Set up Docker Buildx
       #   uses: docker/setup-buildx-action@v3
