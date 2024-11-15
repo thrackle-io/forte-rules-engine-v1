@@ -50,7 +50,7 @@ contract DeployBase is Script, DiamondScriptUtil {
             // diamond version
             "HandlerVersionFacet",
             // Native facets,
-            "ProtocolNativeFacet",
+            "ClientNativeFacet",
             // // Raw implementation facets.
             "ProtocolRawFacet",
             // Protocol facets.
@@ -60,7 +60,7 @@ contract DeployBase is Script, DiamondScriptUtil {
 
         string[4] memory directories = [
             "./out/HandlerVersionFacet.sol/",
-            "./out/ProtocolNativeFacet.sol/",
+            "./out/ClientNativeFacet.sol/",
             "./out/ProtocolRawFacet.sol/",
             "./out/ERC20HandlerMainFacet.sol/"
         ];
@@ -110,7 +110,7 @@ contract DeployBase is Script, DiamondScriptUtil {
     }
 
     function createERC20HandlerDiamondPt2(string memory name, address handlerAddress) public {
-                validateName(name);
+        validateName(name);
         bool recordAllChains;
         recordAllChains = vm.envBool("RECORD_DEPLOYMENTS_FOR_ALL_CHAINS");
         FacetCut[] memory _erc20HandlerFacetCuts = new FacetCut[](5);
@@ -180,7 +180,7 @@ contract DeployBase is Script, DiamondScriptUtil {
             // diamond version
             "HandlerVersionFacet",
             // Native facets,
-            "ProtocolNativeFacet",
+            "ClientNativeFacet",
             // Raw implementation facets.
             "ProtocolRawFacet",
             // Protocol facets.
@@ -190,7 +190,7 @@ contract DeployBase is Script, DiamondScriptUtil {
 
         string[4] memory directories = [
             "./out/HandlerVersionFacet.sol/",
-            "./out/ProtocolNativeFacet.sol/",
+            "./out/ClientNativeFacet.sol/",
             "./out/ProtocolRawFacet.sol/",
             "./out/ERC721HandlerMainFacet.sol/"
         ];
@@ -239,7 +239,7 @@ contract DeployBase is Script, DiamondScriptUtil {
     }
 
         function createERC721HandlerDiamondPt2(string memory name, address handlerAddress) public {
-                validateName(name);
+        validateName(name);
         bool recordAllChains;
         recordAllChains = vm.envBool("RECORD_DEPLOYMENTS_FOR_ALL_CHAINS");
         FacetCut[] memory _erc20HandlerFacetCuts = new FacetCut[](4);

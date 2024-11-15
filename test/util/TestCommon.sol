@@ -38,6 +38,7 @@ import {IAppLevelEvents, IAppManagerAddressSet, IOracleEvents, IApplicationHandl
 import {ApplicationHandler} from "src/example/application/ApplicationHandler.sol";
 import {HandlerDiamond, HandlerDiamondArgs} from "src/client/token/handler/diamond/HandlerDiamond.sol";
 import "src/example/application/ApplicationAppManager.sol";
+import "src/client/token/handler/common/ClientNativeFacet.sol";
 
 import "src/example/ERC20/ApplicationERC20.sol";
 import "src/example/ERC20/upgradeable/ApplicationERC20UMin.sol";

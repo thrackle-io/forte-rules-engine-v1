@@ -3696,4 +3696,34 @@ abstract contract ERC721CommonTests is TestCommonFoundry, ERC721Util {
         vm.expectRevert("UNAUTHORIZED");
         TradingRuleFacet(address(applicationNFTHandler)).checkTradingRules(user1, user, user, createBytes32Array("Tayler"), createBytes32Array("Michael"), 10, ActionTypes.P2P_TRANSFER);
     }
+
+    /// Handler Upgrade testing 
+    function testERC721_ERC721CommonTests_UpgradeHandlerDiamond_Positive() public endWithStopPrank ifDeploymentTestsEnabled {
+        // must be the owner for upgrade
+        switchToAppAdministrator();
+        SampleFacet _sampleFacet = new SampleFacet();
+        //build cut struct
+        FacetCut[] memory cut = new FacetCut[](1);
+        cut[0] = (FacetCut({facetAddress: address(_sampleFacet), action: FacetCutAction.Add, functionSelectors: generateSelectors("SampleFacet")}));
+        // check event emission 
+        vm.expectEmit(true, true, true, false);
+        emit IDiamondCut.DiamondCut(cut, address(0x0), "");
+        //upgrade diamond
+        IDiamondCut(address(applicationNFTHandler)).diamondCut(cut, address(0x0), "");
+    }
+
+    function testERC721_ERC721CommonTests_UpgradeHandlerDiamond_Negative() public endWithStopPrank ifDeploymentTestsEnabled {
+        // must be the owner for upgrade
+        switchToAppAdministrator();
+        SampleFacet _sampleFacet = new SampleFacet();
+        //build cut struct
+        FacetCut[] memory cut = new FacetCut[](1);
+        cut[0] = (FacetCut({facetAddress: address(_sampleFacet), action: FacetCutAction.Add, functionSelectors: generateSelectors("SampleFacet")}));
+        // check event emission 
+        switchToSuperAdmin();
+        //upgrade diamond
+        vm.expectRevert(abi.encodeWithSignature("NotAppAdministratorOrOwner()"));
+        //upgrade diamond
+        IDiamondCut(address(applicationNFTHandler)).diamondCut(cut, address(0x0), "");
+    }
 }

@@ -26,11 +26,15 @@ contract AppAdministratorOrOwnerOnlyDiamondVersion is ERC173, RBACModifiersCommo
     }
 
     function _appAdministratorOrOwnerOnly(address _permissionModuleAppManagerAddress) private view {
-        if (_permissionModuleAppManagerAddress == address(0)) revert AppManagerNotConnected();
-        IAppManager appManager = IAppManager(_permissionModuleAppManagerAddress);
+        if (ERC173Lib.s().owner != _msgSender()) {
+            if (_permissionModuleAppManagerAddress == address(0)) revert AppManagerNotConnected();
+            
+            IAppManager appManager = IAppManager(_permissionModuleAppManagerAddress);
 
-        if (!appManager.isAppAdministrator(_msgSender()) && ERC173Lib.s().owner != _msgSender()) revert NotAppAdministratorOrOwner();
+            if (!appManager.isAppAdministrator(_msgSender()) && ERC173Lib.s().owner != _msgSender()) revert NotAppAdministratorOrOwner();
+        }
     }
+
 
     /**
      * @dev Transfers ownership of the contract to a new account (`newOwner`).
