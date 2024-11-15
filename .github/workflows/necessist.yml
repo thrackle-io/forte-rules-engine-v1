@@ -12,7 +12,7 @@ jobs:
   build-and-push-images:
     runs-on: Linux-Arm64
     outputs:
-      necessist-image: ${{ steps.set-image-tags.outputs.NECESSIST_IMAGE }}
+      necessist-image: ${{ steps.register-image.outputs.necessist_image }}
 
     steps:
       - name: Checkout Repository
@@ -26,7 +26,6 @@ jobs:
           aws-region: ${{ vars.AWS_REGION }}
 
       - name: Login to Amazon ECR
-        id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
 
       - name: Determine Git Tag or Use Commit SHA
@@ -38,10 +37,11 @@ jobs:
             echo "GIT_TAG=${GITHUB_SHA::7}" >> $GITHUB_ENV
           fi
 
-      - name: Set Image Tags per Environment and Hash
+      - name: Register Image Names
+        id: register-image
         run: |
           echo 'NECESSIST_IMAGE=${{ secrets.ECR_REGISTRY }}/necessist/forte-rules-engine:${{ env.GIT_TAG }}' >> $GITHUB_ENV
-          echo '${{ env.NECESSIST_IMAGE }}' >> $GITHUB_OUTPUT
+          echo 'necessist_image=${{ env.NECESSIST_IMAGE }}' >> $GITHUB_OUTPUT
 
       # - name: Set up Docker Buildx
       #   uses: docker/setup-buildx-action@v3
@@ -70,4 +70,4 @@ jobs:
           repository: thrackle-io/application-infrastructure
           event-type: Deploy-Necessist-Forte-Rules-Engine
           client-payload: |
-            {"image": "${{ needs.build-and-push-images.outputs.necessist-image }}"}
+            {"image": "${{ needs.build-and-push-images.register-image.outputs.necessist_image }}"}
