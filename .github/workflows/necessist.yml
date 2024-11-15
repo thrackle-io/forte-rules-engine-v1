@@ -12,7 +12,7 @@ jobs:
   build-and-push-images:
     runs-on: Linux-Arm64
     outputs:
-      necessist-image: ${{ steps.register-image.outputs.necessist_image }}
+      necessist_image: ${{ steps.register-image.outputs.necessist_image }}
 
     steps:
       - name: Checkout Repository
