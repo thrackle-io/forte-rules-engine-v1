@@ -12,7 +12,7 @@ jobs:
   build-and-push-images:
     runs-on: Linux-Arm64
     outputs:
-      necessist_image: ${{ steps.register-image.outputs.necessist_image }}
+      necessist_image_slug: ${{ steps.register-image.outputs.necessist_image_slug }}
 
     steps:
       - name: Checkout Repository
@@ -37,12 +37,13 @@ jobs:
             echo "GIT_TAG=${GITHUB_SHA::7}" >> $GITHUB_ENV
           fi
 
+      # Per https://github.com/orgs/community/discussions/26636, outputs cant contain a secret, but ECR URIs do.
       - name: Register Image Names
         id: register-image
         run: |
-          necessist_image="${{ secrets.ECR_REGISTRY }}/necessist/forte-rules-engine:${{ env.GIT_TAG }}"
-          echo "NECESSIST_IMAGE=${necessist_image}" >> $GITHUB_ENV
-          echo "necessist_image=${necessist_image}" >> $GITHUB_OUTPUT
+          necessist_image_slug="/necessist/forte-rules-engine:${{ env.GIT_TAG }}"
+          echo "NECESSIST_IMAGE=${{ secrets.ECR_REGISTRY }}/${necessist_image_slug}" >> $GITHUB_ENV
+          echo "necessist_image_slug=${necessist_image_slug}" >> $GITHUB_OUTPUT
 
       # - name: Set up Docker Buildx
       #   uses: docker/setup-buildx-action@v3
@@ -71,4 +72,4 @@ jobs:
           repository: thrackle-io/application-infrastructure
           event-type: Deploy-Necessist-Forte-Rules-Engine
           client-payload: |
-            {"image": "${{ needs.build-and-push-images.register-image.outputs.necessist_image }}"}
+            {"image_slug": "${{ needs.build-and-push-images.register-image.outputs.necessist_image_slug }}"}
