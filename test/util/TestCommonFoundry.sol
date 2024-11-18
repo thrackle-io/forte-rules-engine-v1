@@ -155,7 +155,7 @@ abstract contract TestCommonFoundry is TestCommon, EndWithStopPrank, EnabledActi
             // diamond version
             "HandlerVersionFacet",
             // Native facets,
-            "ProtocolNativeFacet",
+            "ClientNativeFacet",
             // // Raw implementation facets.
             "ProtocolRawFacet",
             // ERC20 Handler Facets
@@ -209,7 +209,7 @@ abstract contract TestCommonFoundry is TestCommon, EndWithStopPrank, EnabledActi
             // diamond version
             "HandlerVersionFacet",
             // Native facets,
-            "ProtocolNativeFacet",
+            "ClientNativeFacet",
             // Raw implementation facets.
             "ProtocolRawFacet",
             // ERC721 Handler Facets
