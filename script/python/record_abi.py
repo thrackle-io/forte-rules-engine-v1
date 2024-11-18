@@ -7,7 +7,7 @@ from dotenv import dotenv_values
 # This file is meant to record the ABI for a specific contract per deployment so that it is categorized by date and useable for DOOM backwards compatibility
 _dir  = dotenv_values(".env")
 
-version = "2.2.0"
+version = "2.2.1"
 
 def record_abi(args):    
     contract = args.contract
