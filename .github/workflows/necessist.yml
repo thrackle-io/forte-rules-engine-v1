@@ -72,4 +72,4 @@ jobs:
           repository: thrackle-io/application-infrastructure
           event-type: Deploy-Necessist-Forte-Rules-Engine
           client-payload: |
-            {"image_slug": "${{ needs.build-and-push-images.register-image.outputs.necessist_image_slug }}"}
+            {"image_slug": "${{ needs.build-and-push-images.outputs.necessist_image_slug }}"}
