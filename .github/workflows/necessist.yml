@@ -41,7 +41,7 @@ jobs:
       - name: Register Image Names
         id: register-image
         run: |
-          necessist_image_slug="/necessist/forte-rules-engine:${{ env.GIT_TAG }}"
+          necessist_image_slug="necessist/forte-rules-engine:${{ env.GIT_TAG }}"
           echo "NECESSIST_IMAGE=${{ secrets.ECR_REGISTRY }}/${necessist_image_slug}" >> $GITHUB_ENV
           echo "necessist_image_slug=${necessist_image_slug}" >> $GITHUB_OUTPUT
 
