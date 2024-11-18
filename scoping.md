@@ -27,6 +27,7 @@ src/client/token/ERC20/upgradeable/ProtocolERC20UMin.sol
 src/client/token/ERC721/upgradeable/ProtocolERC721U.sol
 src/client/token/ERC721/upgradeable/ProtocolERC721Umin.sol
 src/client/token/handler/diamond/*
+src/protocol/economic/ruleProcessor/*
 
 ```
 
