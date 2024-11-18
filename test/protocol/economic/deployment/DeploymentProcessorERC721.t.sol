@@ -38,7 +38,7 @@ contract DeploymentProcessorERC721 is ERC721CommonTests {
 
             Blocktime = uint64(block.timestamp); 
             switchToAppAdministrator();    
-            HandlerVersionFacet(address(applicationCoinHandler)).updateVersion("2.2.0");    
+            HandlerVersionFacet(address(applicationCoinHandler)).updateVersion("2.2.1");    
         }  else {
             vm.warp(Blocktime);
             setUpProcotolAndCreateERC20AndDiamondHandler();
