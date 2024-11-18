@@ -11,9 +11,7 @@ The data/format below is provided as an example to guide you.
 ## File paths to INCLUDE
 
 ```
-src/client/*
-src/common/*
-src/protocol/*
+src/*
 ```
 
 ## Priority files
@@ -28,7 +26,6 @@ src/client/token/ERC721/upgradeable/ProtocolERC721U.sol
 src/client/token/ERC721/upgradeable/ProtocolERC721Umin.sol
 src/client/token/handler/diamond/*
 src/protocol/economic/ruleProcessor/*
-
 ```
 
 ## Areas of concern
