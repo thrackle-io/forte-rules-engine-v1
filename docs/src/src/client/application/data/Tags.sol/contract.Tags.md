@@ -1,5 +1,5 @@
 # Tags
-[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/c24a67035f9dc2b86d52113e68cb76f2f45fa3f2/src/client/application/data/Tags.sol)
+[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/9fddf56ef55dac8b5660e8eb459c61d41ab7f720/src/client/application/data/Tags.sol)
 
 **Inherits:**
 [DataModule](/src/client/application/data/DataModule.sol/abstract.DataModule.md), [ITags](/src/client/application/data/ITags.sol/interface.ITags.md), [INoAddressToRemove](/src/common/IErrors.sol/interface.INoAddressToRemove.md), [IAppLevelEvents](/src/common/IEvents.sol/interface.IAppLevelEvents.md)
