@@ -1,5 +1,5 @@
 # AppAdministratorOnlyU
-[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/9fddf56ef55dac8b5660e8eb459c61d41ab7f720/src/protocol/economic/AppAdministratorOnlyU.sol)
+[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/1c8d4aea6c73ad5ec24590e9388e17186ef859be/src/protocol/economic/AppAdministratorOnlyU.sol)
 
 **Inherits:**
 ContextUpgradeable, [IPermissionModifierErrors](/src/common/IErrors.sol/interface.IPermissionModifierErrors.md)
