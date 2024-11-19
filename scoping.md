@@ -33,7 +33,7 @@ src/protocol/economic/ruleProcessor/*
 ✅ List specific issues or vulnerabilities you want the audit to focus on:
 
 ```
-- Malicious user actions
-- Bypassing of rule
-- Elevation of control over rules
+- Malicious user actions (blocking valid transactions, redirecting funds, etc)
+- Bypassing a rule that should cause a transaction to fail
+- Any ability to circumvent permissions (adding/modifying/deleting rules, bypassing checks, etc)
 ```
