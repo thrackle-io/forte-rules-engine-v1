@@ -8,7 +8,7 @@
 # This layer is cached and not re-built unless there is a change to foundry.lock.
 ################################################
 
-# THis is a conflict
+## Just demoing stuff
 
 FROM rust:1.78.0-bookworm as foundry-base
 
