@@ -86,7 +86,7 @@ Other Exceptions
 
 <!-- These are the body links -->
 
-[contributorGuide-url]: ./docs/contributorGuides/README.md
+[contributorGuide-url]: ./CONTRIBUTING.md
 [userGuide-url]: ./docs/userGuides/README.md
 [deploymentGuide-url]: ./docs/userGuides/deployment/NFT-DEPLOYMENT.md
 [archOverview-url]: ./docs/userGuides/ARCHITECTURE-OVERVIEW.md
