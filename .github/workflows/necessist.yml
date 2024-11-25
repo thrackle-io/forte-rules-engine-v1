@@ -70,6 +70,6 @@ jobs:
         with:
           token: "${{ secrets.WORKFLOW_DISPATCH_TOKEN }}"
           repository: thrackle-io/application-infrastructure
-          event-type: necessist-dispatch
+          event-type: necessist-deployment-dispatch
           client-payload: |
             {"image_slug": "${{ needs.build-and-push-images.outputs.necessist_image_slug }}"}
