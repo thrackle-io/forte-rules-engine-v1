@@ -100,8 +100,6 @@ RUN cargo install necessist
 ## Install AWS CLI and set up credentials so the db file that results from 
 ## necessist running can be uploaded to s3.
 
-RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-RUN unzip awscliv2.zip
-RUN ./aws/install
+RUN apt update && apt install -y awscli && apt -y clean
 
-CMD ["src/docker/run-necessist.sh"]
+CMD ["script/docker/run-necessist.sh"]
