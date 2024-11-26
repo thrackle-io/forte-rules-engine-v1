@@ -45,17 +45,17 @@ jobs:
           echo "NECESSIST_IMAGE=${{ secrets.ECR_REGISTRY }}/${necessist_image_slug}" >> $GITHUB_ENV
           echo "necessist_image_slug=${necessist_image_slug}" >> $GITHUB_OUTPUT
 
-      # - name: Set up Docker Buildx
-      #   uses: docker/setup-buildx-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-      # - name: Build and Push Image - Necessist
-      #   uses: docker/build-push-action@v6
-      #   with:
-      #     platforms: linux/arm64
-      #     push: true
-      #     file: Dockerfile
-      #     target: necessist
-      #     tags: ${{ env.NECESSIST_IMAGE }}
+      - name: Build and Push Image - Necessist
+        uses: docker/build-push-action@v6
+        with:
+          platforms: linux/arm64
+          push: true
+          file: Dockerfile
+          target: necessist
+          tags: ${{ env.NECESSIST_IMAGE }}
 
   deploy-necessist:
     runs-on: ubuntu-latest
