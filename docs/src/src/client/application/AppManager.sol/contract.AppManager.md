@@ -1,5 +1,5 @@
 # AppManager
-[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/82c852aae835019a12c3223cb7eabe7f59f19e1a/src/client/application/AppManager.sol)
+[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/7ed34a62033174e2129a3d6ffafc4f97afb624f7/src/client/application/AppManager.sol)
 
 **Inherits:**
 [IAppManager](/src/client/application/IAppManager.sol/interface.IAppManager.md), AccessControlEnumerable, [IAppLevelEvents](/src/common/IEvents.sol/interface.IAppLevelEvents.md), [IApplicationEvents](/src/common/IEvents.sol/interface.IApplicationEvents.md), [IIntegrationEvents](/src/common/IEvents.sol/interface.IIntegrationEvents.md), ReentrancyGuard

@@ -1,5 +1,5 @@
 # IAppManager
-[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/82c852aae835019a12c3223cb7eabe7f59f19e1a/src/client/application/IAppManager.sol)
+[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/7ed34a62033174e2129a3d6ffafc4f97afb624f7/src/client/application/IAppManager.sol)
 
 **Inherits:**
 [IAppManagerErrors](/src/common/IErrors.sol/interface.IAppManagerErrors.md), [IPermissionModifierErrors](/src/common/IErrors.sol/interface.IPermissionModifierErrors.md), [IInputErrors](/src/common/IErrors.sol/interface.IInputErrors.md), [IZeroAddressError](/src/common/IErrors.sol/interface.IZeroAddressError.md), [IOwnershipErrors](/src/common/IErrors.sol/interface.IOwnershipErrors.md)
