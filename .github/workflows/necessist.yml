@@ -1,65 +1,75 @@
-name: Run Necessist
+# Necessist is a testing tool, which modifies Solidity tests,
+name: Run Necessist Tests
 
 on:
   workflow_dispatch:
 
-env:
-  AWS_REGION: us-east-1
-  ECR_REPOSITORY: ${{ secrets.K8S_AWS_ACCOUNT_ID }}.dkr.ecr.us-east-1.amazonaws.com/universus-tf
+permissions:
+  contents: read
+  id-token: write # OIDC to allow push to ECR
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    environment:
-      name: ${{ github.ref_name }}
+  build-and-push-images:
+    runs-on: Linux-Arm64
+    outputs:
+      necessist_image_slug: ${{ steps.register-image.outputs.necessist_image_slug }}
+
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+
+      - name: configure aws credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          # A limited push-to-ECR IAM role exists in the target environment, allowing GitHub ODIC
+          role-to-assume: ${{ secrets.AWS_ECR_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      - name: Login to Amazon ECR
+        uses: aws-actions/amazon-ecr-login@v1
+
+      - name: Determine Git Tag or Use Commit SHA
+        id: determine-git-tag
+        run: |
+          if [[ "${{ github.ref }}" == "refs/tags/"* || -n "${{ github.event.release.tag_name }}" ]]; then
+            echo "GIT_TAG=${GITHUB_REF##*/}" >> $GITHUB_ENV
+          else
+            echo "GIT_TAG=${GITHUB_SHA::7}" >> $GITHUB_ENV
+          fi
+
+      # Per https://github.com/orgs/community/discussions/26636, outputs cant contain a secret, but ECR URIs do.
+      - name: Register Image Names
+        id: register-image
+        run: |
+          necessist_image_slug="necessist/forte-rules-engine:${{ env.GIT_TAG }}"
+          echo "NECESSIST_IMAGE=${{ secrets.ECR_REGISTRY }}/${necessist_image_slug}" >> $GITHUB_ENV
+          echo "necessist_image_slug=${necessist_image_slug}" >> $GITHUB_OUTPUT
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1
+      - name: Build and Push Image - Necessist
+        uses: docker/build-push-action@v6
         with:
-          aws-access-key-id: ${{ secrets.K8S_AWS_ACCESS_KEY_ID }}
-          aws-secret-access-key: ${{ secrets.K8S_AWS_SECRET_ACCESS_KEY }}
-          aws-region: ${{ env.AWS_REGION }}
-
-      - name: Login to Amazon ECR
-        id: login-ecr
-        uses: aws-actions/amazon-ecr-login@v1
-
-      - name: Connect kubectl to universus
-        run: |
-          aws eks update-kubeconfig --name universus --region ${{ env.AWS_REGION }}
-
-      - name: Generate new Image Tags
-        run: |
-          echo 'RULES_BASE_TAG=${{ env.ECR_REPOSITORY }}:rules-base-${{ github.ref_name }}' >> $GITHUB_ENV
-          echo "NECESSIST_IMAGE_TAG=${{ env.ECR_REPOSITORY }}:necessist-${GITHUB_SHA::7}" >> $GITHUB_ENV
-
-      - name: Build and push Necessist image
-        uses: docker/build-push-action@v5
-        with:
-          context: .
-          file: ./Dockerfile
-          target: rules-necessist
+          platforms: linux/arm64
           push: true
-          tags: ${{ env.NECESSIST_IMAGE_TAG }}
-          cache-from: type=registry,ref=${{ env.TRON_BASE_TAG }}
-          cache-to: type=inline
-          build-args: |
-            AWS_ACCESS_KEY_ID=${{ secrets.K8S_AWS_ACCESS_KEY_ID }}
-            AWS_SECRET_ACCESS_KEY=${{ secrets.K8S_AWS_SECRET_ACCESS_KEY }}
-            AWS_REGION=${{ env.AWS_REGION }}
+          file: Dockerfile
+          target: necessist
+          tags: ${{ env.NECESSIST_IMAGE }}
 
-      - name: Update k8s manifest
+  deploy-necessist:
+    runs-on: ubuntu-latest
+    needs: build-and-push-images
+    steps:
+      - name: Echo outputs
         run: |
-          sed -i "s|{{NECESSIST_IMAGE_TAG}}|${{ env.NECESSIST_IMAGE_TAG }}|g" k8s/rules/necessist-job.yaml
+          echo "Necessist Image: ${{ toJson(needs) }}"
 
-      - name: Run the necessist job with k8s
-        run: |
-          kubectl delete job necessist --ignore-not-found=true -n dev
-          sleep 5
-          kubectl apply -f k8s/rules/necessist-job.yaml -n dev
+      - name: Trigger Necessist Deployment
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: "${{ secrets.WORKFLOW_DISPATCH_TOKEN }}"
+          repository: thrackle-io/application-infrastructure
+          event-type: necessist-deployment-dispatch
+          client-payload: |
+            {"image_slug": "${{ needs.build-and-push-images.outputs.necessist_image_slug }}"}
