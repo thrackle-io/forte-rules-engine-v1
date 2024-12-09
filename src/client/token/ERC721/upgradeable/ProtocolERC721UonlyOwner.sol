@@ -4,7 +4,6 @@ pragma solidity ^0.8.24;
 import "@openzeppelin/contracts-upgradeable/token/ERC721/ERC721Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721EnumerableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721URIStorageUpgradeable.sol";
-import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721BurnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts-upgradeable/proxy/utils/UUPSUpgradeable.sol";
@@ -19,12 +18,11 @@ import "src/client/token/ProtocolTokenCommonU.sol";
  * @author @ShaneDuncan602, @oscarsernarosero, @TJ-Everett
  * @notice This is the base contract for all protocol ERC721Upgradeables
  */
-contract ProtocolERC721U is
+contract ProtocolERC721UonlyOwner is
     Initializable,
     ERC721Upgradeable,
     ERC721EnumerableUpgradeable,
     ERC721URIStorageUpgradeable,
-    ERC721BurnableUpgradeable,
     OwnableUpgradeable,
     UUPSUpgradeable,
     ProtocolTokenCommonU,
@@ -55,7 +53,7 @@ contract ProtocolERC721U is
      * @param _symbolProto Symbol for the NFT
      * @param _appManagerAddress Address of App Manager
      */
-    function initialize(string memory _nameProto, string memory _symbolProto, address _appManagerAddress, string memory _baseUri) public virtual appAdministratorOnly(_appManagerAddress) initializer {
+    function initialize(string memory _nameProto, string memory _symbolProto, address _appManagerAddress, string memory _baseUri) public virtual initializer {
         __ERC721_init(_nameProto, _symbolProto);
         __ERC721Enumerable_init();
         __ERC721URIStorage_init();
@@ -75,14 +73,6 @@ contract ProtocolERC721U is
     }
 
     function _authorizeUpgrade(address newImplementation) internal override onlyOwner {}
-
-    /**
-     * @dev Function to burn or remove token from circulation
-     * @param tokenId Id of token to be burned
-     */
-    function _burn(uint256 tokenId) internal override(ERC721Upgradeable, ERC721URIStorageUpgradeable) {
-        super._burn(tokenId);
-    }
 
     /**
      * @dev Function to return baseURI for contract
@@ -105,7 +95,7 @@ contract ProtocolERC721U is
      * @notice this is called in the constructor and can be called to update URI metadata pointer
      * @param _baseUri URI to the metadata file(s) for the contract
      */
-    function setBaseURI(string memory _baseUri) public virtual appAdministratorOnly(appManagerAddress) {
+    function setBaseURI(string memory _baseUri) public virtual onlyOwner() {
         baseUri = _baseUri;
     }
 
@@ -125,13 +115,22 @@ contract ProtocolERC721U is
 
     /**
      * @dev Function mints new a new token to caller with tokenId incremented by 1 from previous minted token.
-     * @notice Add appAdministratorOnly modifier to restrict minting privilages
+     * @notice OnlyOwner modifier used for mints. Only Collection Owner can mint new tokens 
      * @param to Address of recipient
      */
-    function safeMint(address to) public payable virtual appAdministratorOnly(appManagerAddress) {
+    function safeMint(address to) public payable virtual onlyOwner() {
         uint256 tokenId = _tokenIdCounter.current();
         _tokenIdCounter.increment();
         _safeMint(to, tokenId);
+    }
+
+    /**
+     * @dev Function to burn or remove token from circulation
+     * @param tokenId Id of token to be burned
+     */
+    function _burn(uint256 tokenId) internal pure override(ERC721Upgradeable, ERC721URIStorageUpgradeable) {
+        tokenId; 
+        revert("Burning is disabled for this token"); 
     }
 
     /**
@@ -153,11 +152,11 @@ contract ProtocolERC721U is
 
     /**
      * @dev Function to withdraw Ether sent to contract
-     * @dev AppAdministratorOnly modifier uses appManagerAddress. Only Addresses asigned as AppAdministrator can call function.
+     * @dev onlyOwner modifier uses appManagerAddress. Only owner can call function.
      */
-    function withdraw() public payable virtual appAdministratorOnly(appManagerAddress) {
+    function withdraw() public payable virtual onlyOwner() {
         // Disabling this finding as a false positive. The address is not arbitrary, the funciton modifier guarantees 
-        // it is a App Admin.
+        // it is the owner.
         // slither-disable-next-line arbitrary-send-eth
         (bool success, ) = payable(msg.sender).call{value: address(this).balance}("");
         require(success);

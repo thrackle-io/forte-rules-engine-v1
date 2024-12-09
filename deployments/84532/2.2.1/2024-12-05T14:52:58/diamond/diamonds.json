@@ -1,0 +1,12 @@
+{
+    "84532": {
+        "ForumHandlerDiamond": {
+            "2024-12-05": {
+                "ERC721TaggedRuleFacet": "0x27c2b34Eaed15d6Edf4CCFc724fEE3Ca82c091de",
+                "ERC721NonTaggedRuleFacet": "0x792702cE1CbFB407E42cC4501D30ebe8506217cD",
+                "TradingRuleFacet": "0xdb750e3D823d9Bd22ab149cD4AeB0Aeeb80f1dbe",
+                "OracleRulesFacet": "0x76d111d6691A6A19B1DEA62525CA285c791c8079"
+            }
+        }
+    }
+}

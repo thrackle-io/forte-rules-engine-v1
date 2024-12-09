@@ -303,7 +303,7 @@ abstract contract TestCommon is
      * @return _proxy token
      */
     function _createERC721UpgradeableProxy(address _applicationNFTU) public returns (ApplicationERC721UProxy _proxy) {
-        return new ApplicationERC721UProxy(address(_applicationNFTU), "");
+        return new ApplicationERC721UProxy(address(_applicationNFTU), address(proxyOwner), "");
     }
 
     /**

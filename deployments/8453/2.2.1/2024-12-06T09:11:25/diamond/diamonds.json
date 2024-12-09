@@ -1,0 +1,13 @@
+{
+    "8453": {
+        "ForumHandlerDiamond": {
+            "2024-12-06": {
+                "HandlerVersionFacet": "0x8c8452bb20f04F4016E840C5b4C295A70195E67E",
+                "ClientNativeFacet": "0xE338B89867417B020d404e6F74e49B8F8B31d479",
+                "ProtocolRawFacet": "0xF9E61A82310d3E093654C4D6C32fDa45Cc2a576e",
+                "ERC721HandlerMainFacet": "0xCB5426ea5878172b0E42Ae67A96e257747BDeCA8",
+                "diamond": "0xa3d3daEDFACFBB986474E8E5b62D08c11F986e4A"
+            }
+        }
+    }
+}

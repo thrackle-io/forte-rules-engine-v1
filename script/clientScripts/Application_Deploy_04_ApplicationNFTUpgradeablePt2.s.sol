@@ -3,7 +3,7 @@ pragma solidity ^0.8.24;
 
 import "forge-std/Script.sol";
 import "src/example/application/ApplicationHandler.sol";
-import {ApplicationERC721AdminOrOwnerMint} from "src/example/ERC721/ApplicationERC721AdminOrOwnerMint.sol";
+import {Forum} from "src/example/ERC721/Upgradeable/Forum.sol";
 import "src/example/ERC721/upgradeable/ApplicationERC721UProxy.sol";
 import {ApplicationAppManager} from "src/example/application/ApplicationAppManager.sol";
 import "./DeployBase.s.sol";
@@ -44,20 +44,20 @@ contract DeployProtocolERC721Upgradeable is Script, DeployBase {
         vm.startBroadcast(appConfigAdminKey);
         /// Retrieve the App Manager from previous script
         ApplicationAppManager applicationAppManager = ApplicationAppManager(vm.envAddress("APPLICATION_APP_MANAGER"));
-        ApplicationERC721AdminOrOwnerMint nftupgradeable = ApplicationERC721AdminOrOwnerMint(vm.envAddress("APPLICATION_ERC721U_ADDRESS"));
+        Forum forum = Forum(vm.envAddress("APPLICATION_ERC721U_ADDRESS"));
         applicationNFTHandlerDiamond = HandlerDiamond(payable(vm.envAddress("APPLICATION_ERC721U_HANDLER")));
         /// Create NFT Handler
-        createERC721HandlerDiamondPt2("Wolfman", address(applicationNFTHandlerDiamond));
-        ERC721HandlerMainFacet(address(applicationNFTHandlerDiamond)).initialize(vm.envAddress("RULE_PROCESSOR_DIAMOND"), address(applicationAppManager), address(nftupgradeable));
+        createERC721HandlerDiamondPt2("Forum", address(applicationNFTHandlerDiamond));
+        ERC721HandlerMainFacet(address(applicationNFTHandlerDiamond)).initialize(vm.envAddress("RULE_PROCESSOR_DIAMOND"), address(applicationAppManager), address(forum));
         vm.stopBroadcast();
 
         appAdminKey = vm.envUint("APP_ADMIN_PRIVATE_KEY");
         appAdminAddress = vm.envAddress("APP_ADMIN");
         vm.startBroadcast(appAdminKey);
         /// Connect handler to token
-        nftupgradeable.connectHandlerToToken(address(applicationNFTHandlerDiamond));
+        forum.connectHandlerToToken(address(applicationNFTHandlerDiamond));
         /// Register the tokens with the application's app manager
-        applicationAppManager.registerToken("Wolfman", address(nftupgradeable));
+        applicationAppManager.registerToken("Forum", address(forum));
 
         vm.stopBroadcast();
     }
