@@ -11,6 +11,23 @@
     "@openzeppelin/contracts-upgradeable": "4.9.6"
   },
   "files": [
+    "deployments",
+    "script/clientScripts",
+    "script/safe",
+    "script/versioning/to_relative.sh",
+    "script/DeployAllModulesPt1.s.sol",
+    "script/DeployAllModulesPt2.s.sol",
+    "script/DeployAllModulesPt3.s.sol",
+    "script/DeployAllModulesPt4.s.sol",
+    "script/DeployProcessorDiamond.s.sol",
+    "script/DiamondScriptUtil.sol",
+    "script/EnabledActionPerRuleArray.sol",
+    "script/ParseApplicationDeploy.sh",
+    "script/ParseProtocolDeploy.sh",
+    "script/RevertAFacetUpgrade.s.sol",
+    "script/SetupProtocolDeploy.sh",
+    "script/SubUpgradeableTokenForRegularToken.sh",
+    "script/UpgradeAProtocolFacet.s.sol",
     "lib/diamond-std",
     "src/client",
     "src/common",
@@ -20,8 +37,7 @@
     "src/protocol/economic/AppAdministratorOrOwnerOnly.sol",
     "src/protocol/economic/RuleAdministratorOnly.sol",
     "src/protocol/economic/AppAdministratorOnlyU.sol",
-    "src/protocol/economic/ruleProcessor/RuleCodeData.sol",
-    "script/versioning/to_relative.sh"
+    "src/protocol/economic/ruleProcessor/RuleCodeData.sol"
   ],
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
