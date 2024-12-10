@@ -1,5 +1,5 @@
 # ApplicationERC20
-[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/7ed34a62033174e2129a3d6ffafc4f97afb624f7/src/example/ERC20/ApplicationERC20.sol)
+[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/90e2ae1d7df03e5dac710c7ae0a8dd87e3b8b119/src/example/ERC20/ApplicationERC20.sol)
 
 **Inherits:**
 ERC20, ERC20Burnable, AccessControl, [IProtocolToken](/src/client/token/IProtocolToken.sol/interface.IProtocolToken.md), [IZeroAddressError](/src/common/IErrors.sol/interface.IZeroAddressError.md), ReentrancyGuard, [ITokenEvents](/src/common/IEvents.sol/interface.ITokenEvents.md), [IApplicationEvents](/src/common/IEvents.sol/interface.IApplicationEvents.md)

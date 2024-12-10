@@ -1,5 +1,5 @@
 # ERC721TaggedRuleProcessorFacet
-[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/7ed34a62033174e2129a3d6ffafc4f97afb624f7/src/protocol/economic/ruleProcessor/ERC721TaggedRuleProcessorFacet.sol)
+[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/90e2ae1d7df03e5dac710c7ae0a8dd87e3b8b119/src/protocol/economic/ruleProcessor/ERC721TaggedRuleProcessorFacet.sol)
 
 **Inherits:**
 [IInputErrors](/src/common/IErrors.sol/interface.IInputErrors.md), [IERC721Errors](/src/common/IErrors.sol/interface.IERC721Errors.md), [IRuleProcessorErrors](/src/common/IErrors.sol/interface.IRuleProcessorErrors.md), [ITagRuleErrors](/src/common/IErrors.sol/interface.ITagRuleErrors.md), [IMaxTagLimitError](/src/common/IErrors.sol/interface.IMaxTagLimitError.md)

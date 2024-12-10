@@ -1,5 +1,5 @@
 # ProtocolApplicationHandler
-[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/7ed34a62033174e2129a3d6ffafc4f97afb624f7/src/client/application/ProtocolApplicationHandler.sol)
+[Git Source](https://github.com/thrackle-io/forte-rules-engine/blob/90e2ae1d7df03e5dac710c7ae0a8dd87e3b8b119/src/client/application/ProtocolApplicationHandler.sol)
 
 **Inherits:**
 [ActionTypesArray](/src/client/common/ActionTypesArray.sol/contract.ActionTypesArray.md), Ownable, [RuleAdministratorOnly](/src/protocol/economic/RuleAdministratorOnly.sol/contract.RuleAdministratorOnly.md), [IApplicationHandlerEvents](/src/common/IEvents.sol/interface.IApplicationHandlerEvents.md), [ICommonApplicationHandlerEvents](/src/common/IEvents.sol/interface.ICommonApplicationHandlerEvents.md), [IInputErrors](/src/common/IErrors.sol/interface.IInputErrors.md), [IZeroAddressError](/src/common/IErrors.sol/interface.IZeroAddressError.md), [IAppHandlerErrors](/src/common/IErrors.sol/interface.IAppHandlerErrors.md), [ProtocolApplicationHandlerCommon](/src/client/application/ProtocolApplicationHandlerCommon.sol/abstract.ProtocolApplicationHandlerCommon.md)
