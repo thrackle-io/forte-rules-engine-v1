@@ -9,7 +9,7 @@ from datetime import datetime
 _dir  = dotenv_values(".env")
 dir = Path(_dir["DEPLOYMENT_OUT_DIR"])
 file = Path(_dir["DEPLOYMENT_OUT_DIR"] + _dir["DIAMOND_DEPLOYMENT_OUT_FILE"])
-version = "2.2.1"
+version = "2.2.2"
 
 def set_latest_deployed_facet(args):
     record = {}

@@ -19,5 +19,5 @@
 | v1.2.1 | Polygon Amoy    | RuleProcessorDiamond | 0x8D0CcE081d8cb97C68061077883897C4797467E8
 <!-- These are the header links -->
 
-[version-image]: https://img.shields.io/badge/Version-2.2.1-brightgreen?style=for-the-badge&logo=appveyor
+[version-image]: https://img.shields.io/badge/Version-2.2.2-brightgreen?style=for-the-badge&logo=appveyor
 [version-url]: https://github.com/thrackle-io/forte-rules-engine
