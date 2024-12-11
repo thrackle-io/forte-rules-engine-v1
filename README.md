@@ -7,9 +7,6 @@ This repository contains an EVM-based protocol designed to meet the unique needs
 [version-image]: https://img.shields.io/badge/Version-2.2.1-brightgreen?style=for-the-badge&logo=appveyor
 [version-url]: https://github.com/thrackle-io/forte-rules-engine
 
-There are two ways most projects may utilize the protocol. 
-1. 
-
 ## Installation
 
 To install the package, run the following command in the root of your project:
