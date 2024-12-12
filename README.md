@@ -2,6 +2,8 @@
 
 [![Project Version][version-image]][version-url]
 
+Check out [our docs](https://docs.forterulesengine.io) for in-depth guides and reference information: https://docs.forterulesengine.io
+
 This repository contains an EVM-based protocol designed to meet the unique needs of tokenized assets and on-chain economies. The protocol enables the creation and management of economic and compliance controls for your on-chain economy at the token level, allowing for maximum flexibility while maintaining the transparency and trustlessness of Web3.
 
 [version-image]: https://img.shields.io/badge/Version-2.2.1-brightgreen?style=for-the-badge&logo=appveyor
@@ -55,16 +57,6 @@ forge install OpenZeppelin/openzeppelin-contracts
 ```bash
 forge install OpenZeppelin/openzeppelin-contracts-upgradeable
 ```
-
-## Usage
-
-### User Guides
-
-For complete usage information and documentation, please visit the docs at https://docs.forterulesengine.io.
-
-### Example Application
-
-To deploy the Forte Rules Engine and an example application, follow the [deployment guides](https://docs.forterulesengine.io/deployment/overview). 
 
 ## Contributing
 
