@@ -1,0 +1,20 @@
+# Triggers ABI NPM Package Update on Releases
+name: Aggregate ABIs
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+jobs:
+  trigger-abis-package-workflow:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger ABI Aggregation Workflow
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: "${{ secrets.WORKFLOW_DISPATCH_TOKEN }}"
+          repository: thrackle-io/aquifi-abis
+          event-type: package-abis
+          client-payload: |
+            {"repo": "forte-rules-engine", "tag": "${{ github.event.release.tag_name || github.ref }}"}
