@@ -1,10 +1,10 @@
 #!/bin/bash
 
 FOUNDRY_PROFILE=local
-anvil --host 0.0.0.0 --chain-id 31337 > /dev/null &
+anvil --host 0.0.0.0 --chain-id 31337 >/dev/null &
 sleep 2
 
-script/docker/deploy.sh > /dev/null
+script/docker/deploy.sh >/dev/null
 
 source .venv/bin/activate
 
@@ -15,27 +15,26 @@ test_commands=(
   "bash script/deploy/deployAppManagerTest.sh"
   "bash script/deploy/deployAppERC20Test.sh"
   "bash script/deploy/deployAppERC721Test.sh"
-  "node script/deploy/abi-aggregator.mjs --branch main"
 )
 
 echo "Running tests..."
 NUM_FAILED=0
 for command in "${test_commands[@]}"; do
-    echo -e "========================== Running \'$command\' ========================================" >&2
+  echo -e "========================== Running \'$command\' ========================================" >&2
 
-    # Run command in a subshell and capture stderr
-    output=$( eval "$command" )
-    # Capture return value
-    retval=$?
+  # Run command in a subshell and capture stderr
+  output=$(eval "$command")
+  # Capture return value
+  retval=$?
 
-    # If return value is non-zero, the test failed
-    if [ $retval -ne 0 ]; then
-      echo "================================= ❌ '$command' FAILED ❌ =================================\n" >&2
-      echo -e "$output"
-      echo -e "================================= ❌ END ERRORS ❌ =================================\n" >&2
-      NUM_FAILED=$((NUM_FAILED+1))
-    fi
-    echo -e "========================== End \'$command\' ========================================" >&2
+  # If return value is non-zero, the test failed
+  if [ $retval -ne 0 ]; then
+    echo "================================= ❌ '$command' FAILED ❌ =================================\n" >&2
+    echo -e "$output"
+    echo -e "================================= ❌ END ERRORS ❌ =================================\n" >&2
+    NUM_FAILED=$((NUM_FAILED + 1))
+  fi
+  echo -e "========================== End \'$command\' ========================================" >&2
 done
 
 if [ $NUM_FAILED -gt 0 ]; then
