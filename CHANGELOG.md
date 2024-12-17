@@ -42,4 +42,13 @@
 ### Changed 
 - Asset Handler Diamonds now use the DiamondCutFacetAppAdmin library with AppAdminOrOnlyOwner modifier to allow application admins to upgrade facets in the handler diamond 
 
+## 2.2.2 - 2024-12-17
 
+### Removed 
+- Removed internal documentation 
+
+### Added 
+- Documentation pointers to https://docs.forterulesengine.io
+
+### Changed 
+- Updated NPM package contents
