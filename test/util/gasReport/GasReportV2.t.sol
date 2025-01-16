@@ -5,6 +5,11 @@ import "test/util/gasReport/GasHelpers.sol";
 import "test/client/token/ERC721/util/ERC721Util.sol";
 import "test/util/RuleCreation.sol";
 
+/**
+ * @dev Please note that these gas tests are structured to simulate through a local test, an on chain environment of an ERC20 token transfer with the Forte Rules Engine connected. 
+ */
+
+
 contract GasReportsV2 is RuleCreation, GasHelpers, ERC721Util {
 
     uint256 gasUsed;
