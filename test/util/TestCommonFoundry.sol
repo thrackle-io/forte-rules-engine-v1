@@ -295,6 +295,9 @@ abstract contract TestCommonFoundry is TestCommon, EndWithStopPrank, EnabledActi
         oracleDenied = _createOracleDenied();
     }
 
+
+    
+
     /**
      * @dev Deploy and set up the protocol with app manager and 2 supported ERC721 tokens with pricing contract
      * ERC721 tokens and Pricing contract are named for Pricing.t.sol
