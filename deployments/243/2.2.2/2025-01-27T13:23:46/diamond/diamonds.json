@@ -1,0 +1,23 @@
+{
+    "243": {
+        "ProtocolProcessorDiamond": {
+            "2025-01-27": {
+                "VersionFacet": "0xC480bde22B54CBc5890c7a4b18C9FdfAD9B9Bc1e",
+                "ProtocolNativeFacet": "0x9c68Fe498eE752d2f8C00157A957d1Da9b052C82",
+                "ProtocolRawFacet": "0xD331f954504e31D19d81969fCd4458f71406E45C",
+                "ERC20RuleProcessorFacet": "0xF8963C65Ce8C810caDA86D0ddA754B2fe44Be9B5",
+                "ERC721RuleProcessorFacet": "0x84d72F39853c1B9F94AD61763a5C22e08AeEDA6B",
+                "RuleProcessorDiamond": "0xa5322b460598d7DaF980Cf0fCc4Daf3d783E0f16",
+                "ApplicationRiskProcessorFacet": "0xb8747c75d7199F96a70d6706B848655F3e635012",
+                "ApplicationAccessLevelProcessorFacet": "0xb5f751bDC19b5e3B8a4bBEd10B029448FE4de4e7",
+                "ApplicationPauseProcessorFacet": "0x3F423F88474459B4de4b2420520E4fA151d83F9f",
+                "ERC20TaggedRuleProcessorFacet": "0x60b2d484C4494A1C6281C78592Ac34a5B04c5326",
+                "ERC721TaggedRuleProcessorFacet": "0xD0c8E2d542CAb18CA38f1D1797e6e4acB7dcd4a2",
+                "RuleApplicationValidationFacet": "0x817bcede803ff9586400D659916c9f3b650B7C88",
+                "RuleDataFacet": "0x2a492acAa9C91b7F87aFAbbC2Ca8994265565323",
+                "TaggedRuleDataFacet": "0x7042d739Cd12340F54F8B0597E3A2157C9270480",
+                "AppRuleDataFacet": "0x976015b056446F7Fd2824d9C038d066d1466D197"
+            }
+        }
+    }
+}
