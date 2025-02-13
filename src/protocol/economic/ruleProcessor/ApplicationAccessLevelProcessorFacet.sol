@@ -77,10 +77,10 @@ contract ApplicationAccessLevelProcessorFacet is IInputErrors, IRuleProcessorErr
     function checkAccountMaxReceivedByAccessLevel(uint32 _ruleId, uint8 _accessLevel, uint128 _usdTotalReceived, address _from, uint128 _usdAmountTransferring) external view returns (uint128) {
         (uint48 max, bool applicable) = getAccountMaxReceivedByAccessLevel(_ruleId, _accessLevel, _from);
         /// max has to be multiplied by 10 ** 18 to take decimals in token pricing into account
-        if (applicable){ 
+        if (applicable){
             if ((_usdAmountTransferring + _usdTotalReceived) > (uint256(max) * (10 ** 18))) revert OverMaxReceivedByAccessLevel();
             else _usdTotalReceived += _usdAmountTransferring;
-        }        
+        } 
         return _usdTotalReceived;
     }
 
@@ -123,7 +123,7 @@ contract ApplicationAccessLevelProcessorFacet is IInputErrors, IRuleProcessorErr
      * @param _sender sender of the token
      * @return balanceAmount balance allowed for access level
      */
-    function getAccountMaxReceivedByAccessLevel(uint32 _index, uint8 _accessLevel, address _sender) public view returns (uint48, bool applicable) {
+    function getAccountMaxReceivedByAccessLevel(uint32 _index, uint8 _accessLevel, address _sender) internal view returns (uint48, bool applicable) {
         RuleS.AccountMaxReceivedByAccessLevelS storage data = Storage.accountMaxReceivedByAccessLevelStorage();
         if (data.accountMaxReceivedByAccessLevelRules[_index].sender == _sender){
             applicable = true;
@@ -142,5 +142,14 @@ contract ApplicationAccessLevelProcessorFacet is IInputErrors, IRuleProcessorErr
         RuleS.AccountMaxReceivedByAccessLevelS storage data = Storage.accountMaxReceivedByAccessLevelStorage();
         if (_index >= data.accountMaxReceivedByAccessLevelIndex) revert IndexOutOfRange();
         return data.accountMaxReceivedByAccessLevelRules[_index].accountMaxReceivedLimits[_accessLevel];
+    }
+
+    /**
+     * @dev Function to get total Account Max Received By Access Level rules
+     * @return Total number of access level withdrawal rules
+     */
+    function getTotalAccountMaxReceivedByAccessLevel() external view returns (uint32) {
+        RuleS.AccountMaxReceivedByAccessLevelS storage data = Storage.accountMaxReceivedByAccessLevelStorage();
+        return data.accountMaxReceivedByAccessLevelIndex;
     }
 }

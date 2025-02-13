@@ -225,7 +225,7 @@ contract ProtocolApplicationHandler is
                 );
             }
             if (accountMaxReceivedByAccessLevel[_action].active) {
-                usdValueAccountMaxReceived[_from] = ruleProcessor.checkAccountMaxReceivedByAccessLevel(
+                usdValueAccountMaxReceived[_to] = ruleProcessor.checkAccountMaxReceivedByAccessLevel(
                     accountMaxReceivedByAccessLevel[_action].ruleId,
                     fromScore,
                     usdValueAccountMaxReceived[_to],
@@ -247,7 +247,7 @@ contract ProtocolApplicationHandler is
                     );
                 }
                 if (accountMaxReceivedByAccessLevel[ActionTypes.SELL].active) {
-                    usdValueAccountMaxReceived[_from] = ruleProcessor.checkAccountMaxReceivedByAccessLevel(
+                    usdValueAccountMaxReceived[_to] = ruleProcessor.checkAccountMaxReceivedByAccessLevel(
                     accountMaxReceivedByAccessLevel[ActionTypes.SELL].ruleId,
                     fromScore,
                     usdValueAccountMaxReceived[_to],
@@ -268,9 +268,9 @@ contract ProtocolApplicationHandler is
                 );
             }
             if (accountMaxReceivedByAccessLevel[_action].active) {
-                usdValueAccountMaxReceived[_from] = ruleProcessor.checkAccountMaxReceivedByAccessLevel(
+                usdValueAccountMaxReceived[_to] = ruleProcessor.checkAccountMaxReceivedByAccessLevel(
                     accountMaxReceivedByAccessLevel[_action].ruleId,
-                    fromScore,
+                    score,
                     usdValueAccountMaxReceived[_to],
                     _from,
                     _transferValuation
@@ -286,6 +286,15 @@ contract ProtocolApplicationHandler is
                         accountMaxValueOutByAccessLevel[_action].ruleId,
                         fromScore,
                         usdValueTotalWithrawals[_from],
+                        _transferValuation
+                    );
+                }
+                if (accountMaxReceivedByAccessLevel[ActionTypes.BUY].active) {
+                        usdValueAccountMaxReceived[_to] = ruleProcessor.checkAccountMaxReceivedByAccessLevel(
+                        accountMaxReceivedByAccessLevel[ActionTypes.BUY].ruleId,
+                        fromScore,
+                        usdValueAccountMaxReceived[_to],
+                        _from,
                         _transferValuation
                     );
                 }
@@ -310,6 +319,15 @@ contract ProtocolApplicationHandler is
                     accountMaxValueOutByAccessLevel[_action].ruleId,
                     fromScore,
                     usdValueTotalWithrawals[_from],
+                    _transferValuation
+                );
+            }
+            if (accountMaxReceivedByAccessLevel[_action].active) {
+                usdValueAccountMaxReceived[_to] = ruleProcessor.checkAccountMaxReceivedByAccessLevel(
+                    accountMaxReceivedByAccessLevel[_action].ruleId,
+                    fromScore,
+                    usdValueAccountMaxReceived[_to],
+                    _from,
                     _transferValuation
                 );
             }

@@ -1407,7 +1407,7 @@ abstract contract ERC20CommonTests is TestCommonFoundry, DummyAMM, ERC20Util {
 
     /// Account Max Received by Access Level
     function testERC20_ERC20CommonTests_MaxReceivedByAccessLevel_Transfer_Positive() public endWithStopPrank ifDeploymentTestsEnabled {
-        _accountMaxReceivedByAccessLevelSetup(ActionTypes.P2P_TRANSFER, user1);
+        _accountMaxReceivedByAccessLevelSetup(ActionTypes.P2P_TRANSFER, user1, false);
         vm.startPrank(user1, user1);
         testCaseToken.transfer(user3, 50 * ATTO);
         testCaseToken.transfer(user4, 50 * ATTO);
@@ -1419,16 +1419,32 @@ abstract contract ERC20CommonTests is TestCommonFoundry, DummyAMM, ERC20Util {
 
     function testERC20_ERC20CommonTests_MaxReceivedByAccessLevel_Transfer_Negative() public endWithStopPrank ifDeploymentTestsEnabled {
         /// test transfers fail over rule value
-        _accountMaxReceivedByAccessLevelSetup(ActionTypes.P2P_TRANSFER, user1);
+        _accountMaxReceivedByAccessLevelSetup(ActionTypes.P2P_TRANSFER, user1, false);
         vm.startPrank(user1, user1);
 
         vm.expectRevert(abi.encodeWithSignature("OverMaxReceivedByAccessLevel()"));
         testCaseToken.transfer(user3, 101 * ATTO);
     }
 
+    function testERC20_ERC20CommonTests_MaxReceivedByAccessLevel_Mint_Positive() public endWithStopPrank ifDeploymentTestsEnabled {
+        _accountMaxReceivedByAccessLevelSetup(ActionTypes.MINT, address(0), false);
+        vm.startPrank(user4, user4);
+        UtilApplicationERC20(address(testCaseToken)).mint(user4, 1);
+        assertEq(testCaseToken.balanceOf(user4), 1);
+    }
+
+    function testERC20_ERC20CommonTests_MaxReceivedByAccessLevel_Mint_Negative() public endWithStopPrank ifDeploymentTestsEnabled {
+        _accountMaxReceivedByAccessLevelSetup(ActionTypes.MINT, address(0), false);
+        vm.startPrank(user4, user4);
+        UtilApplicationERC20(address(testCaseToken)).mint(user4, 10 * ATTO);
+        /// this one is over the limit and should fail
+        vm.expectRevert(abi.encodeWithSignature("OverMaxReceivedByAccessLevel()"));
+        UtilApplicationERC20(address(testCaseToken)).mint(user4, 1 * ATTO);
+    }
+
     function testERC20_ERC20CommonTests_MaxReceivedByAccessLevel_Buy_Positive() public endWithStopPrank ifDeploymentTestsEnabled {
         // sending address(0) signals the setup to use the AMM address as the source
-        DummyAMM amm = _accountMaxReceivedByAccessLevelSetup(ActionTypes.BUY, address(0));
+        DummyAMM amm = _accountMaxReceivedByAccessLevelSetup(ActionTypes.BUY, address(0), true);
         vm.startPrank(rich_user, rich_user);
         /// make sure that transfer under the threshold works
         testCaseToken.approve(address(amm), 10000 * ATTO);
@@ -1438,8 +1454,8 @@ abstract contract ERC20CommonTests is TestCommonFoundry, DummyAMM, ERC20Util {
     }
 
     function testERC20_ERC20CommonTests_MaxReceivedByAccessLevel_Buy_Negative() public endWithStopPrank ifDeploymentTestsEnabled {
-        // sending address(0) signals the setup to use the AMM address as the source
-        DummyAMM amm = _accountMaxReceivedByAccessLevelSetup(ActionTypes.BUY, address(0));
+        // sending useAMMasSource signals the setup to use the AMM address as the source
+        DummyAMM amm = _accountMaxReceivedByAccessLevelSetup(ActionTypes.BUY, address(0), true);
         vm.startPrank(rich_user, rich_user);
         /// make sure that transfer under the threshold works
         testCaseToken.approve(address(amm), 10000 * ATTO);
@@ -3071,7 +3087,7 @@ abstract contract ERC20CommonTests is TestCommonFoundry, DummyAMM, ERC20Util {
         return amm;
     }
 
-    function _accountMaxReceivedByAccessLevelSetup(ActionTypes action, address sender) private endWithStopPrank returns (DummyAMM) {
+    function _accountMaxReceivedByAccessLevelSetup(ActionTypes action, address sender, bool useAMMasSource) private endWithStopPrank returns (DummyAMM) {
         switchToAppAdministrator();
         testCaseToken.transfer(rich_user, 10000 * ATTO);
         /// load non admin user with application coin
@@ -3105,8 +3121,8 @@ abstract contract ERC20CommonTests is TestCommonFoundry, DummyAMM, ERC20Util {
         /// create and activate rule
         switchToRuleAdmin();
         uint32[] memory ruleIds = new uint32[](1);
-        /// if address = 0, use the AMM address
-        if(sender == address(0)) sender = address(amm);
+        /// if useAMMasSource, use the AMM address
+        if(useAMMasSource) sender = address(amm);
         ruleIds[0] = createAccountMaxReceivedByAccessLevelRule(10, 100, 1000, 10000, 100000, sender);
         setAccountMaxReceivedByAccessLevelIdFull(createActionTypeArray(action), ruleIds);
         //User 1 currently has 950 tokens valued at $950
