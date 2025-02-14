@@ -1408,22 +1408,98 @@ abstract contract ERC20CommonTests is TestCommonFoundry, DummyAMM, ERC20Util {
     /// Account Max Received by Access Level
     function testERC20_ERC20CommonTests_MaxReceivedByAccessLevel_Transfer_Positive() public endWithStopPrank ifDeploymentTestsEnabled {
         _accountMaxReceivedByAccessLevelSetup(ActionTypes.P2P_TRANSFER, user1, false);
+        // Perform transfers at access level = 0
         vm.startPrank(user1, user1);
-        testCaseToken.transfer(user3, 50 * ATTO);
-        testCaseToken.transfer(user4, 50 * ATTO);
-        /// User 1 now at "received" limit for access level
-        vm.startPrank(user3, user3);
-        testCaseToken.transfer(user4, 10 * ATTO);
-        assertEq(testCaseToken.balanceOf(user4), 60 * ATTO);
+        testCaseToken.transfer(user4, 5 * ATTO);
+        testCaseToken.transfer(user4, 4 * ATTO);
+        /// User 4(access level =0) now at "received" limit for access level
+        testCaseToken.transfer(user4, 1 * ATTO);
+        assertEq(testCaseToken.balanceOf(user4), 10 * ATTO);
+
+        switchToAccessLevelAdmin();
+        applicationAppManager.addAccessLevel(user2, 1);
+        applicationAppManager.addAccessLevel(user3, 2);
+        applicationAppManager.addAccessLevel(user6, 3);
+        applicationAppManager.addAccessLevel(user5, 4);
+
+        // Perform transfers at access level = 1
+        vm.startPrank(user1, user1);
+        uint256 beginningBalance = testCaseToken.balanceOf(user2);
+        testCaseToken.transfer(user2, 50 * ATTO);
+        testCaseToken.transfer(user2, 40 * ATTO);
+        /// User 2(access level =1) now at "received" limit for access level
+        testCaseToken.transfer(user2, 10 * ATTO);
+        assertEq(testCaseToken.balanceOf(user2), (100 * ATTO)+beginningBalance);
+
+        // Perform transfers at access level = 2
+        beginningBalance = testCaseToken.balanceOf(user3);
+        testCaseToken.transfer(user3, 500 * ATTO);
+        testCaseToken.transfer(user3, 400 * ATTO);
+        /// User 3(access level =2) now at "received" limit for access level
+        testCaseToken.transfer(user3, 100 * ATTO);
+        assertEq(testCaseToken.balanceOf(user3), (1000 * ATTO)+beginningBalance);
+
+        // Perform transfers at access level = 3
+        beginningBalance = testCaseToken.balanceOf(user6);
+        testCaseToken.transfer(user6, 5000 * ATTO);
+        testCaseToken.transfer(user6, 4000 * ATTO);
+        /// User 6(access level =3) now at "received" limit for access level
+        testCaseToken.transfer(user6, 1000 * ATTO);
+        assertEq(testCaseToken.balanceOf(user6), 10000 * ATTO+beginningBalance);
+
+        // Perform transfers at access level = 4
+        beginningBalance = testCaseToken.balanceOf(user5);
+        testCaseToken.transfer(user5, 50000 * ATTO);
+        testCaseToken.transfer(user5, 40000 * ATTO);
+        /// User 5(access level =4) now at "received" limit for access level
+        testCaseToken.transfer(user5, 10000 * ATTO);
+        assertEq(testCaseToken.balanceOf(user5), 100000 * ATTO+beginningBalance);
     }
 
     function testERC20_ERC20CommonTests_MaxReceivedByAccessLevel_Transfer_Negative() public endWithStopPrank ifDeploymentTestsEnabled {
-        /// test transfers fail over rule value
         _accountMaxReceivedByAccessLevelSetup(ActionTypes.P2P_TRANSFER, user1, false);
+        // Perform transfers at access level = 0
         vm.startPrank(user1, user1);
-
+        testCaseToken.transfer(user4, 5 * ATTO);
+        testCaseToken.transfer(user4, 4 * ATTO);
+        /// User 4(access level =0) attempt to go over limit for access level
         vm.expectRevert(abi.encodeWithSignature("OverMaxReceivedByAccessLevel()"));
-        testCaseToken.transfer(user3, 101 * ATTO);
+        testCaseToken.transfer(user4, 2 * ATTO);
+
+        switchToAccessLevelAdmin();
+        applicationAppManager.addAccessLevel(user2, 1);
+        applicationAppManager.addAccessLevel(user3, 2);
+        applicationAppManager.addAccessLevel(user6, 3);
+        applicationAppManager.addAccessLevel(user5, 4);
+
+        // Perform transfers at access level = 1
+        vm.startPrank(user1, user1);
+        testCaseToken.transfer(user2, 50 * ATTO);
+        testCaseToken.transfer(user2, 40 * ATTO);
+        /// User 2(access level =1) attempt to go over limit for access level
+        vm.expectRevert(abi.encodeWithSignature("OverMaxReceivedByAccessLevel()"));
+        testCaseToken.transfer(user2, 20 * ATTO);
+
+        // Perform transfers at access level = 2
+        testCaseToken.transfer(user3, 500 * ATTO);
+        testCaseToken.transfer(user3, 400 * ATTO);
+        /// User 3(access level =2) attempt to go over limit for access level
+        vm.expectRevert(abi.encodeWithSignature("OverMaxReceivedByAccessLevel()"));
+        testCaseToken.transfer(user3, 200 * ATTO);
+
+        // Perform transfers at access level = 3
+        testCaseToken.transfer(user6, 5000 * ATTO);
+        testCaseToken.transfer(user6, 4000 * ATTO);
+        /// User 6(access level =3) attempt to go over limit for access level
+        vm.expectRevert(abi.encodeWithSignature("OverMaxReceivedByAccessLevel()"));
+        testCaseToken.transfer(user6, 2000 * ATTO);
+
+        // Perform transfers at access level = 4
+        testCaseToken.transfer(user5, 50000 * ATTO);
+        testCaseToken.transfer(user5, 40000 * ATTO);
+        /// User 5(access level =4) attempt to go over limit for access level
+        vm.expectRevert(abi.encodeWithSignature("OverMaxReceivedByAccessLevel()"));
+        testCaseToken.transfer(user5, 20000 * ATTO);
     }
 
     function testERC20_ERC20CommonTests_MaxReceivedByAccessLevel_Mint_Positive() public endWithStopPrank ifDeploymentTestsEnabled {
@@ -3091,8 +3167,7 @@ abstract contract ERC20CommonTests is TestCommonFoundry, DummyAMM, ERC20Util {
         switchToAppAdministrator();
         testCaseToken.transfer(rich_user, 10000 * ATTO);
         /// load non admin user with application coin
-        testCaseToken.transfer(user1, 1000 * ATTO);
-        assertEq(testCaseToken.balanceOf(user1), 1000 * ATTO);
+        testCaseToken.transfer(user1, 1000000 * ATTO);
         vm.startPrank(user1, user1);
         /// check transfer without access level with the rule turned off
         testCaseToken.transfer(user3, 50 * ATTO);

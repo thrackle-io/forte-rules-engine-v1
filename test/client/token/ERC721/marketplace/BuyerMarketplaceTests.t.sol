@@ -1589,12 +1589,13 @@ contract MarketplaceNonCustodialTestsErc20SellsNftBuys is TokenUtils, ERC721Util
 
     function test_accountMaxReceivedByAccessLevel_inOperatorMarketplace_ERC20Buy() public endWithStopPrank {
         switchToAccessLevelAdmin();
-        applicationAppManager.addAccessLevel(user1, 0);
-        applicationAppManager.addAccessLevel(user2, 4);
-
+        applicationAppManager.addAccessLevel(user1, 1);
+        applicationAppManager.addAccessLevel(user2, 0);
+        switchToAppAdministrator();
+        applicationCoin.mint(user2, buyPrice * (10 ** 26));
         switchToRuleAdmin();
         uint32[] memory ruleIds = new uint32[](2);
-        ruleIds[0] = createAccountMaxReceivedByAccessLevelRule(0, 1, 10, 50, 100_000_000_000_000, user1);
+        ruleIds[0] = createAccountMaxReceivedByAccessLevelRule(0, 1, 10, 50, 100_000_000_000_000, user2);
         ruleIds[1] = ruleIds[0];
         setAccountMaxReceivedByAccessLevelIdFull(createActionTypeArray(ActionTypes.BUY, ActionTypes.SELL), ruleIds);
         switchToAppAdministrator();
@@ -1605,7 +1606,7 @@ contract MarketplaceNonCustodialTestsErc20SellsNftBuys is TokenUtils, ERC721Util
         vm.expectRevert(
             abi.encodeWithSelector(
                 TransferFailed.selector, 
-                address(applicationCoin), 
+                address(applicationNFTv2), 
                 IAccessLevelErrors.OverMaxReceivedByAccessLevel.selector
             )
         );

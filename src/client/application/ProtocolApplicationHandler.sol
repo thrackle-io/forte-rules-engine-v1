@@ -227,7 +227,7 @@ contract ProtocolApplicationHandler is
             if (accountMaxReceivedByAccessLevel[_action].active) {
                 usdValueAccountMaxReceived[_to] = ruleProcessor.checkAccountMaxReceivedByAccessLevel(
                     accountMaxReceivedByAccessLevel[_action].ruleId,
-                    fromScore,
+                    score,
                     usdValueAccountMaxReceived[_to],
                     _from,
                     _transferValuation
@@ -249,7 +249,7 @@ contract ProtocolApplicationHandler is
                 if (accountMaxReceivedByAccessLevel[ActionTypes.SELL].active) {
                     usdValueAccountMaxReceived[_to] = ruleProcessor.checkAccountMaxReceivedByAccessLevel(
                     accountMaxReceivedByAccessLevel[ActionTypes.SELL].ruleId,
-                    fromScore,
+                    score,
                     usdValueAccountMaxReceived[_to],
                     _from,
                     _transferValuation
@@ -292,7 +292,7 @@ contract ProtocolApplicationHandler is
                 if (accountMaxReceivedByAccessLevel[ActionTypes.BUY].active) {
                         usdValueAccountMaxReceived[_to] = ruleProcessor.checkAccountMaxReceivedByAccessLevel(
                         accountMaxReceivedByAccessLevel[ActionTypes.BUY].ruleId,
-                        fromScore,
+                        score,
                         usdValueAccountMaxReceived[_to],
                         _from,
                         _transferValuation
@@ -325,7 +325,7 @@ contract ProtocolApplicationHandler is
             if (accountMaxReceivedByAccessLevel[_action].active) {
                 usdValueAccountMaxReceived[_to] = ruleProcessor.checkAccountMaxReceivedByAccessLevel(
                     accountMaxReceivedByAccessLevel[_action].ruleId,
-                    fromScore,
+                    score,
                     usdValueAccountMaxReceived[_to],
                     _from,
                     _transferValuation
