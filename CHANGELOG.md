@@ -52,3 +52,10 @@
 
 ### Changed 
 - Updated NPM package contents
+
+## 2.3.0 - 2025-02-18
+
+### Added 
+- Account Max Received By Access Level Rule was added 
+
+
