@@ -34,7 +34,7 @@ contract ProtocolApplicationHandler is
     IAppHandlerErrors,
     ProtocolApplicationHandlerCommon
 {
-    string private constant VERSION = "2.3.0";
+    string public constant VERSION = "2.3.0";
     IAppManager immutable appManager;
     address public immutable appManagerAddress;
     IRuleProcessor immutable ruleProcessor;
@@ -49,7 +49,7 @@ contract ProtocolApplicationHandler is
     mapping(ActionTypes => Rule) accountDenyForNoAccessLevel;
 
     /// Pause Rule on-off switch
-    bool private pauseRuleActive;
+    bool public pauseRuleActive;
 
     /// Pricing Module interfaces
     IProtocolERC20Pricing erc20Pricer;
@@ -105,9 +105,9 @@ contract ProtocolApplicationHandler is
      * @param _action the current action type
      * @return true if one or more rules are active
      */
-    function requireApplicationRulesChecked(ActionTypes _action, address _sender) public view returns (bool) {
+    function requireApplicationRulesChecked(ActionTypes _action, address _sender) external view returns (bool) {
         return _checkWhichApplicationRulesActive(_action) ? true 
-            : isContract(_sender) ? _checkNonCustodialRules(_action)
+            : (_sender.code.length > 0) ? _checkNonCustodialRules(_action)
             : false;
     }
 
@@ -394,7 +394,7 @@ contract ProtocolApplicationHandler is
      * @return totalValuation of the account in dollars
      */
     // slither-disable-next-line calls-loop
-    function getAccTotalValuation(address _account, uint256 _nftValuationLimit) public view returns (uint256 totalValuation) {
+    function getAccTotalValuation(address _account, uint256 _nftValuationLimit) internal view returns (uint256 totalValuation) {
         address[] memory tokenList = appManager.getTokenList();
         uint256 tokenAmount;
         /// check if _account is zero address. If zero address we return a valuation of zero to allow for burning tokens when rules that need valuations are active.
@@ -990,39 +990,4 @@ contract ProtocolApplicationHandler is
         }
     }
 
-    /**
-     * @dev Tells you if the pause rule check is active or not.
-     * @return boolean representing if the rule is active for specified token
-     */
-    function isPauseRuleActive() external view returns (bool) {
-        return pauseRuleActive;
-    }
-
-    /**
-     * @dev gets the version of the contract
-     * @return VERSION
-     */
-    function version() external pure returns (string memory) {
-        return VERSION;
-    }
-
-    /**
-     * @dev Check if the addresss is a contract
-     * @param account address to check
-     * @return bool
-     */
-    function isContract(address account) internal view returns (bool) {
-        // This method relies on extcodesize/address.code.length, which returns 0
-        // for contracts in construction, since the code is only stored at the end
-        // of the constructor execution.
-        return account.code.length > 0;
-    }
-
-     /**
-     * @dev Getter for rule processor address
-     * @return ruleProcessorAddress
-     */
-    function getRuleProcessAddress() external view returns(address){
-        return address(ruleProcessor);
-    }
 }
