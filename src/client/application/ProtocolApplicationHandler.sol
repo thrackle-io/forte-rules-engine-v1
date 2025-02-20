@@ -9,13 +9,12 @@ import "src/protocol/economic/ruleProcessor/RuleCodeData.sol";
 import "src/protocol/economic/IRuleProcessor.sol";
 import "src/protocol/economic/RuleAdministratorOnly.sol";
 import "src/client/application/IAppManager.sol";
-import "src/common/IProtocolERC721Pricing.sol";
-import "src/common/IProtocolERC20Pricing.sol";
 import "src/client/token/ITokenInterface.sol";
 import {IApplicationHandlerEvents, ICommonApplicationHandlerEvents} from "src/common/IEvents.sol";
 import {IZeroAddressError, IAppHandlerErrors} from "src/common/IErrors.sol";
 import "src/client/application/ProtocolApplicationHandlerCommon.sol";
 import "src/client/common/ActionTypesArray.sol";
+import "src/client/application/helper/ApplicationPricing.sol";
 
 /**
  * @title Protocol Application Handler Contract
@@ -35,10 +34,16 @@ contract ProtocolApplicationHandler is
     ProtocolApplicationHandlerCommon
 {
     string public constant VERSION = "2.3.0";
-    IAppManager immutable appManager;
-    address public immutable appManagerAddress;
-    IRuleProcessor immutable ruleProcessor;
-    address public immutable ruleProcessorAddress; 
+    ApplicationPricing appPricing;
+    IAppManager  appManager;
+    address public  appManagerAddress;
+    IRuleProcessor  ruleProcessor;
+    address public  ruleProcessorAddress; 
+
+    // IAppManager immutable appManager;
+    // address public immutable appManagerAddress;
+    // IRuleProcessor immutable ruleProcessor;
+    // address public immutable ruleProcessorAddress; 
 
     /// Rule mappings
     mapping(ActionTypes => Rule) accountMaxValueByAccessLevel;
@@ -50,12 +55,6 @@ contract ProtocolApplicationHandler is
 
     /// Pause Rule on-off switch
     bool public pauseRuleActive;
-
-    /// Pricing Module interfaces
-    IProtocolERC20Pricing erc20Pricer;
-    IProtocolERC721Pricing nftPricer;
-    address public erc20PricingAddress;
-    address public nftPricingAddress;
 
     /// MaxTxSizePerPeriodByRisk data
     mapping(address => uint128) usdValueTransactedInRiskPeriod;
@@ -71,11 +70,13 @@ contract ProtocolApplicationHandler is
      * @param _appManagerAddress address of the application AppManager.
      */
     constructor(address _ruleProcessorProxyAddress, address _appManagerAddress) {
+        revert("hey");
         if (_ruleProcessorProxyAddress == address(0) || _appManagerAddress == address(0)) revert ZeroAddress();
         appManagerAddress = _appManagerAddress;
         ruleProcessorAddress = _ruleProcessorProxyAddress;
         appManager = IAppManager(_appManagerAddress);
         ruleProcessor = IRuleProcessor(_ruleProcessorProxyAddress);
+        appPricing = new ApplicationPricing(_appManagerAddress);
         transferOwnership(_appManagerAddress);
         emit AD1467_ApplicationHandlerDeployed(_appManagerAddress, _ruleProcessorProxyAddress);
     }
@@ -147,7 +148,7 @@ contract ProtocolApplicationHandler is
             transferValuation = uint128((price * _amount) / (10 ** IToken(_tokenAddress).decimals()));
         } else {
             balanceValuation = uint128(getAccTotalValuation(_to, _nftValuationLimit));
-            transferValuation = uint128(nftPricer.getNFTPrice(_tokenAddress, _tokenId));
+            transferValuation = uint128(appPricing.getNFTPrice(_tokenAddress, _tokenId));
         }
         _checkAccessLevelRules(_from, _to, _sender, balanceValuation, transferValuation, _action);
         _checkRiskRules(_from, _to, _sender, balanceValuation, transferValuation, _action);
@@ -370,10 +371,7 @@ contract ProtocolApplicationHandler is
      * @param _address Nft Pricing Contract address.
      */
     function setNFTPricingAddress(address _address) external ruleAdministratorOnly(appManagerAddress) {
-        if (_address == address(0)) revert ZeroAddress();
-        nftPricingAddress = _address;
-        nftPricer = IProtocolERC721Pricing(_address);
-        emit AD1467_ERC721PricingAddressSet(_address);
+        appPricing.setNFTPricingAddress(_address);
     }
 
     /**
@@ -381,10 +379,7 @@ contract ProtocolApplicationHandler is
      * @param _address ERC20 Pricing Contract address.
      */
     function setERC20PricingAddress(address _address) external ruleAdministratorOnly(appManagerAddress) {
-        if (_address == address(0)) revert ZeroAddress();
-        erc20PricingAddress = _address;
-        erc20Pricer = IProtocolERC20Pricing(_address);
-        emit AD1467_ERC20PricingAddressSet(_address);
+        appPricing.setERC20PricingAddress(_address);
     }
 
     /**
@@ -395,31 +390,7 @@ contract ProtocolApplicationHandler is
      */
     // slither-disable-next-line calls-loop
     function getAccTotalValuation(address _account, uint256 _nftValuationLimit) internal view returns (uint256 totalValuation) {
-        address[] memory tokenList = appManager.getTokenList();
-        uint256 tokenAmount;
-        /// check if _account is zero address. If zero address we return a valuation of zero to allow for burning tokens when rules that need valuations are active.
-        if (_account == address(0)) {
-            return totalValuation;
-        } else {
-            /// Loop through all Nfts and ERC20s and add values to balance for account valuation
-            for (uint256 i; i < tokenList.length; ++i) {
-                /// Check to see if user owns the asset
-                tokenAmount = (IToken(tokenList[i]).balanceOf(_account));
-                if (tokenAmount > 0) {
-                    try IERC165(tokenList[i]).supportsInterface(0x80ac58cd) returns (bool isERC721) {
-                        if (isERC721 && tokenAmount >= _nftValuationLimit) totalValuation += _getNFTCollectionValue(tokenList[i], tokenAmount);
-                        else if (isERC721 && tokenAmount < _nftValuationLimit) totalValuation += _getNFTValuePerCollection(tokenList[i], _account, tokenAmount);
-                        else {
-                            uint8 decimals = ERC20(tokenList[i]).decimals();
-                            totalValuation += (_getERC20Price(tokenList[i]) * (tokenAmount)) / (10 ** decimals);
-                        }
-                    } catch {
-                        uint8 decimals = ERC20(tokenList[i]).decimals();
-                        totalValuation += (_getERC20Price(tokenList[i]) * (tokenAmount)) / (10 ** decimals);
-                    }
-                }
-            }
-        }
+        appPricing.getAccTotalValuation(_account, _nftValuationLimit);
     }
 
     /**
@@ -429,14 +400,15 @@ contract ProtocolApplicationHandler is
      * @return price the price of 1 in dollars
      */
     function _getERC20Price(address _tokenAddress) internal view returns (uint256) {
-        if (erc20PricingAddress != address(0)) {
-            // Disabling this finding, it is a false positive. The if statement for the zero address check
-            // is being treated as a loop.
-            // slither-disable-next-line calls-loop
-            return erc20Pricer.getTokenPrice(_tokenAddress);
-        } else {
-            revert PricingModuleNotConfigured(erc20PricingAddress, nftPricingAddress);
-        }
+        appPricing._getERC20Price(_tokenAddress);
+    }
+
+    function getERC20PricingAddress() external view returns(address){
+        return appPricing.erc20PricingAddress();
+    }
+
+    function getERC721PricingAddress() external view returns(address){
+        return appPricing.nftPricingAddress();
     }
 
     /**
@@ -449,13 +421,7 @@ contract ProtocolApplicationHandler is
      */
     // slither-disable-next-line calls-loop
     function _getNFTValuePerCollection(address _tokenAddress, address _account, uint256 _tokenAmount) internal view returns (uint256 totalValueInThisContract) {
-        if (nftPricingAddress != address(0)) {
-            for (uint i; i < _tokenAmount; ++i) {
-                totalValueInThisContract += nftPricer.getNFTPrice(_tokenAddress, IERC721Enumerable(_tokenAddress).tokenOfOwnerByIndex(_account, i));
-            }
-        } else {
-            revert PricingModuleNotConfigured(erc20PricingAddress, nftPricingAddress);
-        }
+        appPricing._getNFTValuePerCollection(_tokenAddress, _account, _tokenAmount);
     }
 
     /**
@@ -466,14 +432,7 @@ contract ProtocolApplicationHandler is
      * @return totalValueInThisContract total valuation of tokens by collection in whole USD
      */
     function _getNFTCollectionValue(address _tokenAddress, uint256 _tokenAmount) private view returns (uint256 totalValueInThisContract) {
-        if (nftPricingAddress != address(0)) {
-            // Disabling this finding, it is a false positive. The if statement for the zero address check
-            // is being treated as a loop.
-            // slither-disable-next-line calls-loop
-            totalValueInThisContract = _tokenAmount * uint256(nftPricer.getNFTCollectionPrice(_tokenAddress));
-        } else {
-            revert PricingModuleNotConfigured(erc20PricingAddress, nftPricingAddress);
-        }
+        appPricing._getNFTCollectionValue(_tokenAddress, _tokenAmount);
     }
 
     /**

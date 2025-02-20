@@ -712,8 +712,8 @@ abstract contract ApplicationCommonTests is Test, TestCommonFoundry, ERC721Util 
     }
 
     function testApplication_ApplicationCommonTests_VerifyPricingContractsConnectedToHandler() public view ifDeploymentTestsEnabled {
-        assertEq(applicationHandler.erc20PricingAddress(), address(erc20Pricer));
-        assertEq(applicationHandler.nftPricingAddress(), address(erc721Pricer));
+        assertEq(applicationHandler.getERC20PricingAddress(), address(erc20Pricer));
+        assertEq(applicationHandler.getERC721PricingAddress(), address(erc721Pricer));
     }
 
     function testApplication_ApplicationCommonTests_VerifyRuleAdmin() public view ifDeploymentTestsEnabled {
