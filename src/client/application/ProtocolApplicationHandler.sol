@@ -70,7 +70,6 @@ contract ProtocolApplicationHandler is
      * @param _appManagerAddress address of the application AppManager.
      */
     constructor(address _ruleProcessorProxyAddress, address _appManagerAddress) {
-        revert("hey");
         if (_ruleProcessorProxyAddress == address(0) || _appManagerAddress == address(0)) revert ZeroAddress();
         appManagerAddress = _appManagerAddress;
         ruleProcessorAddress = _ruleProcessorProxyAddress;
