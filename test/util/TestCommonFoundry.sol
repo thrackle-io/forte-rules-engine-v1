@@ -267,6 +267,7 @@ abstract contract TestCommonFoundry is TestCommon, EndWithStopPrank, EnabledActi
         switchToAppAdministrator(); // app admin should set up everything after creation of the appManager
         applicationAppManager.setNewApplicationHandlerAddress(address(_createAppHandler(ruleProcessor, applicationAppManager)));
         applicationHandler = ApplicationHandler(applicationAppManager.getHandlerAddress());
+        applicationPricing = ApplicationPricing(address(applicationHandler.appPricingAddress())); 
     }
 
     function setUpProtocolAndAppManagerAndTokensWithERC721HandlerDiamond() public endWithStopPrank {

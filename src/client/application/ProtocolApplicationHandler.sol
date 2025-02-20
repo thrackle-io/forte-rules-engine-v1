@@ -35,6 +35,7 @@ contract ProtocolApplicationHandler is
 {
     string public constant VERSION = "2.3.0";
     ApplicationPricing appPricing;
+    address public appPricingAddress; 
 
     IAppManager immutable appManager;
     address public immutable appManagerAddress;
@@ -72,6 +73,7 @@ contract ProtocolApplicationHandler is
         appManager = IAppManager(_appManagerAddress);
         ruleProcessor = IRuleProcessor(_ruleProcessorProxyAddress);
         appPricing = new ApplicationPricing(_appManagerAddress);
+        appPricingAddress = address(appPricing); 
         transferOwnership(_appManagerAddress);
         emit AD1467_ApplicationHandlerDeployed(_appManagerAddress, _ruleProcessorProxyAddress);
     }
@@ -416,7 +418,7 @@ contract ProtocolApplicationHandler is
      */
     // slither-disable-next-line calls-loop
     function _getNFTValuePerCollection(address _tokenAddress, address _account, uint256 _tokenAmount) internal view returns (uint256 totalValueInThisContract) {
-        appPricing._getNFTValuePerCollection(_tokenAddress, _account, _tokenAmount);
+        return appPricing._getNFTValuePerCollection(_tokenAddress, _account, _tokenAmount);
     }
 
     /**
@@ -427,7 +429,7 @@ contract ProtocolApplicationHandler is
      * @return totalValueInThisContract total valuation of tokens by collection in whole USD
      */
     function _getNFTCollectionValue(address _tokenAddress, uint256 _tokenAmount) private view returns (uint256 totalValueInThisContract) {
-        appPricing._getNFTCollectionValue(_tokenAddress, _tokenAmount);
+        return appPricing._getNFTCollectionValue(_tokenAddress, _tokenAmount);
     }
 
     /**

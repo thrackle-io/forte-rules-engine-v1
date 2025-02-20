@@ -64,6 +64,7 @@ import "src/client/application/data/Tags.sol";
 import "src/client/application/data/PauseRules.sol";
 import "src/client/application/data/AccessLevels.sol";
 import "src/client/application/data/RiskScores.sol";
+import "src/client/application/helper/ApplicationPricing.sol"; 
 
 import "src/client/token/handler/diamond/ERC20TaggedRuleFacet.sol";
 import "src/client/token/handler/diamond/ERC20NonTaggedRuleFacet.sol";
@@ -125,6 +126,8 @@ abstract contract TestCommon is
     ApplicationAppManager public applicationAppManager2;
     ApplicationHandler public applicationHandler2;
     // ApplicationAssetHandlerMod public newAssetHandler;
+
+    ApplicationPricing applicationPricing; 
 
     MinimalERC20 public minimalCoin;
     ApplicationERC20UMin public minimalUCoin;
