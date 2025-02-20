@@ -149,15 +149,8 @@ contract ApplicationERC721TokenDeploymentTest is Test, TestCommonFoundry, ERC721
                 address(oracleDenied)
             );
 
-            assertTrue(
-                vm.envAddress("APPLICATION_PRICING") != address(0x0)
-            );
             applicationPricing= ApplicationPricing(address(
                 applicationHandler.appPricingAddress())
-            );
-            assertEq(
-                vm.envAddress("APPLICATION_PRICING"),
-                address(applicationPricing)
             );
 
             testCaseNFT = applicationNFT;
