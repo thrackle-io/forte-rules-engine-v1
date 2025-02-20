@@ -35,15 +35,11 @@ contract ProtocolApplicationHandler is
 {
     string public constant VERSION = "2.3.0";
     ApplicationPricing appPricing;
-    IAppManager  appManager;
-    address public  appManagerAddress;
-    IRuleProcessor  ruleProcessor;
-    address public  ruleProcessorAddress; 
 
-    // IAppManager immutable appManager;
-    // address public immutable appManagerAddress;
-    // IRuleProcessor immutable ruleProcessor;
-    // address public immutable ruleProcessorAddress; 
+    IAppManager immutable appManager;
+    address public immutable appManagerAddress;
+    IRuleProcessor immutable ruleProcessor;
+    address public immutable ruleProcessorAddress; 
 
     /// Rule mappings
     mapping(ActionTypes => Rule) accountMaxValueByAccessLevel;
@@ -370,7 +366,7 @@ contract ProtocolApplicationHandler is
      * @param _address Nft Pricing Contract address.
      */
     function setNFTPricingAddress(address _address) external ruleAdministratorOnly(appManagerAddress) {
-        appPricing.setNFTPricingAddress(_address);
+        return appPricing.setNFTPricingAddress(_address);
     }
 
     /**
@@ -378,7 +374,7 @@ contract ProtocolApplicationHandler is
      * @param _address ERC20 Pricing Contract address.
      */
     function setERC20PricingAddress(address _address) external ruleAdministratorOnly(appManagerAddress) {
-        appPricing.setERC20PricingAddress(_address);
+        return appPricing.setERC20PricingAddress(_address);
     }
 
     /**
@@ -389,7 +385,7 @@ contract ProtocolApplicationHandler is
      */
     // slither-disable-next-line calls-loop
     function getAccTotalValuation(address _account, uint256 _nftValuationLimit) internal view returns (uint256 totalValuation) {
-        appPricing.getAccTotalValuation(_account, _nftValuationLimit);
+        return appPricing.getAccTotalValuation(_account, _nftValuationLimit);
     }
 
     /**
@@ -399,7 +395,7 @@ contract ProtocolApplicationHandler is
      * @return price the price of 1 in dollars
      */
     function _getERC20Price(address _tokenAddress) internal view returns (uint256) {
-        appPricing._getERC20Price(_tokenAddress);
+        return appPricing._getERC20Price(_tokenAddress);
     }
 
     function getERC20PricingAddress() external view returns(address){
