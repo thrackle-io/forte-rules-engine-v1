@@ -118,9 +118,6 @@ contract ApplicationERC721TokenDeploymentTest is Test, TestCommonFoundry, ERC721
             );
 
             // Verify the ERC721 Pricing Contract has been deployed
-            assertTrue(
-                vm.envAddress("ERC721_PRICING_CONTRACT") != address(0x0)
-            );
             erc721Pricer = ApplicationERC721Pricing(
                 vm.envAddress("ERC721_PRICING_CONTRACT")
             );
@@ -150,6 +147,17 @@ contract ApplicationERC721TokenDeploymentTest is Test, TestCommonFoundry, ERC721
             assertEq(
                 vm.envAddress("APPLICATION_ORACLE_DENIED_ADDRESS"),
                 address(oracleDenied)
+            );
+
+            assertTrue(
+                vm.envAddress("APPLICATION_PRICING") != address(0x0)
+            );
+            applicationPricing= ApplicationPricing(address(
+                applicationHandler.appPricingAddress())
+            );
+            assertEq(
+                vm.envAddress("APPLICATION_PRICING"),
+                address(applicationPricing)
             );
 
             testCaseNFT = applicationNFT;

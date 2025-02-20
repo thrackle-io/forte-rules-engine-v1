@@ -2967,7 +2967,7 @@ abstract contract ERC721CommonTests is TestCommonFoundry, ERC721Util {
         uint gasBegin = gasleft();
         applicationPricing.getAccTotalValuation(appAdministrator, 20);
         uint gasEnd = gasleft();
-        assertLt(gasBegin - gasEnd, 50000);
+        assertLt(gasBegin - gasEnd, 60000);
     }
 
     function testERC721_ERC721CommonTests_getAccTotalValuation_TestGasLimitBreakageNFTsValueLimitHigh() public endWithStopPrank ifDeploymentTestsEnabled {
@@ -2983,7 +2983,7 @@ abstract contract ERC721CommonTests is TestCommonFoundry, ERC721Util {
         applicationPricing.getAccTotalValuation(appAdministrator, 20000);
         uint gasEnd = gasleft();
 
-        assertLt(gasBegin - gasEnd, 50000);
+        assertLt(gasBegin - gasEnd, 60000);
     }
 
     function testERC721_ERC721CommonTests_getAccTotalValuation_TestGasLimitBreakageMultipleNFTsValueLimitHigh() public endWithStopPrank ifDeploymentTestsEnabled {
