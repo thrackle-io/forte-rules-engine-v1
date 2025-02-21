@@ -9,13 +9,12 @@ import "src/protocol/economic/ruleProcessor/RuleCodeData.sol";
 import "src/protocol/economic/IRuleProcessor.sol";
 import "src/protocol/economic/RuleAdministratorOnly.sol";
 import "src/client/application/IAppManager.sol";
-import "src/common/IProtocolERC721Pricing.sol";
-import "src/common/IProtocolERC20Pricing.sol";
 import "src/client/token/ITokenInterface.sol";
 import {IApplicationHandlerEvents, ICommonApplicationHandlerEvents} from "src/common/IEvents.sol";
 import {IZeroAddressError, IAppHandlerErrors} from "src/common/IErrors.sol";
 import "src/client/application/ProtocolApplicationHandlerCommon.sol";
 import "src/client/common/ActionTypesArray.sol";
+import "src/client/application/helper/ApplicationPricing.sol";
 
 /**
  * @title Protocol Application Handler Contract
@@ -34,7 +33,10 @@ contract ProtocolApplicationHandler is
     IAppHandlerErrors,
     ProtocolApplicationHandlerCommon
 {
-    string private constant VERSION = "2.2.2";
+    string public constant VERSION = "2.3.0";
+    ApplicationPricing appPricing;
+    address public appPricingAddress; 
+
     IAppManager immutable appManager;
     address public immutable appManagerAddress;
     IRuleProcessor immutable ruleProcessor;
@@ -42,24 +44,22 @@ contract ProtocolApplicationHandler is
 
     /// Rule mappings
     mapping(ActionTypes => Rule) accountMaxValueByAccessLevel;
+    mapping(ActionTypes => Rule) accountMaxReceivedByAccessLevel;
     mapping(ActionTypes => Rule) accountMaxValueByRiskScore;
     mapping(ActionTypes => Rule) accountMaxTxValueByRiskScore;
     mapping(ActionTypes => Rule) accountMaxValueOutByAccessLevel;
     mapping(ActionTypes => Rule) accountDenyForNoAccessLevel;
 
     /// Pause Rule on-off switch
-    bool private pauseRuleActive;
-
-    /// Pricing Module interfaces
-    IProtocolERC20Pricing erc20Pricer;
-    IProtocolERC721Pricing nftPricer;
-    address public erc20PricingAddress;
-    address public nftPricingAddress;
+    bool public pauseRuleActive;
 
     /// MaxTxSizePerPeriodByRisk data
     mapping(address => uint128) usdValueTransactedInRiskPeriod;
     mapping(address => uint64) lastTxDateRiskRule;
     mapping(address => uint128) usdValueTotalWithrawals;
+
+    /// Account Max Received by Access Level Accumulator
+    mapping(address => uint128) usdValueAccountMaxReceived;
 
     /**
      * @dev Initializes the contract setting the AppManager address as the one provided and setting the ruleProcessor for protocol access
@@ -72,6 +72,8 @@ contract ProtocolApplicationHandler is
         ruleProcessorAddress = _ruleProcessorProxyAddress;
         appManager = IAppManager(_appManagerAddress);
         ruleProcessor = IRuleProcessor(_ruleProcessorProxyAddress);
+        appPricing = new ApplicationPricing(_appManagerAddress);
+        appPricingAddress = address(appPricing); 
         transferOwnership(_appManagerAddress);
         emit AD1467_ApplicationHandlerDeployed(_appManagerAddress, _ruleProcessorProxyAddress);
     }
@@ -83,6 +85,7 @@ contract ProtocolApplicationHandler is
             accountMaxTxValueByRiskScore[_action].active ||
             accountMaxValueByAccessLevel[_action].active ||
             accountMaxValueOutByAccessLevel[_action].active ||
+            accountMaxReceivedByAccessLevel[_action].active ||
             accountDenyForNoAccessLevel[_action].active;
     }
 
@@ -100,9 +103,9 @@ contract ProtocolApplicationHandler is
      * @param _action the current action type
      * @return true if one or more rules are active
      */
-    function requireApplicationRulesChecked(ActionTypes _action, address _sender) public view returns (bool) {
+    function requireApplicationRulesChecked(ActionTypes _action, address _sender) external view returns (bool) {
         return _checkWhichApplicationRulesActive(_action) ? true 
-            : isContract(_sender) ? _checkNonCustodialRules(_action)
+            : (_sender.code.length > 0) ? _checkNonCustodialRules(_action)
             : false;
     }
 
@@ -142,7 +145,7 @@ contract ProtocolApplicationHandler is
             transferValuation = uint128((price * _amount) / (10 ** IToken(_tokenAddress).decimals()));
         } else {
             balanceValuation = uint128(getAccTotalValuation(_to, _nftValuationLimit));
-            transferValuation = uint128(nftPricer.getNFTPrice(_tokenAddress, _tokenId));
+            transferValuation = uint128(appPricing.getNFTPrice(_tokenAddress, _tokenId));
         }
         _checkAccessLevelRules(_from, _to, _sender, balanceValuation, transferValuation, _action);
         _checkRiskRules(_from, _to, _sender, balanceValuation, transferValuation, _action);
@@ -203,7 +206,7 @@ contract ProtocolApplicationHandler is
      */
     function _checkAccessLevelRules(address _from, address _to, address _sender, uint128 _balanceValuation, uint128 _transferValuation, ActionTypes _action) internal {
         uint8 score = appManager.getAccessLevel(_to);
-        uint8 fromScore = appManager.getAccessLevel(_from);
+        uint8 fromScore = appManager.getAccessLevel(_from);        
         if (_action == ActionTypes.P2P_TRANSFER) {
             if (accountDenyForNoAccessLevel[_action].active) {
                 ruleProcessor.checkAccountDenyForNoAccessLevel(fromScore);
@@ -216,6 +219,15 @@ contract ProtocolApplicationHandler is
                     accountMaxValueOutByAccessLevel[_action].ruleId,
                     fromScore,
                     usdValueTotalWithrawals[_from],
+                    _transferValuation
+                );
+            }
+            if (accountMaxReceivedByAccessLevel[_action].active) {
+                usdValueAccountMaxReceived[_to] = ruleProcessor.checkAccountMaxReceivedByAccessLevel(
+                    accountMaxReceivedByAccessLevel[_action].ruleId,
+                    score,
+                    usdValueAccountMaxReceived[_to],
+                    _from,
                     _transferValuation
                 );
             }
@@ -232,6 +244,15 @@ contract ProtocolApplicationHandler is
                         _transferValuation
                     );
                 }
+                if (accountMaxReceivedByAccessLevel[ActionTypes.SELL].active) {
+                    usdValueAccountMaxReceived[_to] = ruleProcessor.checkAccountMaxReceivedByAccessLevel(
+                    accountMaxReceivedByAccessLevel[ActionTypes.SELL].ruleId,
+                    score,
+                    usdValueAccountMaxReceived[_to],
+                    _from,
+                    _transferValuation
+                );
+            }
             }
             if (accountDenyForNoAccessLevel[_action].active) ruleProcessor.checkAccountDenyForNoAccessLevel(score);
             if (accountMaxValueByAccessLevel[_action].active && _to != address(0))
@@ -241,6 +262,15 @@ contract ProtocolApplicationHandler is
                     accountMaxValueOutByAccessLevel[_action].ruleId,
                     fromScore,
                     usdValueTotalWithrawals[_from],
+                    _transferValuation
+                );
+            }
+            if (accountMaxReceivedByAccessLevel[_action].active) {
+                usdValueAccountMaxReceived[_to] = ruleProcessor.checkAccountMaxReceivedByAccessLevel(
+                    accountMaxReceivedByAccessLevel[_action].ruleId,
+                    score,
+                    usdValueAccountMaxReceived[_to],
+                    _from,
                     _transferValuation
                 );
             }
@@ -254,6 +284,15 @@ contract ProtocolApplicationHandler is
                         accountMaxValueOutByAccessLevel[_action].ruleId,
                         fromScore,
                         usdValueTotalWithrawals[_from],
+                        _transferValuation
+                    );
+                }
+                if (accountMaxReceivedByAccessLevel[ActionTypes.BUY].active) {
+                        usdValueAccountMaxReceived[_to] = ruleProcessor.checkAccountMaxReceivedByAccessLevel(
+                        accountMaxReceivedByAccessLevel[ActionTypes.BUY].ruleId,
+                        score,
+                        usdValueAccountMaxReceived[_to],
+                        _from,
                         _transferValuation
                     );
                 }
@@ -278,6 +317,15 @@ contract ProtocolApplicationHandler is
                     accountMaxValueOutByAccessLevel[_action].ruleId,
                     fromScore,
                     usdValueTotalWithrawals[_from],
+                    _transferValuation
+                );
+            }
+            if (accountMaxReceivedByAccessLevel[_action].active) {
+                usdValueAccountMaxReceived[_to] = ruleProcessor.checkAccountMaxReceivedByAccessLevel(
+                    accountMaxReceivedByAccessLevel[_action].ruleId,
+                    score,
+                    usdValueAccountMaxReceived[_to],
+                    _from,
                     _transferValuation
                 );
             }
@@ -320,10 +368,7 @@ contract ProtocolApplicationHandler is
      * @param _address Nft Pricing Contract address.
      */
     function setNFTPricingAddress(address _address) external ruleAdministratorOnly(appManagerAddress) {
-        if (_address == address(0)) revert ZeroAddress();
-        nftPricingAddress = _address;
-        nftPricer = IProtocolERC721Pricing(_address);
-        emit AD1467_ERC721PricingAddressSet(_address);
+        return appPricing.setNFTPricingAddress(_address);
     }
 
     /**
@@ -331,10 +376,7 @@ contract ProtocolApplicationHandler is
      * @param _address ERC20 Pricing Contract address.
      */
     function setERC20PricingAddress(address _address) external ruleAdministratorOnly(appManagerAddress) {
-        if (_address == address(0)) revert ZeroAddress();
-        erc20PricingAddress = _address;
-        erc20Pricer = IProtocolERC20Pricing(_address);
-        emit AD1467_ERC20PricingAddressSet(_address);
+        return appPricing.setERC20PricingAddress(_address);
     }
 
     /**
@@ -344,32 +386,8 @@ contract ProtocolApplicationHandler is
      * @return totalValuation of the account in dollars
      */
     // slither-disable-next-line calls-loop
-    function getAccTotalValuation(address _account, uint256 _nftValuationLimit) public view returns (uint256 totalValuation) {
-        address[] memory tokenList = appManager.getTokenList();
-        uint256 tokenAmount;
-        /// check if _account is zero address. If zero address we return a valuation of zero to allow for burning tokens when rules that need valuations are active.
-        if (_account == address(0)) {
-            return totalValuation;
-        } else {
-            /// Loop through all Nfts and ERC20s and add values to balance for account valuation
-            for (uint256 i; i < tokenList.length; ++i) {
-                /// Check to see if user owns the asset
-                tokenAmount = (IToken(tokenList[i]).balanceOf(_account));
-                if (tokenAmount > 0) {
-                    try IERC165(tokenList[i]).supportsInterface(0x80ac58cd) returns (bool isERC721) {
-                        if (isERC721 && tokenAmount >= _nftValuationLimit) totalValuation += _getNFTCollectionValue(tokenList[i], tokenAmount);
-                        else if (isERC721 && tokenAmount < _nftValuationLimit) totalValuation += _getNFTValuePerCollection(tokenList[i], _account, tokenAmount);
-                        else {
-                            uint8 decimals = ERC20(tokenList[i]).decimals();
-                            totalValuation += (_getERC20Price(tokenList[i]) * (tokenAmount)) / (10 ** decimals);
-                        }
-                    } catch {
-                        uint8 decimals = ERC20(tokenList[i]).decimals();
-                        totalValuation += (_getERC20Price(tokenList[i]) * (tokenAmount)) / (10 ** decimals);
-                    }
-                }
-            }
-        }
+    function getAccTotalValuation(address _account, uint256 _nftValuationLimit) internal view returns (uint256 totalValuation) {
+        return appPricing.getAccTotalValuation(_account, _nftValuationLimit);
     }
 
     /**
@@ -379,14 +397,15 @@ contract ProtocolApplicationHandler is
      * @return price the price of 1 in dollars
      */
     function _getERC20Price(address _tokenAddress) internal view returns (uint256) {
-        if (erc20PricingAddress != address(0)) {
-            // Disabling this finding, it is a false positive. The if statement for the zero address check
-            // is being treated as a loop.
-            // slither-disable-next-line calls-loop
-            return erc20Pricer.getTokenPrice(_tokenAddress);
-        } else {
-            revert PricingModuleNotConfigured(erc20PricingAddress, nftPricingAddress);
-        }
+        return appPricing._getERC20Price(_tokenAddress);
+    }
+
+    function getERC20PricingAddress() external view returns(address){
+        return appPricing.erc20PricingAddress();
+    }
+
+    function getERC721PricingAddress() external view returns(address){
+        return appPricing.nftPricingAddress();
     }
 
     /**
@@ -399,13 +418,7 @@ contract ProtocolApplicationHandler is
      */
     // slither-disable-next-line calls-loop
     function _getNFTValuePerCollection(address _tokenAddress, address _account, uint256 _tokenAmount) internal view returns (uint256 totalValueInThisContract) {
-        if (nftPricingAddress != address(0)) {
-            for (uint i; i < _tokenAmount; ++i) {
-                totalValueInThisContract += nftPricer.getNFTPrice(_tokenAddress, IERC721Enumerable(_tokenAddress).tokenOfOwnerByIndex(_account, i));
-            }
-        } else {
-            revert PricingModuleNotConfigured(erc20PricingAddress, nftPricingAddress);
-        }
+        return appPricing._getNFTValuePerCollection(_tokenAddress, _account, _tokenAmount);
     }
 
     /**
@@ -416,14 +429,7 @@ contract ProtocolApplicationHandler is
      * @return totalValueInThisContract total valuation of tokens by collection in whole USD
      */
     function _getNFTCollectionValue(address _tokenAddress, uint256 _tokenAmount) private view returns (uint256 totalValueInThisContract) {
-        if (nftPricingAddress != address(0)) {
-            // Disabling this finding, it is a false positive. The if statement for the zero address check
-            // is being treated as a loop.
-            // slither-disable-next-line calls-loop
-            totalValueInThisContract = _tokenAmount * uint256(nftPricer.getNFTCollectionPrice(_tokenAddress));
-        } else {
-            revert PricingModuleNotConfigured(erc20PricingAddress, nftPricingAddress);
-        }
+        return appPricing._getNFTCollectionValue(_tokenAddress, _tokenAmount);
     }
 
     /**
@@ -582,6 +588,91 @@ contract ProtocolApplicationHandler is
      */
     function isAccountDenyForNoAccessLevelActive(ActionTypes _action) external view returns (bool) {
         return accountDenyForNoAccessLevel[_action].active;
+    }
+
+    /**
+     * @dev Set the accountMaxReceivedByAccessLevelRule. Restricted to app administrators only.
+     * @notice that setting a rule will automatically activate it.
+     * @param _actions action types in which to apply the rules
+     * @param _ruleId Rule Id to set
+     */
+    function setAccountMaxReceivedByAccessLevelId(ActionTypes[] calldata _actions, uint32 _ruleId) external ruleAdministratorOnly(appManagerAddress) {
+        for (uint i; i < _actions.length; ++i) {
+            setAccountMaxReceivedbyAccessLevelIdUpdate(_actions[i], _ruleId);
+            emit AD1467_ApplicationRuleApplied(ACC_MAX_RECEIVED_BY_ACCESS_LEVEL, _actions[i], _ruleId);
+        }
+    }
+
+    /**
+     * @dev Set the accountMaxReceivedByAccessLevelRule. Restricted to app administrators only.
+     * @notice that setting a rule will automatically activate it.
+     * @param _actions actions to have the rule applied to
+     * @param _ruleIds Rule Id corresponding to the actions
+     */
+    function setAccountMaxReceivedByAccessLevelIdFull(ActionTypes[] calldata _actions, uint32[] calldata _ruleIds) external ruleAdministratorOnly(appManagerAddress) {
+        validateRuleInputFull(_actions, _ruleIds);
+        clearAccountMaxReceivedByAccessLevel();
+        for (uint i; i < _actions.length; ++i) {
+            setAccountMaxReceivedbyAccessLevelIdUpdate(_actions[i], _ruleIds[i]);
+        }
+        emit AD1467_ApplicationRuleAppliedFull(ACC_MAX_RECEIVED_BY_ACCESS_LEVEL, _actions, _ruleIds);
+    }
+
+    /**
+     * @dev Clear the rule data structure
+     */
+    function clearAccountMaxReceivedByAccessLevel() internal {
+        for (uint i; i <= lastPossibleAction; ++i) {
+            delete accountMaxReceivedByAccessLevel[ActionTypes(i)];
+        }
+    }
+
+    /**
+     * @dev Set the AccountMaxReceivedbyAccessLevelRuleId.
+     * @notice that setting a rule will automatically activate it.
+     * @param _action the action type to set the rule
+     * @param _ruleId Rule Id to set
+     */
+    // slither-disable-next-line calls-loop
+    function setAccountMaxReceivedbyAccessLevelIdUpdate(ActionTypes _action, uint32 _ruleId) internal {
+        // slither-disable-next-line calls-loop
+        IRuleProcessor(ruleProcessor).validateAccountMaxReceivedByAccessLevel(createActionTypesArray(_action), _ruleId);
+        accountMaxReceivedByAccessLevel[_action].ruleId = _ruleId;
+        accountMaxReceivedByAccessLevel[_action].active = true;
+    }
+
+    /**
+     * @dev enable/disable rule. Disabling a rule will save gas on transfer transactions.
+     * @param _actions action types
+     * @param _on boolean representing if a rule must be checked or not.
+     */
+    function activateAccountMaxReceivedByAccessLevel(ActionTypes[] calldata _actions, bool _on) external ruleAdministratorOnly(appManagerAddress) {
+        for (uint i; i < _actions.length; ++i) {
+            accountMaxReceivedByAccessLevel[_actions[i]].active = _on;
+        }
+        if (_on) {
+            emit AD1467_ApplicationHandlerActivated(ACC_MAX_RECEIVED_BY_ACCESS_LEVEL, _actions);
+        } else {
+            emit AD1467_ApplicationHandlerDeactivated(ACC_MAX_RECEIVED_BY_ACCESS_LEVEL, _actions);
+        }
+    }
+
+    /**
+     * @dev Tells you if the accountMaxReceivedByAccessLevel Rule is active or not.
+     * @param _action the action type
+     * @return boolean representing if the rule is active
+     */
+    function isAccountMaxReceivedByAccessLevelActive(ActionTypes _action) external view returns (bool) {
+        return accountMaxReceivedByAccessLevel[_action].active;
+    }
+
+    /**
+     * @dev Retrieve the accountMaxReceivedByAccessLevel rule id
+     * @param _action action type
+     * @return accountMaxReceivedByAccessLevelId rule id
+     */
+    function getAccountMaxReceivedByAccessLevelId(ActionTypes _action) external view returns (uint32) {
+        return accountMaxReceivedByAccessLevel[_action].ruleId;
     }
 
     /**
@@ -855,39 +946,4 @@ contract ProtocolApplicationHandler is
         }
     }
 
-    /**
-     * @dev Tells you if the pause rule check is active or not.
-     * @return boolean representing if the rule is active for specified token
-     */
-    function isPauseRuleActive() external view returns (bool) {
-        return pauseRuleActive;
-    }
-
-    /**
-     * @dev gets the version of the contract
-     * @return VERSION
-     */
-    function version() external pure returns (string memory) {
-        return VERSION;
-    }
-
-    /**
-     * @dev Check if the addresss is a contract
-     * @param account address to check
-     * @return bool
-     */
-    function isContract(address account) internal view returns (bool) {
-        // This method relies on extcodesize/address.code.length, which returns 0
-        // for contracts in construction, since the code is only stored at the end
-        // of the constructor execution.
-        return account.code.length > 0;
-    }
-
-     /**
-     * @dev Getter for rule processor address
-     * @return ruleProcessorAddress
-     */
-    function getRuleProcessAddress() external view returns(address){
-        return address(ruleProcessor);
-    }
 }

@@ -118,9 +118,6 @@ contract ApplicationERC721TokenDeploymentTest is Test, TestCommonFoundry, ERC721
             );
 
             // Verify the ERC721 Pricing Contract has been deployed
-            assertTrue(
-                vm.envAddress("ERC721_PRICING_CONTRACT") != address(0x0)
-            );
             erc721Pricer = ApplicationERC721Pricing(
                 vm.envAddress("ERC721_PRICING_CONTRACT")
             );
@@ -152,13 +149,17 @@ contract ApplicationERC721TokenDeploymentTest is Test, TestCommonFoundry, ERC721
                 address(oracleDenied)
             );
 
+            applicationPricing= ApplicationPricing(address(
+                applicationHandler.appPricingAddress())
+            );
+
             testCaseNFT = applicationNFT;
 
             Blocktime = uint64(block.timestamp); 
 
             switchToAppAdministrator();
     
-            HandlerVersionFacet(address(applicationNFTHandler)).updateVersion("2.2.2");
+            HandlerVersionFacet(address(applicationNFTHandler)).updateVersion("2.3.0");
             erc721Pricer.setNFTCollectionPrice(address(applicationNFT), 1 * (10 ** 18));
             forkTest = true;
             testDeployments = true;

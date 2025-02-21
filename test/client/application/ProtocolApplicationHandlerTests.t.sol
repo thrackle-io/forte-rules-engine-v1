@@ -20,17 +20,17 @@ contract ProtocolApplicationHandlerTests is TestCommonFoundry {
         switchToAppAdministrator();
 
         vm.expectEmit();
-        emit AD1467_UpgradedToVersion(appAdministrator, "2.2.2");
-        (success, ) = address(applicationCoinHandler).call(abi.encodeWithSignature("updateVersion(string)", "2.2.2"));
+        emit AD1467_UpgradedToVersion(appAdministrator, "2.3.0");
+        (success, ) = address(applicationCoinHandler).call(abi.encodeWithSignature("updateVersion(string)", "2.3.0"));
         assertTrue(success);
 
         vm.expectEmit();
-        emit AD1467_UpgradedToVersion(appAdministrator, "2.2.2");
-        (success, ) = address(applicationNFTHandler).call(abi.encodeWithSignature("updateVersion(string)", "2.2.2"));
+        emit AD1467_UpgradedToVersion(appAdministrator, "2.3.0");
+        (success, ) = address(applicationNFTHandler).call(abi.encodeWithSignature("updateVersion(string)", "2.3.0"));
         assertTrue(success);
 
-        vm.assertEq(HandlerVersionFacet(address(applicationCoinHandler)).version(), "2.2.2");
-        vm.assertEq(HandlerVersionFacet(address(applicationNFTHandler)).version(), "2.2.2");
+        vm.assertEq(HandlerVersionFacet(address(applicationCoinHandler)).version(), "2.3.0");
+        vm.assertEq(HandlerVersionFacet(address(applicationNFTHandler)).version(), "2.3.0");
     }
 
     // note: make a test for get acc total valuation 
@@ -50,7 +50,7 @@ contract ProtocolApplicationHandlerTests is TestCommonFoundry {
         }
 
         uint gasBegin = gasleft();
-        uint valuation = applicationHandler.getAccTotalValuation(appAdministrator, 0);
+        uint valuation = applicationPricing.getAccTotalValuation(appAdministrator, 0);
         uint gasEnd = gasleft();
         // console2.log("gas: ", gasBegin - gasEnd);
         // console2.log("valuation: ", valuation);
