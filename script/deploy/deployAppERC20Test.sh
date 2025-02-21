@@ -109,11 +109,11 @@ echo "...Checking to make sure the pricing modules are set within the ERC20's Ha
 if [ $RPC_URL == "local" ]; then
   APP_MANAGER=$(cast call $HANDLER 'getAppManagerAddress()(address)')  
   APP_HANDLER=$(cast call $APP_MANAGER 'getHandlerAddress()(address)')
-  HANDLER_PRICER=$(cast call $APP_HANDLER 'erc20PricingAddress()(address)')  
+  HANDLER_PRICER=$(cast call $APP_HANDLER 'getERC20PricingAddress()(address)')  
 else
   APP_MANAGER=$(cast call $HANDLER 'getAppManagerAddress()(address)'  --rpc-url $RPC_URL)  
   APP_HANDLER=$(cast call $APP_MANAGER 'getHandlerAddress()(address)' --rpc-url $RPC_URL)
-  HANDLER_PRICER=$(cast call $APP_HANDLER 'erc20PricingAddress()(address)' --rpc-url $RPC_URL) 
+  HANDLER_PRICER=$(cast call $APP_HANDLER 'getERC20PricingAddress()(address)' --rpc-url $RPC_URL) 
 fi
 
 if test -z "$HANDLER_PRICER"; then
