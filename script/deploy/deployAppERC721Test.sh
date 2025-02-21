@@ -113,11 +113,11 @@ echo "...Checking to make sure the pricing modules are set within the ERC721's H
 if [ $RPC_URL == "local" ]; then
   APP_MANAGER=$(cast call $HANDLER 'getAppManagerAddress()(address)')  
   APP_HANDLER=$(cast call $APP_MANAGER 'getHandlerAddress()(address)')
-  HANDLER_PRICER=$(cast call $APP_HANDLER 'getERC721PricingAddress()(address)')    
+  HANDLER_PRICER=$(cast call $APP_HANDLER 'getERC721PricingAddress()(address)') 
 else
   APP_MANAGER=$(cast call $HANDLER 'getAppManagerAddress()(address)'  --rpc-url $RPC_URL)  
   APP_HANDLER=$(cast call $APP_MANAGER 'getHandlerAddress()(address)' --rpc-url $RPC_URL)
-  HANDLER_PRICER=$(cast call $APP_HANDLER 'getERC721PricingAddress()(address)' --rpc-url $RPC_URL)  
+  HANDLER_PRICER=$(cast call $APP_HANDLER 'getERC721PricingAddress()(address)' --rpc-url $RPC_URL) 
 fi
 echo $HANDLER_PRICER
 if test -z "$HANDLER_PRICER"; then
