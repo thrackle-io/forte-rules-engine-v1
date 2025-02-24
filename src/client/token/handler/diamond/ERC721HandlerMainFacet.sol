@@ -14,7 +14,7 @@ import "diamond-std/implementations/ERC173/ERC173.sol";
 
 contract ERC721HandlerMainFacet is HandlerBase, HandlerUtils, ICommonApplicationHandlerEvents, NFTValuationLimit, IHandlerDiamondErrors {
     
-    string private constant VERSION="2.3.0";
+    string private constant VERSION="2.3.1";
     
     /**
      * @dev Initializer params

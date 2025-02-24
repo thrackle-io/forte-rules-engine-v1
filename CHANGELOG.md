@@ -58,4 +58,9 @@
 ### Added 
 - Account Max Received By Access Level Rule was added 
 
+## 2.3.1 - 2025-02-24
+
+### Added 
+- Administrative bump in version 
+
 

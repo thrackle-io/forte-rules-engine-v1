@@ -11,7 +11,7 @@ import {IHandlerDiamondErrors} from "src/common/IErrors.sol";
 
 contract ERC20HandlerMainFacet is HandlerBase, HandlerUtils, ICommonApplicationHandlerEvents, IHandlerDiamondErrors {
 
-    string private constant VERSION="2.3.0";
+    string private constant VERSION="2.3.1";
     /**
      * @dev Initializer params
      * @param _ruleProcessorProxyAddress of the protocol's Rule Processor contract.
