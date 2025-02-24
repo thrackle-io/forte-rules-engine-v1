@@ -31,7 +31,7 @@ contract DeployAllModulesPt3Script is Script, DiamondScriptUtil, DeployABIUtil {
     address ownerAddress;
     bool recordAllChains;
     uint256 timestamp;
-    string private constant VERSION="2.3.0";
+    string private constant VERSION="2.3.1";
 
     /**
      * @dev This is the main function that gets called by the Makefile or CLI

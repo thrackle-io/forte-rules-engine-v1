@@ -8,7 +8,7 @@ from datetime import datetime
 
 _dir  = dotenv_values(".env")
 dir = Path(_dir["DEPLOYMENT_OUT_DIR"])
-version = "2.3.0"
+version = "2.3.1"
 
 def get_latest_deployed_facet(args):
     record = {}
