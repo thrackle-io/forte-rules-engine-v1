@@ -194,10 +194,11 @@ abstract contract RuleCreation is TestCommonFoundry {
         uint48[] memory receivedLimits = createUint48Array(receivedLimits1, receivedLimits2, receivedLimits3, receivedLimits4, receivedLimits5);
         // check event emission
         vm.expectEmit(true, false, true, true);
-        emit AD1467_ProtocolRuleCreated(ACC_MAX_RECEIVED_ACCESS_LEVEL, 0, new bytes32[](0));
+        emit AD1467_ProtocolRuleCreated(ACC_MAX_RECEIVED_BY_ACCESS_LEVEL, 0, new bytes32[](0));
         uint32 ruleId = AppRuleDataFacet(address(ruleProcessor)).addAccountMaxReceivedByAccessLevel(address(applicationAppManager), receivedLimits, sender);
-        uint256 balance = ApplicationAccessLevelProcessorFacet(address(ruleProcessor)).getAccountMaxReceivedByAccessLevel(ruleId, 2);
+        (uint256 balance, address senderAddress) = ApplicationAccessLevelProcessorFacet(address(ruleProcessor)).getAccountMaxReceivedByAccessLevel(ruleId, 2);
         assertEq(balance, receivedLimits3);
+        assertEq(senderAddress, sender);
         vm.stopPrank();
         return ruleId;
     }

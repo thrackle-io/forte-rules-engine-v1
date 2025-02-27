@@ -138,10 +138,10 @@ contract ApplicationAccessLevelProcessorFacet is IInputErrors, IRuleProcessorErr
      * @param _accessLevel AccessLevel Level to check
      * @return balanceAmount balance allowed for access level
      */
-    function getAccountMaxReceivedByAccessLevel(uint32 _index, uint8 _accessLevel) public view returns (uint48) {
+    function getAccountMaxReceivedByAccessLevel(uint32 _index, uint8 _accessLevel) public view returns (uint48, address) {
         RuleS.AccountMaxReceivedByAccessLevelS storage data = Storage.accountMaxReceivedByAccessLevelStorage();
         if (_index >= data.accountMaxReceivedByAccessLevelIndex) revert IndexOutOfRange();
-        return data.accountMaxReceivedByAccessLevelRules[_index].accountMaxReceivedLimits[_accessLevel];
+        return (data.accountMaxReceivedByAccessLevelRules[_index].accountMaxReceivedLimits[_accessLevel], data.accountMaxReceivedByAccessLevelRules[_index].sender);
     }
 
     /**

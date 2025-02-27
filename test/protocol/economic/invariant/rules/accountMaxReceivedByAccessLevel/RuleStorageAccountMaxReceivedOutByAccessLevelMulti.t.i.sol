@@ -14,6 +14,8 @@ contract RuleStorageAccountMaxReceivedByAccessLevelMultiTest is RuleStorageInvar
     RuleStorageAccountMaxReceivedByAccessLevelActorManager actorManager;
     RuleStorageAccountMaxReceivedByAccessLevelActor[] actors;
     uint48[] ruleBefore = new uint48[](5);
+    uint48[] assertion = new uint48[](5);
+    address[] senderAddress = new address[](5);
 
     function setUp() public {
         prepRuleStorageInvariant();
@@ -31,11 +33,11 @@ contract RuleStorageAccountMaxReceivedByAccessLevelMultiTest is RuleStorageInvar
         actorManager = new RuleStorageAccountMaxReceivedByAccessLevelActorManager(actors);
         switchToRuleAdmin();
         index = AppRuleDataFacet(address(ruleProcessor)).addAccountMaxReceivedByAccessLevel(address(applicationAppManager), createUint48Array(666, 667, 668, 669, 670), address(0));
-        ruleBefore[0] = ApplicationAccessLevelProcessorFacet(address(ruleProcessor)).getAccountMaxReceivedByAccessLevel(index, 0);
-        ruleBefore[1] = ApplicationAccessLevelProcessorFacet(address(ruleProcessor)).getAccountMaxReceivedByAccessLevel(index, 1);
-        ruleBefore[2] = ApplicationAccessLevelProcessorFacet(address(ruleProcessor)).getAccountMaxReceivedByAccessLevel(index, 2);
-        ruleBefore[3] = ApplicationAccessLevelProcessorFacet(address(ruleProcessor)).getAccountMaxReceivedByAccessLevel(index, 3);
-        ruleBefore[4] = ApplicationAccessLevelProcessorFacet(address(ruleProcessor)).getAccountMaxReceivedByAccessLevel(index, 4);
+        (ruleBefore[0], senderAddress[0]) = ApplicationAccessLevelProcessorFacet(address(ruleProcessor)).getAccountMaxReceivedByAccessLevel(index, 0);
+        (ruleBefore[1], senderAddress[1]) = ApplicationAccessLevelProcessorFacet(address(ruleProcessor)).getAccountMaxReceivedByAccessLevel(index, 1);
+        (ruleBefore[2], senderAddress[2]) = ApplicationAccessLevelProcessorFacet(address(ruleProcessor)).getAccountMaxReceivedByAccessLevel(index, 2);
+        (ruleBefore[3], senderAddress[3]) = ApplicationAccessLevelProcessorFacet(address(ruleProcessor)).getAccountMaxReceivedByAccessLevel(index, 3);
+        (ruleBefore[4], senderAddress[4]) = ApplicationAccessLevelProcessorFacet(address(ruleProcessor)).getAccountMaxReceivedByAccessLevel(index, 4);
         targetContract(address(actorManager));
     }
 
@@ -73,11 +75,17 @@ contract RuleStorageAccountMaxReceivedByAccessLevelMultiTest is RuleStorageInvar
     }
 
     // Rules can never be modified.
-    function invariant_AccountMaxReceivedByAccessLevelImmutable() public view {
-        assertEq(ruleBefore[0], ApplicationAccessLevelProcessorFacet(address(ruleProcessor)).getAccountMaxReceivedByAccessLevel(index, 0));
-        assertEq(ruleBefore[1], ApplicationAccessLevelProcessorFacet(address(ruleProcessor)).getAccountMaxReceivedByAccessLevel(index, 1));
-        assertEq(ruleBefore[2], ApplicationAccessLevelProcessorFacet(address(ruleProcessor)).getAccountMaxReceivedByAccessLevel(index, 2));
-        assertEq(ruleBefore[3], ApplicationAccessLevelProcessorFacet(address(ruleProcessor)).getAccountMaxReceivedByAccessLevel(index, 3));
-        assertEq(ruleBefore[4], ApplicationAccessLevelProcessorFacet(address(ruleProcessor)).getAccountMaxReceivedByAccessLevel(index, 4));
+    function invariant_AccountMaxReceivedByAccessLevelImmutable() public {
+        (assertion[0], senderAddress[0]) = ApplicationAccessLevelProcessorFacet(address(ruleProcessor)).getAccountMaxReceivedByAccessLevel(index, 0);
+        (assertion[1], senderAddress[1]) = ApplicationAccessLevelProcessorFacet(address(ruleProcessor)).getAccountMaxReceivedByAccessLevel(index, 1);
+        (assertion[2], senderAddress[2]) = ApplicationAccessLevelProcessorFacet(address(ruleProcessor)).getAccountMaxReceivedByAccessLevel(index, 2);
+        (assertion[3], senderAddress[3]) = ApplicationAccessLevelProcessorFacet(address(ruleProcessor)).getAccountMaxReceivedByAccessLevel(index, 3);
+        (assertion[4], senderAddress[4]) = ApplicationAccessLevelProcessorFacet(address(ruleProcessor)).getAccountMaxReceivedByAccessLevel(index, 4);
+
+        assertEq(ruleBefore[0], assertion[0]);
+        assertEq(ruleBefore[1], assertion[1]);
+        assertEq(ruleBefore[2], assertion[2]);
+        assertEq(ruleBefore[3], assertion[3]);
+        assertEq(ruleBefore[4], assertion[4]);
     }
 }

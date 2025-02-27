@@ -29,7 +29,7 @@ library RuleStoragePositionLib {
     bytes32 constant TOKEN_MAX_DAILY_TRADES_POSITION = bytes32(uint256(keccak256("token-max-daily-trades")) - 1);
     bytes32 constant AMM_FEE_RULE_POSITION = bytes32(uint256(keccak256("AMM.fee-rule")) - 1);
     bytes32 constant ACC_MAX_VALUE_OUT_ACCESS_LEVEL_POSITION = bytes32(uint256(keccak256("account-max-value-out-by-access-level")) - 1);
-    bytes32 constant ACC_MAX_RECEIVED_ACCESS_LEVEL_POSITION = bytes32(uint256(keccak256("account-max-received-by-access-level")) - 1);
+    bytes32 constant ACC_MAX_RECEIVED_BY_ACCESS_LEVEL_POSITION = bytes32(uint256(keccak256("account-max-received-by-access-level")) - 1);
     bytes32 constant ENABLED_ACTIONS = bytes32(uint256(keccak256("enabled-actions")) - 1);
 
     /**
@@ -224,7 +224,7 @@ library RuleStoragePositionLib {
      * @return ds Data Storage of Account Max Received By Access Level rule
      */
     function accountMaxReceivedByAccessLevelStorage() internal pure returns (IRuleStorage.AccountMaxReceivedByAccessLevelS storage ds) {
-        bytes32 position = ACC_MAX_RECEIVED_ACCESS_LEVEL_POSITION;
+        bytes32 position = ACC_MAX_RECEIVED_BY_ACCESS_LEVEL_POSITION;
         assembly {
             ds.slot := position
         }
