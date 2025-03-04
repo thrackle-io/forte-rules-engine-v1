@@ -159,7 +159,7 @@ contract ApplicationERC20TokenDeploymentTest is Test, TestCommonFoundry, ERC20Co
 
             switchToAppAdministrator();
     
-            HandlerVersionFacet(address(applicationCoinHandler)).updateVersion("2.3.1");
+            HandlerVersionFacet(address(applicationCoinHandler)).updateVersion("2.4.0");
     
             forkTest = true;
             testDeployments = true;

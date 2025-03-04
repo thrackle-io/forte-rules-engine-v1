@@ -63,4 +63,9 @@
 ### Added 
 - Administrative bump in version 
 
+## 2.4.0 - 2025-03-04
+
+### Added 
+- Getter function for source address of Account Max Received By Access Level Rule
+
 
