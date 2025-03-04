@@ -39,7 +39,7 @@ contract DeploymentProcessorERC20 is ERC20CommonTests {
 
             Blocktime = uint64(block.timestamp); 
             switchToAppAdministrator();    
-            HandlerVersionFacet(address(applicationCoinHandler)).updateVersion("2.3.1");    
+            HandlerVersionFacet(address(applicationCoinHandler)).updateVersion("2.4.0");    
         }  else {
             setUpProcotolAndCreateERC20AndDiamondHandler();
             switchToAppAdministrator();
