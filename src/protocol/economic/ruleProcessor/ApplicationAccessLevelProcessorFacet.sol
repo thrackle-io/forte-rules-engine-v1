@@ -145,6 +145,17 @@ contract ApplicationAccessLevelProcessorFacet is IInputErrors, IRuleProcessorErr
     }
 
     /**
+     * @dev Function to get the Account Max Received By Access Level rule source address in the rule
+     * @param _index position of rule in array
+     * @return Source Address for the rule Id 
+     */
+    function getAccountMaxReceivedByAccessLevelSourceAddr(uint32 _index) public view returns (address) {
+        RuleS.AccountMaxReceivedByAccessLevelS storage data = Storage.accountMaxReceivedByAccessLevelStorage();
+        if (_index >= data.accountMaxReceivedByAccessLevelIndex) revert IndexOutOfRange();
+        return data.accountMaxReceivedByAccessLevelRules[_index].sender;
+    }
+
+    /**
      * @dev Function to get total Account Max Received By Access Level rules
      * @return Total number of access level withdrawal rules
      */

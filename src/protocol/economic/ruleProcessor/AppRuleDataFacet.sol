@@ -192,7 +192,7 @@ contract AppRuleDataFacet is Context, RuleAdministratorOnly, IEconomicEvents, II
         }
         data.accountMaxReceivedByAccessLevelRules[index].sender = _fromAddress;
         ++data.accountMaxReceivedByAccessLevelIndex;
-        emit AD1467_ProtocolRuleCreated(ACC_MAX_RECEIVED_ACCESS_LEVEL, index, new bytes32[](0));
+        emit AD1467_ProtocolRuleCreated(ACC_MAX_RECEIVED_BY_ACCESS_LEVEL, index, new bytes32[](0));
         return index;
     }
 
