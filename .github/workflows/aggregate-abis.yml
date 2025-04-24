@@ -17,4 +17,4 @@ jobs:
           repository: thrackle-io/aquifi-abis
           event-type: package-abis
           client-payload: |
-            {"repo": "forte-rules-engine", "tag": "${{ github.event.release.tag_name || github.ref }}"}
+            {"repo": "forte-rules-engine-legacy", "tag": "${{ github.event.release.tag_name || github.ref }}"}
