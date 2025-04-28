@@ -12,7 +12,7 @@
   ],
   "replacementPatterns": [
     {
-      "pattern": "https://github.com/thrackle-io/forte-rules-engine-legacy",
+      "pattern": "https://github.com/thrackle-io/forte-rules-engine-v1",
       "replacement": ""
     },
     {

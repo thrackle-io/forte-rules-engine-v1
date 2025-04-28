@@ -1,4 +1,4 @@
-# Forte Rules Engine Deprecated
+# Forte Rules Engine v1
 
 [![Project Version][version-image]][version-url]
 
@@ -7,14 +7,14 @@ Check out [our docs](https://docs.forterulesengine.io) for in-depth guides and r
 This repository contains an EVM-based protocol designed to meet the unique needs of tokenized assets and on-chain economies. The protocol enables the creation and management of economic and compliance controls for your on-chain economy at the token level, allowing for maximum flexibility while maintaining the transparency and trustlessness of Web3.
 
 [version-image]: https://img.shields.io/badge/Version-2.4.0-brightgreen?style=for-the-badge&logo=appveyor
-[version-url]: https://github.com/thrackle-io/forte-rules-engine-deprecated
+[version-url]: https://github.com/thrackle-io/forte-rules-engine-v1
 
 ## Installation
 
 To install the package, run the following command in the root of your project:
 
 ```bash
-npm i @thrackle-io/forte-rules-engine-deprecated
+npm i @thrackle-io/forte-rules-engine-v1
 ```
 
 ### Dependencies
