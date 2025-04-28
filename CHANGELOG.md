@@ -1,3 +1,8 @@
+## 2.4.2 - 2025-04-28
+
+### Changed
+- The repository was renamed to forte-rules-engine-v1
+
 ## 2.4.1 - 2025-04-24
 
 ### Changed
