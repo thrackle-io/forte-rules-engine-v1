@@ -23,7 +23,7 @@ npm i @thrackle-io/forte-rules-engine-v1
 
 This package requires the following:
 
-1.  Foundry
+1.  [Foundry v1.2.1](https://github.com/foundry-rs/foundry)
 
     NOTE: In order to ensure full support, run this command to get the correct Foundry version:
 
