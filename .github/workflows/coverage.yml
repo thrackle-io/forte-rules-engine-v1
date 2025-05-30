@@ -42,7 +42,10 @@ jobs:
         uses: actions/checkout@v4
         with:
           submodules: recursive
-
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
+        with:
+          version: v1.2.1
       - name: Clone repository dependencies
         shell: bash
         run: |
@@ -50,10 +53,6 @@ jobs:
           sudo apt-get install -y python3-pip
           pip3 install -r requirements.txt
           forge install
-      - name: Install Foundry
-        uses: foundry-rs/foundry-toolchain@v1
-        with:
-          version: v1.2.1
       - name: Build the repository
         shell: bash
         run: |
