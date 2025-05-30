@@ -4,7 +4,7 @@ out = 'out'
 libs = ['lib']
 fs_permissions = [{ access = "read-write", path = "./"}]
 gas_limit = "18446744073709551615"
-
+allow_internal_expect_revert = true
 optimize = true
 optimizer_runs = 1
 
