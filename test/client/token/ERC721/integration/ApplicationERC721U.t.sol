@@ -143,8 +143,10 @@ contract ApplicationERC721UTest is TestCommonFoundry, ERC721Util {
 
     function testERC721_ApplicationERC721U_AccountApproveDenyOracle_Invalid() public endWithStopPrank {
         // Finally, check the invalid type
-        vm.expectRevert("Oracle Type Invalid");
-        createAccountApproveDenyOracleRule(2);
+        switchToRuleAdmin();
+        bytes4 selector = bytes4(keccak256("InvalidOracleType(uint8)"));
+        vm.expectRevert(abi.encodeWithSelector(selector, 2));
+        RuleDataFacet(address(ruleProcessor)).addAccountApproveDenyOracle(address(applicationAppManager), 2, address(oracleDenied));
     }
 
     function testERC721_ApplicationERC721U_PauseRulesViaAppManager_Negative() public endWithStopPrank {

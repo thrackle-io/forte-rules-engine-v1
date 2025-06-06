@@ -219,8 +219,9 @@ contract ApplicationERC20HandlerTest is TestCommonFoundry, ERC20Util {
     function testERC20_ApplicationERC20Handler_AccountApproveDenyOracleERC20Handler_Invalid() public endWithStopPrank {
         // Finally, check the invalid type
         switchToRuleAdmin();
-        vm.expectRevert("Oracle Type Invalid");
-        createAccountApproveDenyOracleRule(2);
+        bytes4 selector = bytes4(keccak256("InvalidOracleType(uint8)"));
+        vm.expectRevert(abi.encodeWithSelector(selector, 2));
+        RuleDataFacet(address(ruleProcessor)).addAccountApproveDenyOracle(address(applicationAppManager), 2, address(oracleDenied));
     }
 
     function testERC20_ApplicationERC20Handler_UpgradeApplicationERC20Handler() public endWithStopPrank {

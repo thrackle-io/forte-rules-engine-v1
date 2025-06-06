@@ -11,7 +11,8 @@ def get_selectors(args):
     line = ""
     while line == "":
         res = subprocess.run(
-            ["forge", "inspect", contract, "mi"], capture_output=True )
+            ["forge", "inspect", contract, "mi", "--json"], capture_output=True
+        )
         line = res.stdout.decode()
     res = json.loads(line)
 
