@@ -23,21 +23,11 @@ npm i @thrackle-io/forte-rules-engine-v1
 
 This package requires the following:
 
-1.  Foundry
-
-    NOTE: In order to ensure full support, run this command to get the correct Foundry version:
-
-> [!NOTE]
-> Thrackle maintains a modified [`foundryup`](https://github.com/thrackle-io/foundry/tree/master/foundryup) tool 
-> to provide versioned releases assigned to releases of unmodified upstream binaries.
-
-```bash
-foundryup --version $(awk '$1~/^[^#]/' script/foundryScripts/foundry.lock)
-```
+1.  [Foundry v1.2.1](https://github.com/foundry-rs/foundry?tab=readme-ov-file#installation)
  
 2.  Scripting Requirements
     1.  `eth-abi 5.1.0`
-    2.  `jq 1.6.0`
+    2.  `jq 1.8.0`
     3.  `python-dotenv 1.0.1`
 
     These packages can be installed manually or through the following helper command:

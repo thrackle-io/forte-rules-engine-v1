@@ -264,9 +264,6 @@ contract ProtocolERC721MinLegacyTest is TestCommonFoundry, DummyNFTAMM, ERC721Ut
         vm.expectRevert(0xcafd3316);
         minimalNFTLegacy.transferFrom(user1, address(88), 3);
 
-        // Finally, check the invalid type
-        vm.expectRevert("Oracle Type Invalid");
-        createAccountApproveDenyOracleRule(2);
         /// test burning while oracle rule is active (allow list active)
         ruleId = createAccountApproveDenyOracleRule(1);
         setAccountApproveDenyOracleRule(address(applicationNFTHandler), ruleId);
@@ -277,7 +274,7 @@ contract ProtocolERC721MinLegacyTest is TestCommonFoundry, DummyNFTAMM, ERC721Ut
         minimalNFTLegacy.burn(4);
         /// set oracle to deny and add address(0) to list to deny burns
         switchToRuleAdmin();
-       ruleId = createAccountApproveDenyOracleRule(0);
+        ruleId = createAccountApproveDenyOracleRule(0);
         setAccountApproveDenyOracleRule(address(applicationNFTHandler), ruleId);
         switchToAppAdministrator();
         badBoys.push(address(0));

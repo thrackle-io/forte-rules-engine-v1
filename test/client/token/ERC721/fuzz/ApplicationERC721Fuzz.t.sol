@@ -568,8 +568,9 @@ contract ApplicationERC721FuzzTest is TestCommonFoundry, ERC721Util {
     /** ACCOUNT APPROVE DENY ORACLE : ORACLE TYPE */
     function testERC721_ApplicationERC721Fuzz_AccountApproveDenyOracle_NegativeOracleType() public endWithStopPrank {
         switchToRuleAdmin();
-        vm.expectRevert("Oracle Type Invalid");
-        createAccountApproveDenyOracleRule(2);
+        bytes4 selector = bytes4(keccak256("InvalidOracleType(uint8)"));
+        vm.expectRevert(abi.encodeWithSelector(selector, 2));
+        RuleDataFacet(address(ruleProcessor)).addAccountApproveDenyOracle(address(applicationAppManager), 2, address(oracleDenied));
     }
 
     /******************************************************

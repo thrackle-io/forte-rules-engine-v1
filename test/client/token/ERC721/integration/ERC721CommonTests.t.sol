@@ -284,10 +284,12 @@ abstract contract ERC721CommonTests is TestCommonFoundry, ERC721Util {
         testCaseNFT.transferFrom(user1, address(88), 3);
     }
 
+    /// forge-config: default.allow_internal_expect_revert = true
     function testERC721_ERC721CommonTests_AccountApproveDenyOracle_Invalid() public endWithStopPrank ifDeploymentTestsEnabled {
-        // Finally, check the invalid type
-        vm.expectRevert("Oracle Type Invalid");
-        createAccountApproveDenyOracleRule(2);
+        switchToRuleAdmin();
+        bytes4 selector = bytes4(keccak256("InvalidOracleType(uint8)"));
+        vm.expectRevert(abi.encodeWithSelector(selector, 2));
+        RuleDataFacet(address(ruleProcessor)).addAccountApproveDenyOracle(address(applicationAppManager), 2, address(oracleDenied));
     }
 
     function testERC721_ERC721CommonTests_AccountApproveDenyOracle_Burning() public endWithStopPrank ifDeploymentTestsEnabled {
@@ -453,8 +455,10 @@ abstract contract ERC721CommonTests is TestCommonFoundry, ERC721Util {
 
     function testERC721_ERC721CommonTests_AccountApproveDenyOracleFlexible_Invalid() public endWithStopPrank ifDeploymentTestsEnabled {
         // Finally, check the invalid type
-        vm.expectRevert("Oracle Type Invalid");
-        createAccountApproveDenyOracleFlexibleRule(2, 0);
+        switchToRuleAdmin();
+        bytes4 selector = bytes4(keccak256("InvalidOracleType(uint8)"));
+        vm.expectRevert(abi.encodeWithSelector(selector, 2));
+        RuleDataFacet(address(ruleProcessor)).addAccountApproveDenyOracleFlexible(address(applicationAppManager), 2, 0, address(oracleDenied));
     }
 
     function testERC721_ERC721CommonTests_AccountApproveDenyOracleFlexible_Burning() public endWithStopPrank ifDeploymentTestsEnabled {
