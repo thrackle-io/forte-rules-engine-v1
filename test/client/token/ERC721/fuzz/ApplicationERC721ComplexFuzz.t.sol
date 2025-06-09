@@ -142,10 +142,6 @@ contract ApplicationERC721ComplexFuzzTest is TestCommonFoundry, ERC721Util {
         // This one should fail
         vm.expectRevert(0xcafd3316);
         applicationNFT.transferFrom(_user1, richGuy, 3);
-
-        // Finally, check the invalid type
-        vm.expectRevert("Oracle Type Invalid");
-        createAccountApproveDenyOracleRule(2);
     }
 
     /**

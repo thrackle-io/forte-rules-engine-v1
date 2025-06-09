@@ -660,8 +660,9 @@ abstract contract ERC20CommonTests is TestCommonFoundry, DummyAMM, ERC20Util {
     function testERC20_ERC20CommonTests_AccountApproveDenyOracle_AllActionsEnabled_InvalidOracleType() public endWithStopPrank ifDeploymentTestsEnabled {
         // Finally, check the invalid type
         switchToRuleAdmin();
-        vm.expectRevert("Oracle Type Invalid");
-        createAccountApproveDenyOracleRule(2);
+        bytes4 selector = bytes4(keccak256("InvalidOracleType(uint8)"));
+        vm.expectRevert(abi.encodeWithSelector(selector, 2));
+        RuleDataFacet(address(ruleProcessor)).addAccountApproveDenyOracle(address(applicationAppManager), 2, address(oracleDenied));
     }
 
     function testERC20_ERC20CommonTests_AccountApproveDenyOracle_AllActionsEnabled_Burning() public endWithStopPrank ifDeploymentTestsEnabled {
@@ -923,8 +924,9 @@ abstract contract ERC20CommonTests is TestCommonFoundry, DummyAMM, ERC20Util {
     function testERC20_ERC20CommonTests_AccountApproveDenyOracleFlexible_AllActionsEnabled_InvalidOracleType() public endWithStopPrank ifDeploymentTestsEnabled {
         // Finally, check the invalid type
         switchToRuleAdmin();
-        vm.expectRevert("Oracle Type Invalid");
-        createAccountApproveDenyOracleFlexibleRule(2, 3);
+        bytes4 selector = bytes4(keccak256("InvalidOracleType(uint8)"));
+        vm.expectRevert(abi.encodeWithSelector(selector, 2));
+        RuleDataFacet(address(ruleProcessor)).addAccountApproveDenyOracleFlexible(address(applicationAppManager), 2, 3, address(oracleDenied));
     }
 
     function testERC20_ERC20CommonTests_AccountApproveDenyOracleFlexible_AllActionsEnabled_Burning() public endWithStopPrank ifDeploymentTestsEnabled {
