@@ -19,7 +19,7 @@ contract DeployERC20HandlerPt1 is Script, DeployBase {
     function run() external {
         privateKey = vm.envUint("DEPLOYMENT_OWNER_KEY");
         ownerAddress = vm.envAddress("DEPLOYMENT_OWNER");
-        name = vm.envString("HANDLER_DIAMOND_TO_DEPLOY"); // name of the Diamond
+        name = vm.envString("RULE_PROCESSOR_DIAMOND"); // name of the Diamond
         vm.startBroadcast(privateKey);
         applicationCoinHandlerDiamond = HandlerDiamond(payable(vm.envAddress("APPLICATION_ERC20_HANDLER_ADDRESS")));
 
