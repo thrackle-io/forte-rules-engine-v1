@@ -1,4 +1,6 @@
 # Forte Rules Engine v1
+> [!WARNING]
+> THIS REPOSITORY IS DEPRECATED IN FAVOR OF [forte-rules-engine](https://github.com/Forte-Service-Company-Ltd/forte-rules-engine)
 
 [![Project Version][version-image]][version-url]
 
