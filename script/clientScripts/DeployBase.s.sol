@@ -160,6 +160,105 @@ contract DeployBase is Script, DiamondScriptUtil {
         }
 
         IDiamondCut(handlerAddress).diamondCut(_erc20HandlerFacetCuts, address(0x0), "");
+        
+    }
+
+    function createERC20HandlerDiamondPt2b(string memory name, address handlerAddress) public {
+        validateName(name);
+        bool recordAllChains;
+        recordAllChains = vm.envBool("RECORD_DEPLOYMENTS_FOR_ALL_CHAINS");
+        FacetCut[] memory _erc20HandlerFacetCuts = new FacetCut[](5);
+
+        // Register all facets.
+        string[2] memory facets = [
+            "OracleRulesFacet",
+            "FeesFacet"
+        ];
+
+        string[2] memory directories = [
+            "./out/OracleRulesFacet.sol/",
+            "./out/FeesFacet.sol/"
+        ];
+
+        name = replace(name, " ", "_");
+        string[] memory getSelectorsInput = new string[](3);
+        getSelectorsInput[0] = "python3";
+        getSelectorsInput[1] = "script/python/get_selectors.py";
+
+        // Loop on each facet, deploy them and create the FacetCut.
+        for (uint256 facetIndex = 0; facetIndex < facets.length; facetIndex++) {
+            string memory facet = facets[facetIndex];
+            string memory directory = directories[facetIndex];
+
+            /// Deploy the facet.
+            bytes memory bytecode = vm.getCode(string.concat(directory, string.concat(facet, ".json")));
+            address facetAddress;
+            assembly {
+                facetAddress := create(0, add(bytecode, 0x20), mload(bytecode))
+            }
+            recordFacet(string.concat(name, "HandlerDiamond"), facet, facetAddress, recordAllChains);
+
+            // Get the facet selectors.
+            getSelectorsInput[2] = facet;
+            bytes memory res = vm.ffi(getSelectorsInput);
+            bytes4[] memory selectors = abi.decode(res, (bytes4[]));
+
+            // Create the FacetCut struct for this facet.
+            _erc20HandlerFacetCuts[facetIndex] = FacetCut({facetAddress: facetAddress, action: FacetCutAction.Add, functionSelectors: selectors});
+        }
+
+        IDiamondCut(handlerAddress).diamondCut(_erc20HandlerFacetCuts, address(0x0), "");
+
+    }
+
+    function createERC20HandlerDiamondPt2a(string memory name, address handlerAddress) public {
+        validateName(name);
+        bool recordAllChains;
+        recordAllChains = vm.envBool("RECORD_DEPLOYMENTS_FOR_ALL_CHAINS");
+        FacetCut[] memory _erc20HandlerFacetCuts = new FacetCut[](5);
+
+        // Register all facets.
+        string[3] memory facets = [
+            "ERC20TaggedRuleFacet",
+            "ERC20NonTaggedRuleFacet",
+            "TradingRuleFacet"
+            
+        ];
+
+        string[3] memory directories = [
+            "./out/ERC20TaggedRuleFacet.sol/",
+            "./out/ERC20NonTaggedRuleFacet.sol/",
+            "./out/TradingRuleFacet.sol/"
+        ];
+
+        name = replace(name, " ", "_");
+        string[] memory getSelectorsInput = new string[](3);
+        getSelectorsInput[0] = "python3";
+        getSelectorsInput[1] = "script/python/get_selectors.py";
+
+        // Loop on each facet, deploy them and create the FacetCut.
+        for (uint256 facetIndex = 0; facetIndex < facets.length; facetIndex++) {
+            string memory facet = facets[facetIndex];
+            string memory directory = directories[facetIndex];
+
+            /// Deploy the facet.
+            bytes memory bytecode = vm.getCode(string.concat(directory, string.concat(facet, ".json")));
+            address facetAddress;
+            assembly {
+                facetAddress := create(0, add(bytecode, 0x20), mload(bytecode))
+            }
+            recordFacet(string.concat(name, "HandlerDiamond"), facet, facetAddress, recordAllChains);
+
+            // Get the facet selectors.
+            getSelectorsInput[2] = facet;
+            bytes memory res = vm.ffi(getSelectorsInput);
+            bytes4[] memory selectors = abi.decode(res, (bytes4[]));
+
+            // Create the FacetCut struct for this facet.
+            _erc20HandlerFacetCuts[facetIndex] = FacetCut({facetAddress: facetAddress, action: FacetCutAction.Add, functionSelectors: selectors});
+        }
+
+        IDiamondCut(handlerAddress).diamondCut(_erc20HandlerFacetCuts, address(0x0), "");
 
     }
 
